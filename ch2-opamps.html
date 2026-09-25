@@ -72,7 +72,7 @@
     <!-- ===================================================== -->
     <h2 id="ideal"><span class="sec-no">2.2</span>Op-Amp อุดมคติ</h2>
     <p>แบบจำลองภายในของ op-amp ประกอบด้วยความต้านทานอินพุต <var>r</var><sub>in</sub> ระหว่างขาอินพุตทั้งสอง
-       แหล่งจ่ายแรงดันควบคุม <var>V</var> = <var>A</var>(<var>V</var>⁺ − <var>V</var>⁻) และความต้านทานเอาต์พุต <var>r</var><sub>out</sub>
+       แหล่งจ่ายแรงดันควบคุม <var>V</var> = <var>A</var>(<var>V</var><sup>+</sup> − <var>V</var><sup>−</sup>) และความต้านทานเอาต์พุต <var>r</var><sub>out</sub>
        โดย <var>A</var> คืออัตราขยายวงเปิด (open-loop gain)</p>
     <div class="table-wrap">
       <table>
@@ -80,7 +80,7 @@
         <tbody>
           <tr><td><var>r</var><sub>in</sub> → ∞</td><td><var>i</var><sub>in</sub> → 0 ไม่ดึงกระแสจากวงจรก่อนหน้า</td></tr>
           <tr><td><var>r</var><sub>out</sub> → 0</td><td>ขับวงจรถัดไปได้โดยแรงดันไม่ตก</td></tr>
-          <tr><td><var>A</var> → ∞</td><td><var>V</var>⁺ − <var>V</var>⁻ = <var>V</var><sub>o</sub>/<var>A</var> → 0</td></tr>
+          <tr><td><var>A</var> → ∞</td><td><var>V</var><sup>+</sup> − <var>V</var><sup>−</sup> = <var>V</var><sub>o</sub>/<var>A</var> → 0</td></tr>
         </tbody>
       </table>
     </div>
@@ -88,7 +88,7 @@
       <span class="title">กฎทอง 2 ข้อ</span>
       <ol>
         <li><strong><var>i</var><sub>in</sub> = 0</strong> — ไม่มีกระแสไหลเข้าขาอินพุต</li>
-        <li><strong><var>V</var>⁺ = <var>V</var>⁻</strong> — ใช้ได้เมื่อมี negative feedback เท่านั้น</li>
+        <li><strong><var>V</var><sup>+</sup> = <var>V</var><sup>−</sup></strong> — ใช้ได้เมื่อมี negative feedback เท่านั้น</li>
       </ol>
       Open-loop gain ใหญ่เกินกว่าจะใช้งานตรง ๆ จึงต้องมี negative feedback เสมอ และอัตราขยายที่ใช้งานจริงถูกกำหนดด้วย<strong>อัตราส่วนของตัวต้านทาน</strong>
     </div>
@@ -169,13 +169,13 @@
     </div>
 
     <h3>Inverting amplifier</h3>
-    <p>ขา + ต่อลงกราวด์ และจากกฎ <var>V</var>⁺ = <var>V</var>⁻ จะได้ <var>V</var><sub>a</sub> = 0 เรียกว่า <strong>virtual ground</strong>
+    <p>ขา + ต่อลงกราวด์ และจากกฎ <var>V</var><sup>+</sup> = <var>V</var><sup>−</sup> จะได้ <var>V</var><sub>a</sub> = 0 เรียกว่า <strong>virtual ground</strong>
        (โหนดมีแรงดันประมาณ 0 V โดยไม่ได้ต่อลงกราวด์จริง) ใช้ KCL ที่โหนด a โดย <var>i</var><sub>in</sub> = 0:</p>
     <div class="eq"><span class="frac"><span><var>V</var><sub>i</sub></span><span><var>R</var><sub>i</sub></span></span> + <span class="frac"><span><var>V</var><sub>o</sub></span><span><var>R</var><sub>f</sub></span></span> = 0
       &nbsp;⇒&nbsp; <var>V</var><sub>o</sub> = −<span class="frac"><span><var>R</var><sub>f</sub></span><span><var>R</var><sub>i</sub></span></span><var>V</var><sub>i</sub></div>
 
     <h3>Non-inverting amplifier</h3>
-    <p>สัญญาณเข้าขา + จากกฎ <var>V</var>⁺ = <var>V</var>⁻ จะได้ <var>V</var><sub>a</sub> = <var>V</var><sub>i</sub> (virtual short)
+    <p>สัญญาณเข้าขา + จากกฎ <var>V</var><sup>+</sup> = <var>V</var><sup>−</sup> จะได้ <var>V</var><sub>a</sub> = <var>V</var><sub>i</sub> (virtual short)
        และ <var>V</var><sub>a</sub> เป็นแรงดันจากวงจรแบ่งแรงดันของเอาต์พุต: <var>V</var><sub>a</sub> = <var>V</var><sub>o</sub>·<var>R</var><sub>i</sub>/(<var>R</var><sub>i</sub> + <var>R</var><sub>f</sub>)</p>
     <div class="eq"><var>V</var><sub>o</sub> = <span>(</span>1 + <span class="frac"><span><var>R</var><sub>f</sub></span><span><var>R</var><sub>i</sub></span></span><span>)</span><var>V</var><sub>i</sub></div>
     <p>เอาต์พุตไม่กลับเฟสและ gain ≥ 1 เสมอ — <strong>เป็นวงจรหลักสำหรับขยายสัญญาณเซนเซอร์เกษตร</strong>
@@ -186,14 +186,14 @@
 
     <h3>Summing amplifier</h3>
     <p>อินพุตหลายตัวต่อผ่านตัวต้านทานเข้าโหนด virtual ground เดียวกัน</p>
-    <div class="eq"><var>V</var><sub>o</sub> = −<var>R</var><sub>f</sub><span>(</span><span class="frac"><span><var>V</var>₁</span><span><var>R</var>₁</span></span> + <span class="frac"><span><var>V</var>₂</span><span><var>R</var>₂</span></span> + <span class="frac"><span><var>V</var>₃</span><span><var>R</var>₃</span></span><span>)</span></div>
-    <p>ถ้าตัวต้านทานเท่ากันทั้งหมด <var>V</var><sub>o</sub> = −(<var>V</var>₁ + <var>V</var>₂ + <var>V</var>₃) — หลักการเดียวกันใช้<strong>เลื่อนระดับสัญญาณ</strong> (บวกค่าคงที่เข้าไป)
+    <div class="eq"><var>V</var><sub>o</sub> = −<var>R</var><sub>f</sub><span>(</span><span class="frac"><span><var>V</var><sub>1</sub></span><span><var>R</var><sub>1</sub></span></span> + <span class="frac"><span><var>V</var><sub>2</sub></span><span><var>R</var><sub>2</sub></span></span> + <span class="frac"><span><var>V</var><sub>3</sub></span><span><var>R</var><sub>3</sub></span></span><span>)</span></div>
+    <p>ถ้าตัวต้านทานเท่ากันทั้งหมด <var>V</var><sub>o</sub> = −(<var>V</var><sub>1</sub> + <var>V</var><sub>2</sub> + <var>V</var><sub>3</sub>) — หลักการเดียวกันใช้<strong>เลื่อนระดับสัญญาณ</strong> (บวกค่าคงที่เข้าไป)
        และใช้ใน DAC แบบ binary-weighted (บทที่ 3)</p>
 
     <h3>Differential amplifier</h3>
-    <p><var>V</var>₁ เข้าขา − ผ่าน <var>R</var>₁ (feedback <var>R</var><sub>f</sub>) ส่วน <var>V</var>₂ เข้าผ่าน <var>R</var>₁ ไปยังโหนด b ซึ่งมี <var>R</var><sub>f</sub> ลงกราวด์
-       ดังนั้น <var>V</var><sub>a</sub> = <var>V</var><sub>b</sub> = <var>V</var>₂·<var>R</var><sub>f</sub>/(<var>R</var>₁ + <var>R</var><sub>f</sub>) และใช้ superposition:</p>
-    <div class="eq"><var>V</var><sub>o</sub> = <span class="frac"><span><var>R</var><sub>f</sub></span><span><var>R</var>₁</span></span>(<var>V</var>₂ − <var>V</var>₁)</div>
+    <p><var>V</var><sub>1</sub> เข้าขา − ผ่าน <var>R</var><sub>1</sub> (feedback <var>R</var><sub>f</sub>) ส่วน <var>V</var><sub>2</sub> เข้าผ่าน <var>R</var><sub>1</sub> ไปยังโหนด b ซึ่งมี <var>R</var><sub>f</sub> ลงกราวด์
+       ดังนั้น <var>V</var><sub>a</sub> = <var>V</var><sub>b</sub> = <var>V</var><sub>2</sub>·<var>R</var><sub>f</sub>/(<var>R</var><sub>1</sub> + <var>R</var><sub>f</sub>) และใช้ superposition:</p>
+    <div class="eq"><var>V</var><sub>o</sub> = <span class="frac"><span><var>R</var><sub>f</sub></span><span><var>R</var><sub>1</sub></span></span>(<var>V</var><sub>2</sub> − <var>V</var><sub>1</sub>)</div>
     <p>ขยายเฉพาะ<strong>ผลต่าง</strong> จึงตัดสัญญาณรบกวนที่เข้าทั้งสองสายเท่ากัน (common mode) ได้
        ข้อจำกัดคือ input impedance ต่ำ — แก้ด้วย instrumentation amplifier</p>
 
@@ -251,11 +251,11 @@
 
     <!-- ===================================================== -->
     <h2 id="decibel"><span class="sec-no">2.6</span>เดซิเบล (dB)</h2>
-    <p>หน่วย bel ถูกนิยามที่ Bell Labs เพื่อวัดการสูญเสียกำลังในสายโทรศัพท์: B = log₁₀(<var>P</var>₂/<var>P</var>₁) และ 1 B = 10 dB</p>
-    <div class="eq">dB = 10 log₁₀<span class="frac"><span><var>P</var>₂</span><span><var>P</var>₁</span></span> <span class="label">อัตราส่วนกำลัง</span></div>
-    <p>เพราะ <var>P</var> = <var>V</var>²/<var>R</var> (โหลดเท่ากัน) จึงได้ 10 log(<var>V</var>₂²/<var>V</var>₁²) =</p>
-    <div class="eq">dB = 20 log₁₀<span class="frac"><span><var>V</var><sub>out</sub></span><span><var>V</var><sub>in</sub></span></span> <span class="label">อัตราส่วนแรงดัน</span></div>
-    <p>แปลงกลับ: <var>V</var>₂/<var>V</var>₁ = 10<sup>dB/20</sup> และ <var>P</var>₂/<var>P</var>₁ = 10<sup>dB/10</sup></p>
+    <p>หน่วย bel ถูกนิยามที่ Bell Labs เพื่อวัดการสูญเสียกำลังในสายโทรศัพท์: B = log<sub>10</sub>(<var>P</var><sub>2</sub>/<var>P</var><sub>1</sub>) และ 1 B = 10 dB</p>
+    <div class="eq">dB = 10 log<sub>10</sub><span class="frac"><span><var>P</var><sub>2</sub></span><span><var>P</var><sub>1</sub></span></span> <span class="label">อัตราส่วนกำลัง</span></div>
+    <p>เพราะ <var>P</var> = <var>V</var><sup>2</sup>/<var>R</var> (โหลดเท่ากัน) จึงได้ 10 log(<var>V</var><sub>2</sub><sup>2</sup>/<var>V</var><sub>1</sub><sup>2</sup>) =</p>
+    <div class="eq">dB = 20 log<sub>10</sub><span class="frac"><span><var>V</var><sub>out</sub></span><span><var>V</var><sub>in</sub></span></span> <span class="label">อัตราส่วนแรงดัน</span></div>
+    <p>แปลงกลับ: <var>V</var><sub>2</sub>/<var>V</var><sub>1</sub> = 10<sup>dB/20</sup> และ <var>P</var><sub>2</sub>/<var>P</var><sub>1</sub> = 10<sup>dB/10</sup></p>
 
     <div class="table-wrap">
       <table>
@@ -295,9 +295,9 @@
       <figcaption>รูปที่ 2.3 วงจรกรองความถี่ต่ำแบบ RC (passive)</figcaption>
     </figure>
     <div class="eq"><var>f</var><sub>c</sub> = <span class="frac"><span>1</span><span>2π<var>RC</var></span></span> <span class="label">ความถี่ตัด (−3 dB)</span></div>
-    <div class="eq"><span>|</span><span class="frac"><span><var>V</var><sub>out</sub></span><span><var>V</var><sub>in</sub></span></span><span>|</span> = <span class="frac"><span>1</span><span>√(1 + (<var>f</var>/<var>f</var><sub>c</sub>)²)</span></span></div>
-    <p><strong>ตัวอย่าง:</strong> <var>R</var> = 10 kΩ, <var>C</var> = 1 µF → <var>f</var><sub>c</sub> = 1/(2π × 10⁴ × 10⁻⁶) ≈ 16 Hz
-       ที่ 50 Hz: 1/√(1 + (50/16)²) ≈ 0.30 หรือประมาณ −10 dB</p>
+    <div class="eq"><span>|</span><span class="frac"><span><var>V</var><sub>out</sub></span><span><var>V</var><sub>in</sub></span></span><span>|</span> = <span class="frac"><span>1</span><span>√(1 + (<var>f</var>/<var>f</var><sub>c</sub>)<sup>2</sup>)</span></span></div>
+    <p><strong>ตัวอย่าง:</strong> <var>R</var> = 10 kΩ, <var>C</var> = 1 µF → <var>f</var><sub>c</sub> = 1/(2π × 10<sup>4</sup> × 10<sup>−6</sup>) ≈ 16 Hz
+       ที่ 50 Hz: 1/√(1 + (50/16)<sup>2</sup>) ≈ 0.30 หรือประมาณ −10 dB</p>
     <div class="callout key">
       <span class="title">หลักการเลือก f<sub>c</sub></span>
       ตั้ง <var>f</var><sub>c</sub> ให้สูงกว่าความถี่ของสัญญาณที่ต้องการ 5–10 เท่า แต่ต่ำกว่าความถี่ของสัญญาณรบกวน
@@ -326,7 +326,7 @@
     <p>ประกอบด้วย op-amp 3 ตัว:</p>
     <ul>
       <li><strong>A1 และ A2</strong> ทำหน้าที่ buffer ให้ input impedance สูงมาก ไม่รบกวนแหล่งสัญญาณ
-          โดยมีโซ่ตัวต้านทาน A1 out → <var>R</var>₁ → <var>R</var><sub>G</sub> → <var>R</var>₁ → A2 out</li>
+          โดยมีโซ่ตัวต้านทาน A1 out → <var>R</var><sub>1</sub> → <var>R</var><sub>G</sub> → <var>R</var><sub>1</sub> → A2 out</li>
       <li><strong><var>R</var><sub>G</sub></strong> ตัวเดียวกำหนด gain เพราะต่อคร่อมระหว่างขา inverting ของ A1 และ A2 โดยตรง</li>
       <li><strong>A3</strong> เป็น differential amplifier ตัด common-mode noise</li>
       <li><strong>ขา REF:</strong> เอาต์พุตวัดเทียบกับขานี้ ต่อ GND ให้เอาต์พุตอยู่รอบ 0 V หรือต่อ M ให้อยู่รอบ 6 V</li>
@@ -351,9 +351,9 @@
     <div class="quiz">
       <div class="q" data-answer="a">
         <p class="q-text">กฎทองของ op-amp อุดมคติ (เมื่อมี negative feedback) คือข้อใด?</p>
-        <label class="opt"><input type="radio" value="a"> <var>i</var><sub>in</sub> = 0 และ <var>V</var>⁺ = <var>V</var>⁻</label>
+        <label class="opt"><input type="radio" value="a"> <var>i</var><sub>in</sub> = 0 และ <var>V</var><sup>+</sup> = <var>V</var><sup>−</sup></label>
         <label class="opt"><input type="radio" value="b"> <var>V</var><sub>o</sub> = 0 และ <var>i</var><sub>out</sub> = 0</label>
-        <label class="opt"><input type="radio" value="c"> <var>V</var>⁺ = 0 และ <var>V</var>⁻ = <var>V</var><sub>o</sub></label>
+        <label class="opt"><input type="radio" value="c"> <var>V</var><sup>+</sup> = 0 และ <var>V</var><sup>−</sup> = <var>V</var><sub>o</sub></label>
         <label class="opt"><input type="radio" value="d"> gain = 1 เสมอ</label>
         <div class="explain" hidden>Input impedance อนันต์ → ไม่มีกระแสเข้าขา และ open-loop gain อนันต์ + feedback → ขาทั้งสองมีแรงดันเท่ากัน</div>
       </div>
@@ -418,13 +418,13 @@
       <div class="q" data-type="num" data-answer="40">
         <p class="q-text">วงจรขยายแรงดัน 100 เท่า คิดเป็นกี่ dB?</p>
         <div class="num-input"><input type="number" step="any" aria-label="คำตอบ"> dB</div>
-        <div class="explain" hidden>20 log₁₀(100) = 20 × 2 = <strong>40 dB</strong></div>
+        <div class="explain" hidden>20 log<sub>10</sub>(100) = 20 × 2 = <strong>40 dB</strong></div>
       </div>
 
       <div class="q" data-type="num" data-answer="1.59">
         <p class="q-text">วงจร RC low-pass มี <var>R</var> = 10 kΩ, <var>C</var> = 10 µF ความถี่ตัดเท่าใด?</p>
         <div class="num-input"><input type="number" step="any" aria-label="คำตอบ"> Hz</div>
-        <div class="explain" hidden><var>f</var><sub>c</sub> = 1/(2π × 10⁴ × 10⁻⁵) = 1/(2π × 0.1) ≈ <strong>1.59 Hz</strong></div>
+        <div class="explain" hidden><var>f</var><sub>c</sub> = 1/(2π × 10<sup>4</sup> × 10<sup>−5</sup>) = 1/(2π × 0.1) ≈ <strong>1.59 Hz</strong></div>
       </div>
 
       <div class="q" data-type="num" data-answer="505" data-tol="0.02">
@@ -454,8 +454,8 @@
       <summary>โจทย์ 2 — ออกแบบตัวกรองสำหรับเซนเซอร์ความชื้นดิน</summary>
       <div class="problem"><p>ต้องการตัวกรอง RC ที่มี <var>f</var><sub>c</sub> ≈ 1 Hz โดยมีตัวเก็บประจุ 10 µF จงหาค่า <var>R</var> และคำนวณการลดทอนที่ 50 Hz</p></div>
       <div class="sol">
-        <p><var>R</var> = 1/(2π<var>f</var><sub>c</sub><var>C</var>) = 1/(2π × 1 × 10⁻⁵) ≈ <strong>15.9 kΩ</strong> (ใช้ค่ามาตรฐาน 15 kΩ หรือ 16 kΩ)</p>
-        <p>ที่ 50 Hz: |H| = 1/√(1 + 50²) ≈ 0.020 → 20 log(0.02) ≈ <strong>−34 dB</strong> ลดสัญญาณรบกวนจากไฟบ้านเหลือประมาณ 2%</p>
+        <p><var>R</var> = 1/(2π<var>f</var><sub>c</sub><var>C</var>) = 1/(2π × 1 × 10<sup>−5</sup>) ≈ <strong>15.9 kΩ</strong> (ใช้ค่ามาตรฐาน 15 kΩ หรือ 16 kΩ)</p>
+        <p>ที่ 50 Hz: |H| = 1/√(1 + 50<sup>2</sup>) ≈ 0.020 → 20 log(0.02) ≈ <strong>−34 dB</strong> ลดสัญญาณรบกวนจากไฟบ้านเหลือประมาณ 2%</p>
       </div>
     </details>
 
@@ -463,7 +463,7 @@
       <summary>โจทย์ 3 — พิสูจน์ gain ของ non-inverting amplifier</summary>
       <div class="problem"><p>จากรูปที่ 2.2 ใช้กฎทองของ op-amp พิสูจน์ว่า <var>V</var><sub>o</sub> = (1 + <var>R</var><sub>f</sub>/<var>R</var><sub>i</sub>)<var>V</var><sub>i</sub></p></div>
       <div class="sol">
-        <p>กฎข้อ 2: <var>V</var><sub>a</sub> = <var>V</var>⁺ = <var>V</var><sub>i</sub></p>
+        <p>กฎข้อ 2: <var>V</var><sub>a</sub> = <var>V</var><sup>+</sup> = <var>V</var><sub>i</sub></p>
         <p>กฎข้อ 1: ไม่มีกระแสเข้าขา − ดังนั้นกระแสผ่าน <var>R</var><sub>f</sub> เท่ากับกระแสผ่าน <var>R</var><sub>i</sub>:
            (<var>V</var><sub>o</sub> − <var>V</var><sub>a</sub>)/<var>R</var><sub>f</sub> = <var>V</var><sub>a</sub>/<var>R</var><sub>i</sub></p>
         <p>จัดรูป: <var>V</var><sub>o</sub> = <var>V</var><sub>a</sub>(1 + <var>R</var><sub>f</sub>/<var>R</var><sub>i</sub>) = (1 + <var>R</var><sub>f</sub>/<var>R</var><sub>i</sub>)<var>V</var><sub>i</sub> ∎</p>
@@ -474,13 +474,13 @@
       <summary>โจทย์ 4 — การบ้าน: ทำไม gain ของ instrumentation amp ขึ้นกับ R<sub>G</sub> ตัวเดียว</summary>
       <div class="problem"><p>อธิบายว่าทำไม gain ของขั้นอินพุตขึ้นกับ <var>R</var><sub>G</sub> เพียงตัวเดียว และขา REF มีบทบาทอย่างไร</p></div>
       <div class="sol">
-        <p>จากกฎ <var>V</var>⁺ = <var>V</var>⁻ ขา − ของ A1 และ A2 มีแรงดัน <var>V</var>₁ และ <var>V</var>₂ ตามอินพุต
-           จึงมีแรงดัน (<var>V</var>₂ − <var>V</var>₁) คร่อม <var>R</var><sub>G</sub> ทำให้เกิดกระแส <var>i</var> = (<var>V</var>₂ − <var>V</var>₁)/<var>R</var><sub>G</sub></p>
-        <p>กระแสนี้ไม่ไหลเข้าขา op-amp จึงไหลผ่าน <var>R</var>₁ ทั้งสองตัวด้วย แรงดันระหว่างเอาต์พุต A1 และ A2 จึงเป็น
-           <var>i</var>(<var>R</var>₁ + <var>R</var><sub>G</sub> + <var>R</var>₁) = (<var>V</var>₂ − <var>V</var>₁)(1 + 2<var>R</var>₁/<var>R</var><sub>G</sub>)
-           — ใน INA128 ค่า 2<var>R</var>₁ = 50 kΩ จึงได้ <var>G</var> = 1 + 50 kΩ/<var>R</var><sub>G</sub></p>
+        <p>จากกฎ <var>V</var><sup>+</sup> = <var>V</var><sup>−</sup> ขา − ของ A1 และ A2 มีแรงดัน <var>V</var><sub>1</sub> และ <var>V</var><sub>2</sub> ตามอินพุต
+           จึงมีแรงดัน (<var>V</var><sub>2</sub> − <var>V</var><sub>1</sub>) คร่อม <var>R</var><sub>G</sub> ทำให้เกิดกระแส <var>i</var> = (<var>V</var><sub>2</sub> − <var>V</var><sub>1</sub>)/<var>R</var><sub>G</sub></p>
+        <p>กระแสนี้ไม่ไหลเข้าขา op-amp จึงไหลผ่าน <var>R</var><sub>1</sub> ทั้งสองตัวด้วย แรงดันระหว่างเอาต์พุต A1 และ A2 จึงเป็น
+           <var>i</var>(<var>R</var><sub>1</sub> + <var>R</var><sub>G</sub> + <var>R</var><sub>1</sub>) = (<var>V</var><sub>2</sub> − <var>V</var><sub>1</sub>)(1 + 2<var>R</var><sub>1</sub>/<var>R</var><sub>G</sub>)
+           — ใน INA128 ค่า 2<var>R</var><sub>1</sub> = 50 kΩ จึงได้ <var>G</var> = 1 + 50 kΩ/<var>R</var><sub>G</sub></p>
         <p>สัญญาณ common mode ทำให้ปลายทั้งสองของ <var>R</var><sub>G</sub> ขึ้นลงพร้อมกัน ไม่เกิดกระแส จึงไม่ถูกขยาย แล้ว A3 ตัดทิ้งอีกชั้น
-           ขา REF เป็นจุดอ้างอิงของ A3 — เอาต์พุต = <var>G</var>(<var>V</var>₂ − <var>V</var>₁) + <var>V</var><sub>REF</sub> จึงใช้เลื่อนระดับเอาต์พุตไปไว้ที่ M ได้</p>
+           ขา REF เป็นจุดอ้างอิงของ A3 — เอาต์พุต = <var>G</var>(<var>V</var><sub>2</sub> − <var>V</var><sub>1</sub>) + <var>V</var><sub>REF</sub> จึงใช้เลื่อนระดับเอาต์พุตไปไว้ที่ M ได้</p>
       </div>
     </details>
 

@@ -93,9 +93,9 @@
     <ul>
       <li>บิตที่เป็น 1 จะปิดสวิตช์ ให้กระแสจากกิ่งนั้นไหลเข้าโหนด a</li>
       <li>Op-amp รวมกระแสเป็นแรงดัน — คือ <strong>summing amplifier</strong> จากบทที่ 2</li>
-      <li>ใช้ตัวต้านทาน <var>R</var>, 2<var>R</var>, 4<var>R</var>, 8<var>R</var> ทำให้ <var>i</var>₃ = 2<var>i</var>₂ = 4<var>i</var>₁ = 8<var>i</var>₀ แต่ละบิตมีน้ำหนักเป็นสองเท่าของบิตถัดลงไป</li>
+      <li>ใช้ตัวต้านทาน <var>R</var>, 2<var>R</var>, 4<var>R</var>, 8<var>R</var> ทำให้ <var>i</var><sub>3</sub> = 2<var>i</var><sub>2</sub> = 4<var>i</var><sub>1</sub> = 8<var>i</var><sub>0</sub> แต่ละบิตมีน้ำหนักเป็นสองเท่าของบิตถัดลงไป</li>
     </ul>
-    <div class="callout warn">ข้อจำกัด: DAC 16 บิตต้องใช้ตัวต้านทานที่ค่ามากสุดและน้อยสุดต่างกัน 2¹⁵ = 32,768 เท่า และทุกตัวต้องแม่นยำ ซึ่งผลิตจริงไม่ได้</div>
+    <div class="callout warn">ข้อจำกัด: DAC 16 บิตต้องใช้ตัวต้านทานที่ค่ามากสุดและน้อยสุดต่างกัน 2<sup>15</sup> = 32,768 เท่า และทุกตัวต้องแม่นยำ ซึ่งผลิตจริงไม่ได้</div>
     <p>ทางออกคือ <strong>R-2R ladder</strong> ที่ใช้ตัวต้านทานเพียงสองค่า (<var>R</var> และ 2<var>R</var>) ไม่ว่าจะกี่บิต</p>
 
     <!-- ===================================================== -->
@@ -113,7 +113,7 @@
 
     <h3>ตัวอย่าง: SAR 4 บิต, V<sub>ref</sub> = 15 V, V<sub>in</sub> = 10.1 V</h3>
     <figure>
-      <svg viewBox="0 0 320 235" width="340" role="img" aria-label="ขั้นตอนการแปลงของ SAR ADC">
+      <svg viewBox="0 0 320 242" width="340" role="img" aria-label="ขั้นตอนการแปลงของ SAR ADC">
         <line class="grid" x1="40" y1="200" x2="305" y2="200"/>
         <line class="grid" x1="40" y1="140" x2="305" y2="140"/>
         <line class="grid" x1="40" y1="80" x2="305" y2="80"/>
@@ -136,10 +136,10 @@
         <text class="lbl" x="140" y="219" text-anchor="middle" font-family="monospace">1100</text>
         <text class="lbl" x="200" y="219" text-anchor="middle" font-family="monospace">1010</text>
         <text class="lbl" x="260" y="219" text-anchor="middle" font-family="monospace">1011</text>
-        <text class="lbl-sm" x="80" y="233" text-anchor="middle">คง b₃</text>
-        <text class="lbl-sm" x="140" y="233" text-anchor="middle">ล้าง b₂</text>
-        <text class="lbl-sm" x="200" y="233" text-anchor="middle">คง b₁</text>
-        <text class="lbl-sm" x="260" y="233" text-anchor="middle">ล้าง b₀</text>
+        <text class="lbl-sm" x="80" y="233" text-anchor="middle">คง b<tspan font-size="10" dy="3">3</tspan></text>
+        <text class="lbl-sm" x="140" y="233" text-anchor="middle">ล้าง b<tspan font-size="10" dy="3">2</tspan></text>
+        <text class="lbl-sm" x="200" y="233" text-anchor="middle">คง b<tspan font-size="10" dy="3">1</tspan></text>
+        <text class="lbl-sm" x="260" y="233" text-anchor="middle">ล้าง b<tspan font-size="10" dy="3">0</tspan></text>
       </svg>
       <figcaption>รูปที่ 3.1 V<sub>DAC</sub> ของรหัสทดลองแต่ละขั้น (เขียว = ไม่เกิน V<sub>in</sub> คงบิต, แดง = เกิน ล้างบิต)</figcaption>
     </figure>
@@ -147,14 +147,14 @@
       <table>
         <thead><tr><th>ขั้น</th><th>รหัสทดลอง</th><th>V<sub>DAC</sub></th><th>เทียบ</th><th>ผล</th></tr></thead>
         <tbody>
-          <tr><td>i = 3</td><td class="mono">1000</td><td>8/16 × 15 = 7.50 V</td><td>7.50 &lt; 10.1</td><td>คง b₃ = 1</td></tr>
-          <tr><td>i = 2</td><td class="mono">1100</td><td>12/16 × 15 = 11.25 V</td><td>11.25 &gt; 10.1</td><td>ล้าง b₂ = 0</td></tr>
-          <tr><td>i = 1</td><td class="mono">1010</td><td>10/16 × 15 = 9.375 V</td><td>9.375 &lt; 10.1</td><td>คง b₁ = 1</td></tr>
-          <tr><td>i = 0</td><td class="mono">1011</td><td>11/16 × 15 = 10.31 V</td><td>10.31 &gt; 10.1</td><td>ล้าง b₀ = 0</td></tr>
+          <tr><td>i = 3</td><td class="mono">1000</td><td>8/16 × 15 = 7.50 V</td><td>7.50 &lt; 10.1</td><td>คง b<sub>3</sub> = 1</td></tr>
+          <tr><td>i = 2</td><td class="mono">1100</td><td>12/16 × 15 = 11.25 V</td><td>11.25 &gt; 10.1</td><td>ล้าง b<sub>2</sub> = 0</td></tr>
+          <tr><td>i = 1</td><td class="mono">1010</td><td>10/16 × 15 = 9.375 V</td><td>9.375 &lt; 10.1</td><td>คง b<sub>1</sub> = 1</td></tr>
+          <tr><td>i = 0</td><td class="mono">1011</td><td>11/16 × 15 = 10.31 V</td><td>10.31 &gt; 10.1</td><td>ล้าง b<sub>0</sub> = 0</td></tr>
         </tbody>
       </table>
     </div>
-    <p>ผลลัพธ์ 1010₂ = 10 → <var>V</var> = 10/16 × 15 = <strong>9.375 V</strong> คลาดจริงไม่เกิน 1 LSB (0.94 V)</p>
+    <p>ผลลัพธ์ 1010<sub>2</sub> = 10 → <var>V</var> = 10/16 × 15 = <strong>9.375 V</strong> คลาดจริงไม่เกิน 1 LSB (0.94 V)</p>
     <div class="callout">
       SAR ต้องมีวงจร <strong>sample-and-hold</strong> — ถ้า <var>V</var><sub>in</sub> เปลี่ยนระหว่างการแปลง ผลจะผิดโดยไม่มีสัญญาณเตือน
       ESP32 มี SAR ADC 12 บิต 2 ชุด (ADC1, ADC2) ที่มี <var>V</var><sub>ref</sub> ภายในประมาณ 1.1 V จึงต้องใช้ attenuation (หัวข้อ 3.6)
@@ -170,13 +170,13 @@
           <tr><td>Flash</td><td>Comparator 2<sup>n</sup> − 1 ตัวเทียบพร้อมกันใน 1 cycle</td><td>6–8 บิต, ระดับ GHz · แพงและกินไฟ</td><td>Oscilloscope, วิดีโอ</td></tr>
           <tr><td>Pipeline</td><td>หลายขั้นต่อกัน แต่ละขั้นแก้ไม่กี่บิตแล้วส่งส่วนที่เหลือต่อ</td><td>10–16 บิต, MHz · มี latency หลาย clock</td><td>การสื่อสาร, กล้อง</td></tr>
           <tr><td>Delta-Sigma (ΔΣ)</td><td>สุ่มเร็วมากด้วย comparator 1 บิต แล้ว digital filter เฉลี่ย</td><td>16–24 บิต, Hz–kHz · ทนสัญญาณรบกวนดีมาก</td><td>HX711, ADS1115, MAX31865</td></tr>
-          <tr><td>Dual-slope</td><td>Integrator ชาร์จด้วย V<sub>in</sub> เวลา T₁ แล้วคายด้วย −V<sub>ref</sub> จนเป็นศูนย์ที่เวลา T₂</td><td>ช้ามากแต่แม่นยำ · T₂ ∝ V<sub>in</sub> ไม่ขึ้นกับ R, C</td><td>มัลติมิเตอร์, ตาชั่ง</td></tr>
+          <tr><td>Dual-slope</td><td>Integrator ชาร์จด้วย V<sub>in</sub> เวลา T<sub>1</sub> แล้วคายด้วย −V<sub>ref</sub> จนเป็นศูนย์ที่เวลา T<sub>2</sub></td><td>ช้ามากแต่แม่นยำ · T<sub>2</sub> ∝ V<sub>in</sub> ไม่ขึ้นกับ R, C</td><td>มัลติมิเตอร์, ตาชั่ง</td></tr>
         </tbody>
       </table>
     </div>
     <div class="callout key">
       สัญญาณเกษตรส่วนใหญ่เปลี่ยนช้า แต่ต้องการความละเอียดสูงและทนสัญญาณรบกวน สำหรับสัญญาณระดับ mV เช่น load cell หรือ thermocouple
-      ชิป ΔΣ ภายนอก (HX711, ADS1115) มักดีกว่า SAR ในตัว MCU · Dual-slope ที่เลือก T₁ = 20 ms จะเฉลี่ยสัญญาณรบกวน 50 Hz ทิ้งได้หมดพอดี
+      ชิป ΔΣ ภายนอก (HX711, ADS1115) มักดีกว่า SAR ในตัว MCU · Dual-slope ที่เลือก T<sub>1</sub> = 20 ms จะเฉลี่ยสัญญาณรบกวน 50 Hz ทิ้งได้หมดพอดี
     </div>
 
     <h3>การสุ่มตัวอย่าง (Sampling)</h3>
@@ -485,7 +485,7 @@ float T = ((w &gt;&gt; 3) &amp; 0x0FFF) * 0.25;  // เลื่อนขวา 
         <label class="opt"><input type="radio" value="b"> ขึ้นกับค่า V<sub>in</sub></label>
         <label class="opt"><input type="radio" value="c"> 10 ขั้นเสมอ</label>
         <label class="opt"><input type="radio" value="d"> 1,024 ขั้น</label>
-        <div class="explain" hidden>SAR ทำ binary search ทีละบิต จึงใช้ n ขั้นเสมอ (digital-ramp ใช้ได้ถึง 2ⁿ ขั้น และ Flash ใช้ 1 ขั้นแต่ต้องมี comparator 2ⁿ − 1 ตัว)</div>
+        <div class="explain" hidden>SAR ทำ binary search ทีละบิต จึงใช้ n ขั้นเสมอ (digital-ramp ใช้ได้ถึง 2<sup><var>n</var></sup> ขั้น และ Flash ใช้ 1 ขั้นแต่ต้องมี comparator 2<sup><var>n</var></sup> − 1 ตัว)</div>
       </div>
 
       <div class="q" data-answer="a">
@@ -542,7 +542,7 @@ float T = ((w &gt;&gt; 3) &amp; 0x0FFF) * 0.25;  // เลื่อนขวา 
       <div class="q" data-type="num" data-answer="255">
         <p class="q-text">Flash ADC ขนาด 8 บิต ต้องใช้ comparator กี่ตัว?</p>
         <div class="num-input"><input type="number" step="any" aria-label="คำตอบ"> ตัว</div>
-        <div class="explain" hidden>2⁸ − 1 = <strong>255</strong> ตัว — จำนวนเพิ่มเป็นสองเท่าทุกบิต จึงทำได้เพียง 6–8 บิต</div>
+        <div class="explain" hidden>2<sup>8</sup> − 1 = <strong>255</strong> ตัว — จำนวนเพิ่มเป็นสองเท่าทุกบิต จึงทำได้เพียง 6–8 บิต</div>
       </div>
 
       <div class="q" data-type="num" data-answer="25">
@@ -575,14 +575,14 @@ float T = ((w &gt;&gt; 3) &amp; 0x0FFF) * 0.25;  // เลื่อนขวา 
           <table>
             <thead><tr><th>ขั้น</th><th>รหัส</th><th>V<sub>DAC</sub></th><th>ผล</th></tr></thead>
             <tbody>
-              <tr><td>i = 3</td><td class="mono">1000</td><td>8 × 0.625 = 5.000 V &lt; 6.8</td><td>คง b₃</td></tr>
-              <tr><td>i = 2</td><td class="mono">1100</td><td>12 × 0.625 = 7.500 V &gt; 6.8</td><td>ล้าง b₂</td></tr>
-              <tr><td>i = 1</td><td class="mono">1010</td><td>10 × 0.625 = 6.250 V &lt; 6.8</td><td>คง b₁</td></tr>
-              <tr><td>i = 0</td><td class="mono">1011</td><td>11 × 0.625 = 6.875 V &gt; 6.8</td><td>ล้าง b₀</td></tr>
+              <tr><td>i = 3</td><td class="mono">1000</td><td>8 × 0.625 = 5.000 V &lt; 6.8</td><td>คง b<sub>3</sub></td></tr>
+              <tr><td>i = 2</td><td class="mono">1100</td><td>12 × 0.625 = 7.500 V &gt; 6.8</td><td>ล้าง b<sub>2</sub></td></tr>
+              <tr><td>i = 1</td><td class="mono">1010</td><td>10 × 0.625 = 6.250 V &lt; 6.8</td><td>คง b<sub>1</sub></td></tr>
+              <tr><td>i = 0</td><td class="mono">1011</td><td>11 × 0.625 = 6.875 V &gt; 6.8</td><td>ล้าง b<sub>0</sub></td></tr>
             </tbody>
           </table>
         </div>
-        <p>ผลลัพธ์ <strong>1010₂ = 10</strong> → 6.25 V (ต่ำกว่าค่าจริง 0.55 V ซึ่งน้อยกว่า 1 LSB)</p>
+        <p>ผลลัพธ์ <strong>1010<sub>2</sub> = 10</strong> → 6.25 V (ต่ำกว่าค่าจริง 0.55 V ซึ่งน้อยกว่า 1 LSB)</p>
       </div>
     </details>
 

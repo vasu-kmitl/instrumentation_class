@@ -86,7 +86,7 @@
         <ul>
           <li>Capacitive soil moisture: การเปลี่ยนแปลงของ C → แรงดัน</li>
           <li>Load cell: แรง → การเปลี่ยนแปลงความต้านทาน → สัญญาณระดับ mV</li>
-          <li>pH probe: ประจุ H⁺ → mV</li>
+          <li>pH probe: ประจุ H<sup>+</sup> → mV</li>
         </ul>
       </dd>
       <dt><strong>Signal Conditioning</strong></dt>
@@ -140,7 +140,7 @@
           <tr><td>ประจุ <var>q</var></td><td>1 C = 6.24 × 10<sup>18</sup> ประจุมูลฐาน</td><td>คูลอมบ์ (C)</td></tr>
           <tr><td>กระแส <var>i</var></td><td><var>i</var> = d<var>q</var>/d<var>t</var></td><td>C/s = แอมแปร์ (A)</td></tr>
           <tr><td>แรงดัน <var>V</var></td><td><var>V</var> = d<var>W</var>/d<var>q</var> — พลังงานที่ผลักประจุผ่านอุปกรณ์</td><td>J/C = โวลต์ (V)</td></tr>
-          <tr><td>กำลัง <var>P</var></td><td><var>P</var> = d<var>W</var>/d<var>t</var> = <var>Vi</var> = <var>i</var>²<var>R</var> = <var>V</var>²/<var>R</var></td><td>วัตต์ (W)</td></tr>
+          <tr><td>กำลัง <var>P</var></td><td><var>P</var> = d<var>W</var>/d<var>t</var> = <var>Vi</var> = <var>i</var><sup>2</sup><var>R</var> = <var>V</var><sup>2</sup>/<var>R</var></td><td>วัตต์ (W)</td></tr>
         </tbody>
       </table>
     </div>
@@ -169,24 +169,24 @@
     <h3>กฎกระแส (KCL)</h3>
     <p>ผลรวมกระแสที่ไหลเข้าโหนดใด ๆ เท่ากับศูนย์: <strong>Σ<var>i</var> = 0</strong></p>
     <ul>
-      <li>สามกิ่ง: <var>i</var>₁ + <var>i</var>₂ + <var>i</var>₃ = 0 → <var>i</var>₁ = −<var>i</var>₂ − <var>i</var>₃</li>
-      <li>ห้ากิ่ง: <var>i</var>₁ + <var>i</var>₂ + <var>i</var>₃ + <var>i</var>₄ − <var>i</var>₅ = 0 → <var>i</var>₅ = <var>i</var>₁ + <var>i</var>₂ + <var>i</var>₃ + <var>i</var>₄</li>
+      <li>สามกิ่ง: <var>i</var><sub>1</sub> + <var>i</var><sub>2</sub> + <var>i</var><sub>3</sub> = 0 → <var>i</var><sub>1</sub> = −<var>i</var><sub>2</sub> − <var>i</var><sub>3</sub></li>
+      <li>ห้ากิ่ง: <var>i</var><sub>1</sub> + <var>i</var><sub>2</sub> + <var>i</var><sub>3</sub> + <var>i</var><sub>4</sub> − <var>i</var><sub>5</sub> = 0 → <var>i</var><sub>5</sub> = <var>i</var><sub>1</sub> + <var>i</var><sub>2</sub> + <var>i</var><sub>3</sub> + <var>i</var><sub>4</sub></li>
     </ul>
     <h3>กฎแรงดัน (KVL)</h3>
     <p>ผลรวมแรงดันรอบวงปิดใด ๆ เท่ากับศูนย์: <strong>Σ<var>V</var> = 0</strong></p>
     <ul>
-      <li>ตัวอย่าง: <var>V</var>₁ + <var>V</var>₂ + <var>V</var>₃ − <var>V</var><sub>s</sub> = 0 → <var>V</var><sub>s</sub> = <var>V</var>₁ + <var>V</var>₂ + <var>V</var>₃</li>
+      <li>ตัวอย่าง: <var>V</var><sub>1</sub> + <var>V</var><sub>2</sub> + <var>V</var><sub>3</sub> − <var>V</var><sub>s</sub> = 0 → <var>V</var><sub>s</sub> = <var>V</var><sub>1</sub> + <var>V</var><sub>2</sub> + <var>V</var><sub>3</sub></li>
     </ul>
 
     <!-- ===================================================== -->
     <h2 id="series-parallel"><span class="sec-no">1.7</span>ตัวต้านทานอนุกรมและขนาน</h2>
     <h3>อนุกรม</h3>
-    <p>จาก KVL: <var>V</var><sub>s</sub> = <var>iR</var>₁ + <var>iR</var>₂ ดังนั้น <var>i</var> = <var>V</var><sub>s</sub>/(<var>R</var>₁ + <var>R</var>₂)</p>
-    <div class="eq"><var>R</var><sub>eq</sub> = <var>R</var>₁ + <var>R</var>₂</div>
+    <p>จาก KVL: <var>V</var><sub>s</sub> = <var>iR</var><sub>1</sub> + <var>iR</var><sub>2</sub> ดังนั้น <var>i</var> = <var>V</var><sub>s</sub>/(<var>R</var><sub>1</sub> + <var>R</var><sub>2</sub>)</p>
+    <div class="eq"><var>R</var><sub>eq</sub> = <var>R</var><sub>1</sub> + <var>R</var><sub>2</sub></div>
     <h3>ขนาน</h3>
-    <p>จาก KCL ที่โหนด: <var>i</var> = <var>i</var>₁ + <var>i</var>₂ = <var>V</var><sub>s</sub>/<var>R</var>₁ + <var>V</var><sub>s</sub>/<var>R</var>₂</p>
-    <div class="eq"><span class="frac"><span>1</span><span><var>R</var><sub>eq</sub></span></span> = <span class="frac"><span>1</span><span><var>R</var>₁</span></span> + <span class="frac"><span>1</span><span><var>R</var>₂</span></span>
-      &nbsp;⇒&nbsp; <var>R</var><sub>eq</sub> = <span class="frac"><span><var>R</var>₁<var>R</var>₂</span><span><var>R</var>₁ + <var>R</var>₂</span></span></div>
+    <p>จาก KCL ที่โหนด: <var>i</var> = <var>i</var><sub>1</sub> + <var>i</var><sub>2</sub> = <var>V</var><sub>s</sub>/<var>R</var><sub>1</sub> + <var>V</var><sub>s</sub>/<var>R</var><sub>2</sub></p>
+    <div class="eq"><span class="frac"><span>1</span><span><var>R</var><sub>eq</sub></span></span> = <span class="frac"><span>1</span><span><var>R</var><sub>1</sub></span></span> + <span class="frac"><span>1</span><span><var>R</var><sub>2</sub></span></span>
+      &nbsp;⇒&nbsp; <var>R</var><sub>eq</sub> = <span class="frac"><span><var>R</var><sub>1</sub><var>R</var><sub>2</sub></span><span><var>R</var><sub>1</sub> + <var>R</var><sub>2</sub></span></span></div>
 
     <!-- ===================================================== -->
     <h2 id="divider"><span class="sec-no">1.8</span>วงจรแบ่งแรงดัน (Voltage Divider)</h2>
@@ -217,8 +217,8 @@
       <figcaption>รูปที่ 1.1 วงจรแบ่งแรงดัน: V<sub>out</sub> วัดคร่อม R<sub>2</sub></figcaption>
     </figure>
 
-    <p>กระแสไหลผ่าน <var>R</var>₁ และ <var>R</var>₂ เท่ากัน: <var>i</var> = <var>V</var><sub>s</sub>/(<var>R</var>₁ + <var>R</var>₂) และ <var>V</var><sub>out</sub> = <var>iR</var>₂</p>
-    <div class="eq"><var>V</var><sub>out</sub> = <var>V</var><sub>s</sub> · <span class="frac"><span><var>R</var>₂</span><span><var>R</var>₁ + <var>R</var>₂</span></span></div>
+    <p>กระแสไหลผ่าน <var>R</var><sub>1</sub> และ <var>R</var><sub>2</sub> เท่ากัน: <var>i</var> = <var>V</var><sub>s</sub>/(<var>R</var><sub>1</sub> + <var>R</var><sub>2</sub>) และ <var>V</var><sub>out</sub> = <var>iR</var><sub>2</sub></p>
+    <div class="eq"><var>V</var><sub>out</sub> = <var>V</var><sub>s</sub> · <span class="frac"><span><var>R</var><sub>2</sub></span><span><var>R</var><sub>1</sub> + <var>R</var><sub>2</sub></span></span></div>
 
     <div class="callout warn">
       <span class="title">ข้อควรระวัง: Loading effect</span>
@@ -246,7 +246,7 @@
         <path class="wire" d="M140 115 H185"/>
         <path class="wire" d="M215 115 H260"/>
         <circle class="comp accent" cx="200" cy="115" r="15"/>
-        <text class="lbl" x="200" y="120" text-anchor="middle">V₀</text>
+        <text class="lbl" x="200" y="120" text-anchor="middle">V<tspan font-size="11" dy="4">0</tspan></text>
         <circle class="dot" cx="140" cy="30" r="3.5"/>
         <circle class="dot" cx="140" cy="200" r="3.5"/>
         <circle class="dot" cx="140" cy="115" r="3.5"/>
@@ -258,17 +258,17 @@
         <text class="lbl" x="120" y="110" font-weight="700">A</text>
         <text class="lbl" x="270" y="110" font-weight="700">B</text>
       </svg>
-      <figcaption>รูปที่ 1.2 Wheatstone bridge วาดเป็นวงจรแบ่งแรงดันสองชุด (V₀ = V<sub>A</sub> − V<sub>B</sub>)</figcaption>
+      <figcaption>รูปที่ 1.2 Wheatstone bridge วาดเป็นวงจรแบ่งแรงดันสองชุด (V<sub>0</sub> = V<sub>A</sub> − V<sub>B</sub>)</figcaption>
     </figure>
 
-    <div class="eq"><var>V</var><sub>A</sub> = <var>V</var><sub>s</sub><span class="frac"><span><var>R</var>₂</span><span><var>R</var>₁ + <var>R</var>₂</span></span>
-      &nbsp;;&nbsp; <var>V</var><sub>B</sub> = <var>V</var><sub>s</sub><span class="frac"><span><var>R</var>₄</span><span><var>R</var>₃ + <var>R</var>₄</span></span></div>
-    <div class="eq"><var>V</var>₀ = <var>V</var><sub>A</sub> − <var>V</var><sub>B</sub> = <var>V</var><sub>s</sub> · <span class="frac"><span><var>R</var>₂<var>R</var>₃ − <var>R</var>₁<var>R</var>₄</span><span>(<var>R</var>₁ + <var>R</var>₂)(<var>R</var>₃ + <var>R</var>₄)</span></span></div>
+    <div class="eq"><var>V</var><sub>A</sub> = <var>V</var><sub>s</sub><span class="frac"><span><var>R</var><sub>2</sub></span><span><var>R</var><sub>1</sub> + <var>R</var><sub>2</sub></span></span>
+      &nbsp;;&nbsp; <var>V</var><sub>B</sub> = <var>V</var><sub>s</sub><span class="frac"><span><var>R</var><sub>4</sub></span><span><var>R</var><sub>3</sub> + <var>R</var><sub>4</sub></span></span></div>
+    <div class="eq"><var>V</var><sub>0</sub> = <var>V</var><sub>A</sub> − <var>V</var><sub>B</sub> = <var>V</var><sub>s</sub> · <span class="frac"><span><var>R</var><sub>2</sub><var>R</var><sub>3</sub> − <var>R</var><sub>1</sub><var>R</var><sub>4</sub></span><span>(<var>R</var><sub>1</sub> + <var>R</var><sub>2</sub>)(<var>R</var><sub>3</sub> + <var>R</var><sub>4</sub>)</span></span></div>
 
     <div class="callout key">
       <span class="title">สภาวะสมดุล</span>
-      Bridge สมดุล (<var>V</var>₀ = 0) เมื่อ <strong><var>R</var>₂<var>R</var>₃ = <var>R</var>₁<var>R</var>₄</strong>
-      เมื่อเซนเซอร์ตัวใดตัวหนึ่งเปลี่ยนค่าเล็กน้อย V₀ จะเปลี่ยนจากศูนย์เป็นสัญญาณระดับ mV
+      Bridge สมดุล (<var>V</var><sub>0</sub> = 0) เมื่อ <strong><var>R</var><sub>2</sub><var>R</var><sub>3</sub> = <var>R</var><sub>1</sub><var>R</var><sub>4</sub></strong>
+      เมื่อเซนเซอร์ตัวใดตัวหนึ่งเปลี่ยนค่าเล็กน้อย V<sub>0</sub> จะเปลี่ยนจากศูนย์เป็นสัญญาณระดับ mV
       ซึ่งต้องขยายด้วย instrumentation amplifier (บทที่ 2)
     </div>
 
@@ -323,16 +323,16 @@
       </div>
 
       <div class="q" data-answer="c">
-        <p class="q-text">Wheatstone bridge ในรูปที่ 1.2 จะสมดุล (V₀ = 0) เมื่อใด?</p>
-        <label class="opt"><input type="radio" value="a"> <var>R</var>₁ + <var>R</var>₂ = <var>R</var>₃ + <var>R</var>₄</label>
-        <label class="opt"><input type="radio" value="b"> <var>R</var>₁<var>R</var>₂ = <var>R</var>₃<var>R</var>₄</label>
-        <label class="opt"><input type="radio" value="c"> <var>R</var>₂<var>R</var>₃ = <var>R</var>₁<var>R</var>₄</label>
-        <label class="opt"><input type="radio" value="d"> <var>R</var>₁ = <var>R</var>₄ เสมอ</label>
-        <div class="explain" hidden>ตัวเศษของสมการ V₀ คือ <var>R</var>₂<var>R</var>₃ − <var>R</var>₁<var>R</var>₄ ซึ่งเป็นศูนย์เมื่อ <var>R</var>₂<var>R</var>₃ = <var>R</var>₁<var>R</var>₄ (หรือ <var>R</var>₁/<var>R</var>₂ = <var>R</var>₃/<var>R</var>₄)</div>
+        <p class="q-text">Wheatstone bridge ในรูปที่ 1.2 จะสมดุล (V<sub>0</sub> = 0) เมื่อใด?</p>
+        <label class="opt"><input type="radio" value="a"> <var>R</var><sub>1</sub> + <var>R</var><sub>2</sub> = <var>R</var><sub>3</sub> + <var>R</var><sub>4</sub></label>
+        <label class="opt"><input type="radio" value="b"> <var>R</var><sub>1</sub><var>R</var><sub>2</sub> = <var>R</var><sub>3</sub><var>R</var><sub>4</sub></label>
+        <label class="opt"><input type="radio" value="c"> <var>R</var><sub>2</sub><var>R</var><sub>3</sub> = <var>R</var><sub>1</sub><var>R</var><sub>4</sub></label>
+        <label class="opt"><input type="radio" value="d"> <var>R</var><sub>1</sub> = <var>R</var><sub>4</sub> เสมอ</label>
+        <div class="explain" hidden>ตัวเศษของสมการ V<sub>0</sub> คือ <var>R</var><sub>2</sub><var>R</var><sub>3</sub> − <var>R</var><sub>1</sub><var>R</var><sub>4</sub> ซึ่งเป็นศูนย์เมื่อ <var>R</var><sub>2</sub><var>R</var><sub>3</sub> = <var>R</var><sub>1</sub><var>R</var><sub>4</sub> (หรือ <var>R</var><sub>1</sub>/<var>R</var><sub>2</sub> = <var>R</var><sub>3</sub>/<var>R</var><sub>4</sub>)</div>
       </div>
 
       <div class="q" data-type="num" data-answer="3">
-        <p class="q-text">วงจรแบ่งแรงดันมี <var>V</var><sub>s</sub> = 5 V, <var>R</var>₁ = 10 kΩ, <var>R</var>₂ = 15 kΩ จงหา <var>V</var><sub>out</sub></p>
+        <p class="q-text">วงจรแบ่งแรงดันมี <var>V</var><sub>s</sub> = 5 V, <var>R</var><sub>1</sub> = 10 kΩ, <var>R</var><sub>2</sub> = 15 kΩ จงหา <var>V</var><sub>out</sub></p>
         <div class="num-input"><input type="number" step="any" aria-label="คำตอบ"> V</div>
         <div class="explain" hidden><var>V</var><sub>out</sub> = 5 × 15/(10 + 15) = 5 × 0.6 = <strong>3.0 V</strong></div>
       </div>
@@ -346,13 +346,13 @@
       <div class="q" data-type="num" data-answer="113.6">
         <p class="q-text">ตัวต้านทาน 220 Ω ต่อกับแรงดัน 5 V กำลังที่สูญเสียเป็นความร้อนเท่าใด?</p>
         <div class="num-input"><input type="number" step="any" aria-label="คำตอบ"> mW</div>
-        <div class="explain" hidden><var>P</var> = <var>V</var>²/<var>R</var> = 25/220 = 0.1136 W ≈ <strong>113.6 mW</strong> — ตัวต้านทาน ¼ W (250 mW) ใช้ได้</div>
+        <div class="explain" hidden><var>P</var> = <var>V</var><sup>2</sup>/<var>R</var> = 25/220 = 0.1136 W ≈ <strong>113.6 mW</strong> — ตัวต้านทาน ¼ W (250 mW) ใช้ได้</div>
       </div>
 
       <div class="q" data-type="num" data-answer="-12.44" data-tol="0.02">
-        <p class="q-text">Bridge ในรูปที่ 1.2 มี <var>V</var><sub>s</sub> = 5 V, <var>R</var>₁ = <var>R</var>₂ = <var>R</var>₃ = 1000 Ω และ <var>R</var>₄ = 1010 Ω (เซนเซอร์เปลี่ยนค่า 1%) จงหา V₀</p>
+        <p class="q-text">Bridge ในรูปที่ 1.2 มี <var>V</var><sub>s</sub> = 5 V, <var>R</var><sub>1</sub> = <var>R</var><sub>2</sub> = <var>R</var><sub>3</sub> = 1000 Ω และ <var>R</var><sub>4</sub> = 1010 Ω (เซนเซอร์เปลี่ยนค่า 1%) จงหา V<sub>0</sub></p>
         <div class="num-input"><input type="number" step="any" aria-label="คำตอบ"> mV</div>
-        <div class="explain" hidden>V₀ = 5 × (1000·1000 − 1000·1010) / [(2000)(2010)] = 5 × (−10,000)/4,020,000 = −0.01244 V ≈ <strong>−12.44 mV</strong>
+        <div class="explain" hidden>V<sub>0</sub> = 5 × (1000·1000 − 1000·1010) / [(2000)(2010)] = 5 × (−10,000)/4,020,000 = −0.01244 V ≈ <strong>−12.44 mV</strong>
           — ความต้านทานเปลี่ยน 1% ให้สัญญาณเพียงระดับสิบ mV จึงต้องขยายก่อนเข้า ADC</div>
       </div>
     </div>
@@ -362,14 +362,14 @@
     <details class="solution">
       <summary>โจทย์ 1 — วงจรแบ่งแรงดันกับ thermistor</summary>
       <div class="problem">
-        <p>Thermistor แบบ NTC มีค่า 10 kΩ ที่ 25 °C และ 3.3 kΩ ที่ 50 °C ต่อเป็น <var>R</var>₂ ในวงจรแบ่งแรงดัน โดย <var>R</var>₁ = 10 kΩ และ <var>V</var><sub>s</sub> = 3.3 V
+        <p>Thermistor แบบ NTC มีค่า 10 kΩ ที่ 25 °C และ 3.3 kΩ ที่ 50 °C ต่อเป็น <var>R</var><sub>2</sub> ในวงจรแบ่งแรงดัน โดย <var>R</var><sub>1</sub> = 10 kΩ และ <var>V</var><sub>s</sub> = 3.3 V
            จงหา <var>V</var><sub>out</sub> ที่อุณหภูมิทั้งสอง และบอกว่าเมื่ออุณหภูมิเพิ่ม <var>V</var><sub>out</sub> เพิ่มหรือลด</p>
       </div>
       <div class="sol">
         <p>ที่ 25 °C: <var>V</var><sub>out</sub> = 3.3 × 10/(10 + 10) = <strong>1.65 V</strong></p>
         <p>ที่ 50 °C: <var>V</var><sub>out</sub> = 3.3 × 3.3/(10 + 3.3) = 3.3 × 0.248 = <strong>0.82 V</strong></p>
         <p>อุณหภูมิเพิ่ม → ความต้านทาน NTC ลด → <var>V</var><sub>out</sub> <strong>ลดลง</strong>
-           (ถ้าต้องการให้แรงดันเพิ่มตามอุณหภูมิ ให้สลับตำแหน่ง thermistor ไปเป็น <var>R</var>₁)
+           (ถ้าต้องการให้แรงดันเพิ่มตามอุณหภูมิ ให้สลับตำแหน่ง thermistor ไปเป็น <var>R</var><sub>1</sub>)
            สังเกตว่าความสัมพันธ์ไม่เป็นเชิงเส้น จึงต้องสอบเทียบหลายจุด</p>
       </div>
     </details>
@@ -377,22 +377,22 @@
     <details class="solution">
       <summary>โจทย์ 2 — ผลของโหลดต่อวงจรแบ่งแรงดัน</summary>
       <div class="problem">
-        <p>วงจรแบ่งแรงดัน <var>V</var><sub>s</sub> = 10 V, <var>R</var>₁ = <var>R</var>₂ = 100 kΩ ถ้าต่อเครื่องวัดที่มีความต้านทานอินพุต 100 kΩ คร่อม <var>R</var>₂ จะอ่านได้เท่าใด เทียบกับค่าที่คำนวณโดยไม่มีโหลด</p>
+        <p>วงจรแบ่งแรงดัน <var>V</var><sub>s</sub> = 10 V, <var>R</var><sub>1</sub> = <var>R</var><sub>2</sub> = 100 kΩ ถ้าต่อเครื่องวัดที่มีความต้านทานอินพุต 100 kΩ คร่อม <var>R</var><sub>2</sub> จะอ่านได้เท่าใด เทียบกับค่าที่คำนวณโดยไม่มีโหลด</p>
       </div>
       <div class="sol">
         <p>ไม่มีโหลด: <var>V</var><sub>out</sub> = 10 × 100/200 = 5.00 V</p>
-        <p>มีโหลด: <var>R</var>₂ ขนานกับ 100 kΩ = 50 kΩ → <var>V</var><sub>out</sub> = 10 × 50/(100 + 50) = <strong>3.33 V</strong></p>
+        <p>มีโหลด: <var>R</var><sub>2</sub> ขนานกับ 100 kΩ = 50 kΩ → <var>V</var><sub>out</sub> = 10 × 50/(100 + 50) = <strong>3.33 V</strong></p>
         <p>ค่าลดลงถึง 33% นี่คือ <strong>loading effect</strong> ที่จะสังเกตใน Lab 1 และแก้ด้วย voltage follower ใน Lab 3</p>
       </div>
     </details>
 
     <details class="solution">
       <summary>โจทย์ 3 — พิสูจน์สมการ Wheatstone bridge</summary>
-      <div class="problem"><p>จากสมการ <var>V</var><sub>A</sub> และ <var>V</var><sub>B</sub> จงพิสูจน์ว่า V₀ = V<sub>s</sub>(R₂R₃ − R₁R₄)/[(R₁+R₂)(R₃+R₄)]</p></div>
+      <div class="problem"><p>จากสมการ <var>V</var><sub>A</sub> และ <var>V</var><sub>B</sub> จงพิสูจน์ว่า V<sub>0</sub> = V<sub>s</sub>(R<sub>2</sub>R<sub>3</sub> − R<sub>1</sub>R<sub>4</sub>)/[(R<sub>1</sub>+R<sub>2</sub>)(R<sub>3</sub>+R<sub>4</sub>)]</p></div>
       <div class="sol">
-        <p>V₀ = V<sub>s</sub>[R₂/(R₁+R₂) − R₄/(R₃+R₄)]</p>
-        <p>ทำตัวส่วนร่วม: = V<sub>s</sub>[R₂(R₃+R₄) − R₄(R₁+R₂)] / [(R₁+R₂)(R₃+R₄)]</p>
-        <p>กระจาย: R₂R₃ + R₂R₄ − R₁R₄ − R₂R₄ = R₂R₃ − R₁R₄ จึงได้สมการตามต้องการ ∎</p>
+        <p>V<sub>0</sub> = V<sub>s</sub>[R<sub>2</sub>/(R<sub>1</sub>+R<sub>2</sub>) − R<sub>4</sub>/(R<sub>3</sub>+R<sub>4</sub>)]</p>
+        <p>ทำตัวส่วนร่วม: = V<sub>s</sub>[R<sub>2</sub>(R<sub>3</sub>+R<sub>4</sub>) − R<sub>4</sub>(R<sub>1</sub>+R<sub>2</sub>)] / [(R<sub>1</sub>+R<sub>2</sub>)(R<sub>3</sub>+R<sub>4</sub>)]</p>
+        <p>กระจาย: R<sub>2</sub>R<sub>3</sub> + R<sub>2</sub>R<sub>4</sub> − R<sub>1</sub>R<sub>4</sub> − R<sub>2</sub>R<sub>4</sub> = R<sub>2</sub>R<sub>3</sub> − R<sub>1</sub>R<sub>4</sub> จึงได้สมการตามต้องการ ∎</p>
       </div>
     </details>
 
