@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>บทที่ 2 การปรับสภาพสัญญาณและ Op-Amp</title>
+<link rel="stylesheet" href="style.css">
+<script src="sidebar.js" defer></script>
+<script src="quiz.js" defer></script>
+</head>
+<body>
+<nav id="sidebar" class="sidebar" aria-label="สารบัญ"></nav>
+
+<div class="page">
+  <header class="topbar">
+    <button class="menu-btn" type="button" aria-label="เปิดเมนู">☰</button>
+    <span class="crumb">บทที่ 2 · การปรับสภาพสัญญาณและ Op-Amp</span>
+  </header>
+
+  <main class="content">
+    <header class="chapter-head">
+      <div class="eyebrow">บทที่ 2 · Signal Conditioning &amp; Op-Amps</div>
+      <h1>การปรับสภาพสัญญาณและ Op-Amp</h1>
+      <p class="lead">ทำให้สัญญาณจากเซนเซอร์ “พร้อม” สำหรับ ADC — ขยาย บัฟเฟอร์ กรอง และเลื่อนระดับ ด้วยวงจร op-amp</p>
+      <div class="source">เรียบเรียงจาก INS02_SigCon_OpAmps_v20</div>
+      <div class="objectives">
+        <h4>เมื่อจบบทนี้ ผู้เรียนควรสามารถ</h4>
+        <ul>
+          <li>อธิบายว่าทำไมการขยายสัญญาณจึงสำคัญต่อความละเอียดของ ADC</li>
+          <li>ใช้กฎทองของ op-amp อุดมคติและ KCL หาอัตราขยายของวงจรพื้นฐาน 7 แบบ</li>
+          <li>ออกแบบโดยคำนึงถึงข้อจำกัดของ op-amp จริง (saturation, single supply, crossover, GBP, offset)</li>
+          <li>คำนวณเดซิเบลและออกแบบวงจรกรองความถี่ต่ำ RC</li>
+          <li>เลือกระหว่างการขยายแรงดัน (op-amp) กับการขยายกระแส (ทรานซิสเตอร์/รีเลย์)</li>
+          <li>อธิบายการทำงานของ instrumentation amplifier ร่วมกับ Wheatstone bridge</li>
+        </ul>
+      </div>
+    </header>
+
+    <!-- ===================================================== -->
+    <h2 id="why"><span class="sec-no">2.1</span>ทำไมต้องปรับสภาพสัญญาณ</h2>
+    <div class="chain">
+      <div class="stage"><b>Load cell</b><small>แรง → ความต้านทาน</small></div>
+      <div class="arrow">→</div>
+      <div class="stage"><b>Wheatstone bridge</b><small>0–50 mV</small></div>
+      <div class="arrow">→</div>
+      <div class="stage"><b>ขยาย ×60</b><small>0–3 V</small></div>
+      <div class="arrow">→</div>
+      <div class="stage"><b>ESP32 ADC</b><small>12 บิต, 0–3.3 V</small></div>
+    </div>
+    <p>ADC ของ ESP32 แบ่งช่วง 0–3.3 V ออกเป็น 4,096 ระดับ ถ้าป้อนสัญญาณ 0–50 mV เข้าไปตรง ๆ
+       จะใช้ช่วงเพียง 50/3300 ≈ 1.5% หรือประมาณ 62 ระดับจาก 4,096 — ความละเอียดหยาบลงราว 66 เท่า</p>
+    <div class="callout key">
+      <span class="title">จุดประสงค์ของการขยาย</span>
+      ไม่ใช่เพื่อให้ได้ตัวเลขที่ใหญ่ขึ้น แต่เพื่อ<strong>ใช้ความละเอียดของ ADC ให้เต็มช่วง</strong>
+    </div>
+
+    <h3>หน้าที่ของการปรับสภาพสัญญาณ</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>หน้าที่</th><th>ปัญหาที่แก้</th><th>วงจร</th></tr></thead>
+        <tbody>
+          <tr><td>Amplification</td><td>สัญญาณเล็กเกินกว่า ADC จะแยกแยะได้</td><td>Non-inverting amp, Instrumentation amp</td></tr>
+          <tr><td>Buffering</td><td>วงจรถัดไปดึงกระแส ทำให้ค่าที่อ่านเพี้ยน</td><td>Voltage follower</td></tr>
+          <tr><td>Filtering</td><td>สัญญาณรบกวน 50 Hz จากไฟบ้าน การสั่นสะเทือน</td><td>RC low-pass, Active filter</td></tr>
+          <tr><td>Level shift / Scaling</td><td>สัญญาณมีทั้งบวกและลบ แต่ ADC รับได้เฉพาะ 0–3.3 V</td><td>Divider, Summing amp</td></tr>
+          <tr><td>Excitation</td><td>เซนเซอร์แบบความต้านทานต้องมีไฟเลี้ยงจึงจะให้สัญญาณ</td><td>Divider, Wheatstone bridge</td></tr>
+          <tr><td>Isolation / Protection</td><td>กันไฟแรงสูงไม่ให้เข้าไมโครคอนโทรลเลอร์</td><td>Opto-isolator, Relay</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ===================================================== -->
+    <h2 id="ideal"><span class="sec-no">2.2</span>Op-Amp อุดมคติ</h2>
+    <p>แบบจำลองภายในของ op-amp ประกอบด้วยความต้านทานอินพุต <var>r</var><sub>in</sub> ระหว่างขาอินพุตทั้งสอง
+       แหล่งจ่ายแรงดันควบคุม <var>V</var> = <var>A</var>(<var>V</var>⁺ − <var>V</var>⁻) และความต้านทานเอาต์พุต <var>r</var><sub>out</sub>
+       โดย <var>A</var> คืออัตราขยายวงเปิด (open-loop gain)</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>สมบัติอุดมคติ</th><th>ความหมาย</th></tr></thead>
+        <tbody>
+          <tr><td><var>r</var><sub>in</sub> → ∞</td><td><var>i</var><sub>in</sub> → 0 ไม่ดึงกระแสจากวงจรก่อนหน้า</td></tr>
+          <tr><td><var>r</var><sub>out</sub> → 0</td><td>ขับวงจรถัดไปได้โดยแรงดันไม่ตก</td></tr>
+          <tr><td><var>A</var> → ∞</td><td><var>V</var>⁺ − <var>V</var>⁻ = <var>V</var><sub>o</sub>/<var>A</var> → 0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout key">
+      <span class="title">กฎทอง 2 ข้อ</span>
+      <ol>
+        <li><strong><var>i</var><sub>in</sub> = 0</strong> — ไม่มีกระแสไหลเข้าขาอินพุต</li>
+        <li><strong><var>V</var>⁺ = <var>V</var>⁻</strong> — ใช้ได้เมื่อมี negative feedback เท่านั้น</li>
+      </ol>
+      Open-loop gain ใหญ่เกินกว่าจะใช้งานตรง ๆ จึงต้องมี negative feedback เสมอ และอัตราขยายที่ใช้งานจริงถูกกำหนดด้วย<strong>อัตราส่วนของตัวต้านทาน</strong>
+    </div>
+
+    <h3>LM358 (Dual Op-Amp) ที่ใช้ในปฏิบัติการ</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ขา</th><th>หน้าที่</th><th>ขา</th><th>หน้าที่</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Out A</td><td>8</td><td>V+ (+12 V)</td></tr>
+          <tr><td>2</td><td>In A− (inverting)</td><td>7</td><td>Out B</td></tr>
+          <tr><td>3</td><td>In A+ (non-inverting)</td><td>6</td><td>In B−</td></tr>
+          <tr><td>4</td><td>V− (GND)</td><td>5</td><td>In B+</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li><strong>ไฟเลี้ยง:</strong> single supply 3–32 V หรือ ±1.5 ถึง ±16 V — ในแล็บใช้ 12 V เดี่ยว ไม่ต้องมีไฟลบ</li>
+      <li><strong>ช่วงอินพุต:</strong> ครอบคลุม 0 V ถึง (ไฟเลี้ยง − 1.5 V) จึงอ่านเซนเซอร์ที่ให้แรงดันใกล้ 0 V ได้</li>
+      <li><strong>ช่วงเอาต์พุต:</strong> ลงได้ใกล้ 0 V แต่ขึ้นได้เพียงประมาณ ไฟเลี้ยง − 1.5 V (≈ 10.5 V ที่ไฟเลี้ยง 12 V)</li>
+      <li><strong>Gain-bandwidth product:</strong> ≈ 1 MHz → ที่ gain 11 แบนด์วิดท์ใช้งานได้ ≈ 90 kHz</li>
+      <li><strong>Slew rate:</strong> ≈ 0.3 V/µs จำกัดความชันของขอบสัญญาณ</li>
+    </ul>
+    <div class="callout warn">
+      <span class="title">กฎความปลอดภัยในแล็บ</span>
+      ใช้ op-amp A (ขา 1-2-3) เท่านั้น แต่อย่าปล่อยอินพุตของ B ลอย · ต่อตัวเก็บประจุ decoupling 0.1 µF คร่อมขา 8 และ 4 ·
+      ตรวจว่าขา 8 = +12 V และขา 4 = GND <strong>ก่อนจ่ายไฟทุกครั้ง</strong> — ต่อกลับขั้วจะทำให้ IC เสียโดยมองไม่เห็นความเสียหาย ·
+      ตั้ง current limit ที่ 100 mA
+    </div>
+
+    <!-- ===================================================== -->
+    <h2 id="amplifiers"><span class="sec-no">2.3</span>วงจรขยายแบบกลับเฟสและไม่กลับเฟส</h2>
+
+    <div class="fig-row">
+      <figure>
+        <svg viewBox="0 0 280 180" width="280" role="img" aria-label="วงจรขยายแบบกลับเฟส">
+          <circle class="term" cx="20" cy="80" r="4"/>
+          <path class="wire" d="M24 80 H55 l4 -8 l8 16 l8 -16 l8 16 l8 -16 l8 16 l4 -8 H140"/>
+          <path class="wire" d="M120 80 V30 H155 l4 -8 l8 16 l8 -16 l8 16 l8 -16 l8 16 l4 -8 H240 V100"/>
+          <path class="comp" d="M140 60 L140 140 L210 100 Z"/>
+          <text class="lbl" x="146" y="86">−</text>
+          <text class="lbl" x="146" y="126">+</text>
+          <path class="wire" d="M210 100 H262"/>
+          <circle class="term" cx="266" cy="100" r="4"/>
+          <path class="wire" d="M140 120 H120 V150 M108 150 H132 M112 156 H128 M116 162 H124"/>
+          <circle class="dot" cx="120" cy="80" r="3.5"/>
+          <circle class="dot" cx="240" cy="100" r="3.5"/>
+          <text class="lbl" x="10" y="66">V<tspan font-size="11" dy="4">i</tspan></text>
+          <text class="lbl" x="79" y="62" text-anchor="middle">R<tspan font-size="11" dy="4">i</tspan></text>
+          <text class="lbl" x="179" y="14" text-anchor="middle">R<tspan font-size="11" dy="4">f</tspan></text>
+          <text class="lbl-sm" x="106" y="72">a</text>
+          <text class="lbl" x="252" y="90" text-anchor="middle">V<tspan font-size="11" dy="4">o</tspan></text>
+        </svg>
+        <figcaption>รูปที่ 2.1 Inverting amplifier</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 280 240" width="280" role="img" aria-label="วงจรขยายแบบไม่กลับเฟส">
+          <circle class="term" cx="20" cy="80" r="4"/>
+          <path class="wire" d="M24 80 H140"/>
+          <path class="comp" d="M140 60 L140 140 L210 100 Z"/>
+          <text class="lbl" x="146" y="86">+</text>
+          <text class="lbl" x="146" y="126">−</text>
+          <path class="wire" d="M140 120 H115 V150"/>
+          <path class="wire" d="M115 150 H150 l4 -8 l8 16 l8 -16 l8 16 l8 -16 l8 16 l4 -8 H240 V100"/>
+          <path class="wire" d="M115 150 V162 l8 4 l-16 8 l16 8 l-16 8 l16 8 l-16 8 l8 4 V222 M103 222 H127 M107 228 H123 M111 234 H119"/>
+          <path class="wire" d="M210 100 H262"/>
+          <circle class="term" cx="266" cy="100" r="4"/>
+          <circle class="dot" cx="115" cy="150" r="3.5"/>
+          <circle class="dot" cx="240" cy="100" r="3.5"/>
+          <text class="lbl" x="10" y="66">V<tspan font-size="11" dy="4">i</tspan></text>
+          <text class="lbl" x="174" y="136" text-anchor="middle">R<tspan font-size="11" dy="4">f</tspan></text>
+          <text class="lbl" x="130" y="192">R<tspan font-size="11" dy="4">i</tspan></text>
+          <text class="lbl-sm" x="96" y="146">a</text>
+          <text class="lbl" x="252" y="90" text-anchor="middle">V<tspan font-size="11" dy="4">o</tspan></text>
+        </svg>
+        <figcaption>รูปที่ 2.2 Non-inverting amplifier</figcaption>
+      </figure>
+    </div>
+
+    <h3>Inverting amplifier</h3>
+    <p>ขา + ต่อลงกราวด์ และจากกฎ <var>V</var>⁺ = <var>V</var>⁻ จะได้ <var>V</var><sub>a</sub> = 0 เรียกว่า <strong>virtual ground</strong>
+       (โหนดมีแรงดันประมาณ 0 V โดยไม่ได้ต่อลงกราวด์จริง) ใช้ KCL ที่โหนด a โดย <var>i</var><sub>in</sub> = 0:</p>
+    <div class="eq"><span class="frac"><span><var>V</var><sub>i</sub></span><span><var>R</var><sub>i</sub></span></span> + <span class="frac"><span><var>V</var><sub>o</sub></span><span><var>R</var><sub>f</sub></span></span> = 0
+      &nbsp;⇒&nbsp; <var>V</var><sub>o</sub> = −<span class="frac"><span><var>R</var><sub>f</sub></span><span><var>R</var><sub>i</sub></span></span><var>V</var><sub>i</sub></div>
+
+    <h3>Non-inverting amplifier</h3>
+    <p>สัญญาณเข้าขา + จากกฎ <var>V</var>⁺ = <var>V</var>⁻ จะได้ <var>V</var><sub>a</sub> = <var>V</var><sub>i</sub> (virtual short)
+       และ <var>V</var><sub>a</sub> เป็นแรงดันจากวงจรแบ่งแรงดันของเอาต์พุต: <var>V</var><sub>a</sub> = <var>V</var><sub>o</sub>·<var>R</var><sub>i</sub>/(<var>R</var><sub>i</sub> + <var>R</var><sub>f</sub>)</p>
+    <div class="eq"><var>V</var><sub>o</sub> = <span>(</span>1 + <span class="frac"><span><var>R</var><sub>f</sub></span><span><var>R</var><sub>i</sub></span></span><span>)</span><var>V</var><sub>i</sub></div>
+    <p>เอาต์พุตไม่กลับเฟสและ gain ≥ 1 เสมอ — <strong>เป็นวงจรหลักสำหรับขยายสัญญาณเซนเซอร์เกษตร</strong>
+       ควรวัดค่าความต้านทานจริงก่อนคำนวณ gain</p>
+
+    <!-- ===================================================== -->
+    <h2 id="other-circuits"><span class="sec-no">2.4</span>วงจร Op-Amp อื่น ๆ</h2>
+
+    <h3>Summing amplifier</h3>
+    <p>อินพุตหลายตัวต่อผ่านตัวต้านทานเข้าโหนด virtual ground เดียวกัน</p>
+    <div class="eq"><var>V</var><sub>o</sub> = −<var>R</var><sub>f</sub><span>(</span><span class="frac"><span><var>V</var>₁</span><span><var>R</var>₁</span></span> + <span class="frac"><span><var>V</var>₂</span><span><var>R</var>₂</span></span> + <span class="frac"><span><var>V</var>₃</span><span><var>R</var>₃</span></span><span>)</span></div>
+    <p>ถ้าตัวต้านทานเท่ากันทั้งหมด <var>V</var><sub>o</sub> = −(<var>V</var>₁ + <var>V</var>₂ + <var>V</var>₃) — หลักการเดียวกันใช้<strong>เลื่อนระดับสัญญาณ</strong> (บวกค่าคงที่เข้าไป)
+       และใช้ใน DAC แบบ binary-weighted (บทที่ 3)</p>
+
+    <h3>Differential amplifier</h3>
+    <p><var>V</var>₁ เข้าขา − ผ่าน <var>R</var>₁ (feedback <var>R</var><sub>f</sub>) ส่วน <var>V</var>₂ เข้าผ่าน <var>R</var>₁ ไปยังโหนด b ซึ่งมี <var>R</var><sub>f</sub> ลงกราวด์
+       ดังนั้น <var>V</var><sub>a</sub> = <var>V</var><sub>b</sub> = <var>V</var>₂·<var>R</var><sub>f</sub>/(<var>R</var>₁ + <var>R</var><sub>f</sub>) และใช้ superposition:</p>
+    <div class="eq"><var>V</var><sub>o</sub> = <span class="frac"><span><var>R</var><sub>f</sub></span><span><var>R</var>₁</span></span>(<var>V</var>₂ − <var>V</var>₁)</div>
+    <p>ขยายเฉพาะ<strong>ผลต่าง</strong> จึงตัดสัญญาณรบกวนที่เข้าทั้งสองสายเท่ากัน (common mode) ได้
+       ข้อจำกัดคือ input impedance ต่ำ — แก้ด้วย instrumentation amplifier</p>
+
+    <h3>Integrator</h3>
+    <p>ใช้ <var>R</var> ที่อินพุตและ <var>C</var> ในทาง feedback: <var>V</var><sub>i</sub>/<var>R</var> + <var>C</var>·d<var>V</var><sub>o</sub>/d<var>t</var> = 0</p>
+    <div class="eq"><var>V</var><sub>o</sub> = −<span class="frac"><span>1</span><span><var>RC</var></span></span>∫<var>V</var><sub>i</sub> d<var>t</var></div>
+    <p>ใช้สะสมค่าตามเวลา เช่น ปริมาตรน้ำรวมจากอัตราการไหล และเป็นหัวใจของ ADC แบบ dual-slope (บทที่ 3)</p>
+
+    <h3>Differentiator</h3>
+    <p>ใช้ <var>C</var> ที่อินพุตและ <var>R</var> ในทาง feedback: <var>C</var>·d<var>V</var><sub>i</sub>/d<var>t</var> + <var>V</var><sub>o</sub>/<var>R</var> = 0</p>
+    <div class="eq"><var>V</var><sub>o</sub> = −<var>RC</var><span class="frac"><span>d<var>V</var><sub>i</sub></span><span>d<var>t</var></span></span></div>
+    <div class="callout warn">วงจรหาอนุพันธ์ขยายสัญญาณรบกวนความถี่สูงด้วย ในงานภาคสนามจึงนิยมคำนวณอนุพันธ์ในซอฟต์แวร์จากข้อมูลที่กรองแล้ว</div>
+
+    <h3>Voltage follower (Buffer)</h3>
+    <p>ต่อเอาต์พุตกลับเข้าขา − โดยตรง และป้อนสัญญาณที่ขา +</p>
+    <div class="eq"><var>V</var><sub>o</sub> = <var>V</var><sub>i</sub> <span class="label">voltage gain = 1</span></div>
+    <p>ประโยชน์อยู่ที่ <strong>current gain</strong>: input impedance สูงมาก (แทบไม่ดึงกระแสจากเซนเซอร์) และ output impedance ต่ำ (จ่ายกระแสให้วงจรถัดไปได้)
+       จึง<strong>ป้องกัน loading effect</strong> — ใน Lab 1 จะเห็นแรงดันของวงจรแบ่งแรงดันตกเมื่อต่อโหลด และแก้ด้วย follower ใน Activity 3.1</p>
+
+    <!-- ===================================================== -->
+    <h2 id="real-opamp"><span class="sec-no">2.5</span>ข้อจำกัดของ Op-Amp จริง</h2>
+    <p>สูตรที่ผ่านมาสมมติ op-amp อุดมคติ ใช้ออกแบบได้ดี แต่ต้องรู้ว่าจะคลาดเคลื่อนเมื่อใด</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ข้อจำกัด</th><th>สิ่งที่เกิดขึ้น</th><th>ผลต่อการออกแบบ</th></tr></thead>
+        <tbody>
+          <tr><td>Saturation</td><td>เอาต์พุตเกินไฟเลี้ยงไม่ได้ และขึ้นไม่ถึงไฟเลี้ยงด้วยซ้ำ</td><td>Gain 11 กับอินพุต 1.0 V คำนวณได้ 11 V แต่วัดได้ต่ำกว่า — เผื่อ headroom เสมอ</td></tr>
+          <tr><td>Single supply</td><td>มีเพียง 0 V และ +12 V ส่วนลบของสัญญาณถูกตัด</td><td>ไบแอสสัญญาณรอบ mid-rail M</td></tr>
+          <tr><td>Crossover distortion</td><td>เกิดรอยหักเมื่อสัญญาณผ่านจุดกึ่งกลาง จาก output stage</td><td>ต่อตัวต้านทาน pull-down 1 kΩ จากขา 1 ลง GND</td></tr>
+          <tr><td>Gain-bandwidth product</td><td>Gain สูงขึ้น แบนด์วิดท์ใช้งานแคบลง</td><td>วัด gain ที่ 50–1000 Hz หาจุด −3 dB</td></tr>
+          <tr><td>Offset และ bias current</td><td>มีค่าผิดพลาดเล็กน้อยแม้อินพุตเป็นศูนย์</td><td>ที่ gain ×100 error ก็ ×100 ด้วย — แก้ด้วยการสอบเทียบ</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>ตัวอย่าง: Lab 3 Activity 3.2 (non-inverting)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ชุด</th><th class="num">R<sub>f</sub></th><th class="num">R<sub>i</sub></th><th class="num">G</th><th>คำนวณ V<sub>i</sub> → V<sub>o</sub></th></tr></thead>
+        <tbody>
+          <tr><td>ก</td><td class="num">10 kΩ</td><td class="num">10 kΩ</td><td class="num">2</td><td>1.0 V → 2.0 V</td></tr>
+          <tr><td>ข</td><td class="num">100 kΩ</td><td class="num">10 kΩ</td><td class="num">11</td><td>0.5 V → 5.5 V</td></tr>
+          <tr class="hl"><td>ค</td><td class="num">100 kΩ</td><td class="num">10 kΩ</td><td class="num">11</td><td>1.0 V → 11 V (?) — วัดได้จริงไม่เกิน ≈ 10.5 V เพราะ saturation</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Single supply และ mid-rail</h3>
+    <p>เมื่อไฟเลี้ยงมีเพียง 0 V และ +12 V การขยายสัญญาณ AC รอบ 0 V จะสูญเสียครึ่งลบ
+       วิธีแก้คือไบแอสสัญญาณไว้ที่ครึ่งหนึ่งของไฟเลี้ยง <strong>M = 12/2 = 6 V</strong> ด้วยวงจรแบ่งแรงดันตัวต้านทานเท่ากันสองตัว
+       แล้วตัดส่วน DC ออกด้วยตัวเก็บประจุที่เอาต์พุต — แนวคิดเดียวกับขา REF ของ instrumentation amplifier</p>
+    <div class="callout">ก่อนป้อนสัญญาณใน Activity 3.3 ให้วัดแรงดัน DC ที่จุด M ก่อน ควรได้ประมาณครึ่งหนึ่งของไฟเลี้ยง ถ้าไม่ใช่ให้ตรวจการต่อวงจร</div>
+
+    <div class="callout key">ค่าที่วัดได้จะไม่ตรงกับค่าคำนวณ — นี่เป็นพฤติกรรมปกติของอุปกรณ์จริง ไม่ใช่ความผิดพลาดของการต่อวงจร</div>
+
+    <!-- ===================================================== -->
+    <h2 id="decibel"><span class="sec-no">2.6</span>เดซิเบล (dB)</h2>
+    <p>หน่วย bel ถูกนิยามที่ Bell Labs เพื่อวัดการสูญเสียกำลังในสายโทรศัพท์: B = log₁₀(<var>P</var>₂/<var>P</var>₁) และ 1 B = 10 dB</p>
+    <div class="eq">dB = 10 log₁₀<span class="frac"><span><var>P</var>₂</span><span><var>P</var>₁</span></span> <span class="label">อัตราส่วนกำลัง</span></div>
+    <p>เพราะ <var>P</var> = <var>V</var>²/<var>R</var> (โหลดเท่ากัน) จึงได้ 10 log(<var>V</var>₂²/<var>V</var>₁²) =</p>
+    <div class="eq">dB = 20 log₁₀<span class="frac"><span><var>V</var><sub>out</sub></span><span><var>V</var><sub>in</sub></span></span> <span class="label">อัตราส่วนแรงดัน</span></div>
+    <p>แปลงกลับ: <var>V</var>₂/<var>V</var>₁ = 10<sup>dB/20</sup> และ <var>P</var>₂/<var>P</var>₁ = 10<sup>dB/10</sup></p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="num">dB</th><th class="num">อัตราส่วนแรงดัน</th><th class="num">อัตราส่วนกำลัง</th></tr></thead>
+        <tbody>
+          <tr><td class="num">+20</td><td class="num">×10</td><td class="num">×100</td></tr>
+          <tr><td class="num">+6</td><td class="num">×2</td><td class="num">×4</td></tr>
+          <tr><td class="num">0</td><td class="num">×1</td><td class="num">×1</td></tr>
+          <tr class="hl"><td class="num">−3</td><td class="num">×0.707</td><td class="num">×0.5</td></tr>
+          <tr><td class="num">−6</td><td class="num">×0.5</td><td class="num">×0.25</td></tr>
+          <tr><td class="num">−10</td><td class="num">×0.316</td><td class="num">×0.1</td></tr>
+          <tr><td class="num">−20</td><td class="num">×0.1</td><td class="num">×0.01</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li>ลอการิทึมเปลี่ยน<strong>การคูณ</strong> gain ของแต่ละขั้นเป็น<strong>การบวก</strong> dB เช่น ขยาย ×100 (+40 dB) ตามด้วยตัวกรอง ×0.707 (−3 dB) รวมเป็น ×70.7 (+37 dB)</li>
+      <li>ที่ −3 dB กำลังเหลือครึ่งหนึ่ง (แรงดันเหลือ 0.707) — เป็นนิยามสากลของ<strong>แบนด์วิดท์</strong></li>
+      <li>dB เป็นค่าเทียบกับค่าอ้างอิงเสมอ สเกลสัมบูรณ์จะระบุค่าอ้างอิง เช่น dBm (1 mW), dBV (1 V), dB SPL (20 µPa)</li>
+    </ul>
+
+    <!-- ===================================================== -->
+    <h2 id="filter"><span class="sec-no">2.7</span>วงจรกรองความถี่ต่ำ (Low-pass Filter)</h2>
+    <p>สัญญาณจริงมีสิ่งที่ไม่ต้องการปนมา เช่น สัญญาณรบกวน 50 Hz จากไฟบ้าน การสั่นสะเทือนทางกล และสัญญาณรบกวนความถี่สูง</p>
+    <figure>
+      <svg viewBox="0 0 280 145" width="280" role="img" aria-label="วงจรกรองความถี่ต่ำ RC">
+        <circle class="term" cx="20" cy="40" r="4"/>
+        <path class="wire" d="M24 40 H60 l4 -8 l8 16 l8 -16 l8 16 l8 -16 l8 16 l4 -8 H256"/>
+        <path class="wire" d="M170 40 V82 M152 82 H188 M152 92 H188 M170 92 V120 M158 120 H182 M162 126 H178 M166 132 H174"/>
+        <circle class="term" cx="260" cy="40" r="4"/>
+        <circle class="dot" cx="170" cy="40" r="3.5"/>
+        <text class="lbl" x="8" y="24">V<tspan font-size="11" dy="4">in</tspan></text>
+        <text class="lbl" x="84" y="22" text-anchor="middle">R</text>
+        <text class="lbl" x="196" y="94">C</text>
+        <text class="lbl" x="246" y="24" text-anchor="middle">V<tspan font-size="11" dy="4">out</tspan></text>
+      </svg>
+      <figcaption>รูปที่ 2.3 วงจรกรองความถี่ต่ำแบบ RC (passive)</figcaption>
+    </figure>
+    <div class="eq"><var>f</var><sub>c</sub> = <span class="frac"><span>1</span><span>2π<var>RC</var></span></span> <span class="label">ความถี่ตัด (−3 dB)</span></div>
+    <div class="eq"><span>|</span><span class="frac"><span><var>V</var><sub>out</sub></span><span><var>V</var><sub>in</sub></span></span><span>|</span> = <span class="frac"><span>1</span><span>√(1 + (<var>f</var>/<var>f</var><sub>c</sub>)²)</span></span></div>
+    <p><strong>ตัวอย่าง:</strong> <var>R</var> = 10 kΩ, <var>C</var> = 1 µF → <var>f</var><sub>c</sub> = 1/(2π × 10⁴ × 10⁻⁶) ≈ 16 Hz
+       ที่ 50 Hz: 1/√(1 + (50/16)²) ≈ 0.30 หรือประมาณ −10 dB</p>
+    <div class="callout key">
+      <span class="title">หลักการเลือก f<sub>c</sub></span>
+      ตั้ง <var>f</var><sub>c</sub> ให้สูงกว่าความถี่ของสัญญาณที่ต้องการ 5–10 เท่า แต่ต่ำกว่าความถี่ของสัญญาณรบกวน
+      ความชื้นดินเปลี่ยนช้ามาก <var>f</var><sub>c</sub> ≈ 1 Hz ก็เพียงพอ
+    </div>
+
+    <!-- ===================================================== -->
+    <h2 id="drive"><span class="sec-no">2.8</span>การขับโหลด: ขยายกระแส</h2>
+    <p>Op-amp ขยายแรงดันแต่จ่ายกระแสได้น้อย (LM358 ระดับสิบ mA) ส่วนขา GPIO ของ ESP32 จ่ายได้เพียงประมาณ 20 mA
+       การขับปั๊ม วาล์ว หรือรีเลย์จึงต้องใช้อุปกรณ์ขยายกระแส</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>อุปกรณ์</th><th>การควบคุม</th><th>หมายเหตุ</th></tr></thead>
+        <tbody>
+          <tr><td>BJT</td><td>กระแสเบสเล็ก ๆ ควบคุมกระแสคอลเลกเตอร์: <var>I</var><sub>C</sub> = β<var>I</var><sub>B</sub></td><td>ใช้ตัวต้านทานเบส R<sub>B</sub> และไดโอด flyback คร่อมโหลดขดลวด</td></tr>
+          <tr><td>MOSFET</td><td>ควบคุมด้วยแรงดันเกต (<var>I</var><sub>G</sub> ≈ 0)</td><td>เหมาะกับโหลดกระแสสูง เลือกแบบ logic-level ให้ 3.3 V ขับได้</td></tr>
+          <tr><td>Opto-isolated relay</td><td>GPIO → LED ใน opto → ทรานซิสเตอร์ → ขดลวดรีเลย์ → หน้าสัมผัส</td><td>แยกฝั่งไฟ 220 V ออกจาก MCU โดยสมบูรณ์ — ใช้ในโครงงาน</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>ลำดับการขยายกระแส: GPIO ≈ 20 mA → ทรานซิสเตอร์ 0.1–1 A → หน้าสัมผัสรีเลย์ สูงสุด 10 A</p>
+    <div class="callout key"><strong>Op-amp ขยายแรงดันเพื่ออ่านเซนเซอร์</strong> ส่วน <strong>ทรานซิสเตอร์/รีเลย์ขยายกระแสเพื่อขับโหลด</strong></div>
+
+    <!-- ===================================================== -->
+    <h2 id="inamp"><span class="sec-no">2.9</span>Instrumentation Amplifier</h2>
+    <p>ประกอบด้วย op-amp 3 ตัว:</p>
+    <ul>
+      <li><strong>A1 และ A2</strong> ทำหน้าที่ buffer ให้ input impedance สูงมาก ไม่รบกวนแหล่งสัญญาณ
+          โดยมีโซ่ตัวต้านทาน A1 out → <var>R</var>₁ → <var>R</var><sub>G</sub> → <var>R</var>₁ → A2 out</li>
+      <li><strong><var>R</var><sub>G</sub></strong> ตัวเดียวกำหนด gain เพราะต่อคร่อมระหว่างขา inverting ของ A1 และ A2 โดยตรง</li>
+      <li><strong>A3</strong> เป็น differential amplifier ตัด common-mode noise</li>
+      <li><strong>ขา REF:</strong> เอาต์พุตวัดเทียบกับขานี้ ต่อ GND ให้เอาต์พุตอยู่รอบ 0 V หรือต่อ M ให้อยู่รอบ 6 V</li>
+    </ul>
+    <div class="eq"><var>G</var> = 1 + <span class="frac"><span>50 kΩ</span><span><var>R</var><sub>G</sub></span></span> <span class="label">INA128P</span></div>
+
+    <h3>ใช้ร่วมกับ Wheatstone bridge</h3>
+    <p>Bridge คือวงจรแบ่งแรงดันสองชุดที่ผลต่างมีเพียงไม่กี่ mV จุดกลางแต่ละชุดต่อเข้า IN+ และ IN− ของ INA128
+       ต่อ <var>R</var><sub>G</sub> คร่อมขา RG และต่อ REF ไปที่ M</p>
+    <ul>
+      <li>Input impedance สูง ไม่ทำให้ bridge เสียสมดุล (ต่างจาก differential amp แบบตัวต้านทานธรรมดา)</li>
+      <li>สายยาวในแปลงรับสัญญาณรบกวนเท่ากันทั้งสองเส้น — ถูกตัดทิ้ง</li>
+      <li>กำหนด gain ด้วย <var>R</var><sub>G</sub> ตัวเดียว ไม่ต้องจับคู่ตัวต้านทาน</li>
+      <li>REF = M ทำให้เอาต์พุตอยู่กลางช่วง เหมาะกับ ADC ที่รับเฉพาะค่าบวก</li>
+    </ul>
+    <p>Lab 6 จะใช้วงจรนี้กับ strain gauge และเซนเซอร์ความดัน แล้วสอบเทียบกับเครื่องมืออ้างอิง</p>
+
+    <!-- ===================================================== -->
+    <h2 id="exercises"><span class="sec-no">✎</span>แบบฝึกหัดท้ายบท</h2>
+
+    <h3>ตอนที่ 1: ปรนัยและเติมตัวเลข</h3>
+    <div class="quiz">
+      <div class="q" data-answer="a">
+        <p class="q-text">กฎทองของ op-amp อุดมคติ (เมื่อมี negative feedback) คือข้อใด?</p>
+        <label class="opt"><input type="radio" value="a"> <var>i</var><sub>in</sub> = 0 และ <var>V</var>⁺ = <var>V</var>⁻</label>
+        <label class="opt"><input type="radio" value="b"> <var>V</var><sub>o</sub> = 0 และ <var>i</var><sub>out</sub> = 0</label>
+        <label class="opt"><input type="radio" value="c"> <var>V</var>⁺ = 0 และ <var>V</var>⁻ = <var>V</var><sub>o</sub></label>
+        <label class="opt"><input type="radio" value="d"> gain = 1 เสมอ</label>
+        <div class="explain" hidden>Input impedance อนันต์ → ไม่มีกระแสเข้าขา และ open-loop gain อนันต์ + feedback → ขาทั้งสองมีแรงดันเท่ากัน</div>
+      </div>
+
+      <div class="q" data-answer="c">
+        <p class="q-text">วงจร voltage follower มี voltage gain = 1 แล้วนำไปใช้ประโยชน์อะไร?</p>
+        <label class="opt"><input type="radio" value="a"> เพิ่มความละเอียดของ ADC</label>
+        <label class="opt"><input type="radio" value="b"> กรองสัญญาณรบกวน 50 Hz</label>
+        <label class="opt"><input type="radio" value="c"> ป้องกัน loading effect เพราะ input impedance สูงและ output impedance ต่ำ</label>
+        <label class="opt"><input type="radio" value="d"> กลับเฟสสัญญาณ</label>
+        <div class="explain" hidden>Follower ให้ current gain: ไม่ดึงกระแสจากเซนเซอร์ แต่จ่ายกระแสให้วงจรถัดไปได้</div>
+      </div>
+
+      <div class="q" data-answer="b">
+        <p class="q-text">LM358 ใช้ไฟเลี้ยง 12 V เดี่ยว ออกแบบ gain 11 และป้อน 1.0 V จะวัดเอาต์พุตได้ประมาณเท่าใด?</p>
+        <label class="opt"><input type="radio" value="a"> 11 V ตามสูตร</label>
+        <label class="opt"><input type="radio" value="b"> ประมาณ 10.5 V เพราะ saturation</label>
+        <label class="opt"><input type="radio" value="c"> 12 V เท่าไฟเลี้ยง</label>
+        <label class="opt"><input type="radio" value="d"> 0 V เพราะวงจรเสีย</label>
+        <div class="explain" hidden>เอาต์พุต LM358 ขึ้นได้ประมาณ ไฟเลี้ยง − 1.5 V เท่านั้น</div>
+      </div>
+
+      <div class="q" data-answer="d">
+        <p class="q-text">ทำไมวงจร differentiator จึงไม่นิยมใช้กับสัญญาณเซนเซอร์ในภาคสนาม?</p>
+        <label class="opt"><input type="radio" value="a"> เพราะต้องใช้ไฟเลี้ยงคู่เสมอ</label>
+        <label class="opt"><input type="radio" value="b"> เพราะ gain ต่ำเกินไป</label>
+        <label class="opt"><input type="radio" value="c"> เพราะตัวเก็บประจุมีราคาแพง</label>
+        <label class="opt"><input type="radio" value="d"> เพราะขยายสัญญาณรบกวนความถี่สูงด้วย</label>
+        <div class="explain" hidden>อนุพันธ์ของสัญญาณความถี่สูงมีค่ามาก จึงนิยมคำนวณอนุพันธ์ในซอฟต์แวร์จากข้อมูลที่กรองแล้ว</div>
+      </div>
+
+      <div class="q" data-answer="a">
+        <p class="q-text">เหตุใด instrumentation amplifier จึงเหมาะกับ Wheatstone bridge มากกว่า differential amplifier ธรรมดา?</p>
+        <label class="opt"><input type="radio" value="a"> Input impedance สูง ไม่ทำให้ bridge เสียสมดุล และตัด common-mode noise ได้ดี</label>
+        <label class="opt"><input type="radio" value="b"> ไม่ต้องใช้ไฟเลี้ยง</label>
+        <label class="opt"><input type="radio" value="c"> ให้เอาต์พุตเป็นดิจิทัล</label>
+        <label class="opt"><input type="radio" value="d"> gain คงที่ ปรับไม่ได้</label>
+        <div class="explain" hidden>A1/A2 เป็น buffer และ gain ปรับได้ด้วย R<sub>G</sub> ตัวเดียว</div>
+      </div>
+
+      <div class="q" data-answer="c">
+        <p class="q-text">ต้องการให้ ESP32 สั่งเปิด-ปิดปั๊ม 220 V วิธีใดเหมาะสมที่สุด?</p>
+        <label class="opt"><input type="radio" value="a"> ต่อปั๊มกับขา GPIO โดยตรง</label>
+        <label class="opt"><input type="radio" value="b"> ใช้ LM358 ขยายแรงดันจาก GPIO</label>
+        <label class="opt"><input type="radio" value="c"> ใช้โมดูลรีเลย์แบบ opto-isolated</label>
+        <label class="opt"><input type="radio" value="d"> ใช้วงจรแบ่งแรงดัน</label>
+        <div class="explain" hidden>ต้องขยายกระแสและแยกไฟแรงสูงออกจาก MCU — opto-relay ทำได้ทั้งสองอย่าง</div>
+      </div>
+
+      <div class="q" data-type="num" data-answer="-2">
+        <p class="q-text">Inverting amplifier มี <var>R</var><sub>f</sub> = 100 kΩ, <var>R</var><sub>i</sub> = 10 kΩ ป้อน <var>V</var><sub>i</sub> = 0.2 V (ไฟเลี้ยงคู่ ±12 V) จงหา <var>V</var><sub>o</sub></p>
+        <div class="num-input"><input type="number" step="any" aria-label="คำตอบ"> V</div>
+        <div class="explain" hidden><var>V</var><sub>o</sub> = −(100/10) × 0.2 = <strong>−2 V</strong></div>
+      </div>
+
+      <div class="q" data-type="num" data-answer="5.7">
+        <p class="q-text">Non-inverting amplifier มี <var>R</var><sub>f</sub> = 47 kΩ, <var>R</var><sub>i</sub> = 10 kΩ จงหา gain</p>
+        <div class="num-input"><input type="number" step="any" aria-label="คำตอบ"> เท่า</div>
+        <div class="explain" hidden><var>G</var> = 1 + 47/10 = <strong>5.7</strong></div>
+      </div>
+
+      <div class="q" data-type="num" data-answer="40">
+        <p class="q-text">วงจรขยายแรงดัน 100 เท่า คิดเป็นกี่ dB?</p>
+        <div class="num-input"><input type="number" step="any" aria-label="คำตอบ"> dB</div>
+        <div class="explain" hidden>20 log₁₀(100) = 20 × 2 = <strong>40 dB</strong></div>
+      </div>
+
+      <div class="q" data-type="num" data-answer="1.59">
+        <p class="q-text">วงจร RC low-pass มี <var>R</var> = 10 kΩ, <var>C</var> = 10 µF ความถี่ตัดเท่าใด?</p>
+        <div class="num-input"><input type="number" step="any" aria-label="คำตอบ"> Hz</div>
+        <div class="explain" hidden><var>f</var><sub>c</sub> = 1/(2π × 10⁴ × 10⁻⁵) = 1/(2π × 0.1) ≈ <strong>1.59 Hz</strong></div>
+      </div>
+
+      <div class="q" data-type="num" data-answer="505" data-tol="0.02">
+        <p class="q-text">ต้องการให้ INA128 มี gain = 100 ต้องใช้ <var>R</var><sub>G</sub> เท่าใด?</p>
+        <div class="num-input"><input type="number" step="any" aria-label="คำตอบ"> Ω</div>
+        <div class="explain" hidden>100 = 1 + 50 kΩ/<var>R</var><sub>G</sub> → <var>R</var><sub>G</sub> = 50,000/99 ≈ <strong>505 Ω</strong> (ใช้ค่ามาตรฐาน 499 Ω หรือ 510 Ω แล้ววัดค่าจริง)</div>
+      </div>
+    </div>
+
+    <h3>ตอนที่ 2: โจทย์คำนวณพร้อมเฉลย</h3>
+
+    <details class="solution">
+      <summary>โจทย์ 1 — เลือก gain สำหรับเซนเซอร์ 0–50 mV (แบบฝึกหัดท้ายคาบ)</summary>
+      <div class="problem"><p>เซนเซอร์ให้สัญญาณ 0–50 mV และ ADC รับ 0–3.3 V จงเลือก gain ที่ใช้ช่วงได้เต็มที่โดยไม่ saturate พร้อมระบุระยะเผื่อ</p></div>
+      <div class="sol">
+        <p>Gain อุดมคติ = 3.3/0.05 = <strong>66</strong> แต่ถ้าใช้ 66 พอดี สัญญาณสูงสุดจะชนขอบบนของ ADC
+           และ offset ของ op-amp ก็ถูกขยาย ×66 ด้วย</p>
+        <p>ควรเผื่อ headroom ประมาณ 10% → gain ≈ 60 ให้เอาต์พุต 0–3.0 V (ตรงกับตัวอย่างในหัวข้อ 2.1)
+           ด้วย non-inverting: 1 + <var>R</var><sub>f</sub>/<var>R</var><sub>i</sub> = 60 → เช่น <var>R</var><sub>i</sub> = 1 kΩ, <var>R</var><sub>f</sub> = 59 kΩ
+           หรือ INA128: <var>R</var><sub>G</sub> = 50 k/59 ≈ 847 Ω</p>
+        <p>นอกจากนี้ ADC ของ ESP32 ไม่เป็นเชิงเส้นใกล้ 0 V และใกล้ขอบบน (บทที่ 3) และ LM358 ขึ้นไม่ถึงไฟเลี้ยง
+           ถ้าเลี้ยง op-amp ด้วย 3.3 V จะต้องลด gain ลงอีก</p>
+      </div>
+    </details>
+
+    <details class="solution">
+      <summary>โจทย์ 2 — ออกแบบตัวกรองสำหรับเซนเซอร์ความชื้นดิน</summary>
+      <div class="problem"><p>ต้องการตัวกรอง RC ที่มี <var>f</var><sub>c</sub> ≈ 1 Hz โดยมีตัวเก็บประจุ 10 µF จงหาค่า <var>R</var> และคำนวณการลดทอนที่ 50 Hz</p></div>
+      <div class="sol">
+        <p><var>R</var> = 1/(2π<var>f</var><sub>c</sub><var>C</var>) = 1/(2π × 1 × 10⁻⁵) ≈ <strong>15.9 kΩ</strong> (ใช้ค่ามาตรฐาน 15 kΩ หรือ 16 kΩ)</p>
+        <p>ที่ 50 Hz: |H| = 1/√(1 + 50²) ≈ 0.020 → 20 log(0.02) ≈ <strong>−34 dB</strong> ลดสัญญาณรบกวนจากไฟบ้านเหลือประมาณ 2%</p>
+      </div>
+    </details>
+
+    <details class="solution">
+      <summary>โจทย์ 3 — พิสูจน์ gain ของ non-inverting amplifier</summary>
+      <div class="problem"><p>จากรูปที่ 2.2 ใช้กฎทองของ op-amp พิสูจน์ว่า <var>V</var><sub>o</sub> = (1 + <var>R</var><sub>f</sub>/<var>R</var><sub>i</sub>)<var>V</var><sub>i</sub></p></div>
+      <div class="sol">
+        <p>กฎข้อ 2: <var>V</var><sub>a</sub> = <var>V</var>⁺ = <var>V</var><sub>i</sub></p>
+        <p>กฎข้อ 1: ไม่มีกระแสเข้าขา − ดังนั้นกระแสผ่าน <var>R</var><sub>f</sub> เท่ากับกระแสผ่าน <var>R</var><sub>i</sub>:
+           (<var>V</var><sub>o</sub> − <var>V</var><sub>a</sub>)/<var>R</var><sub>f</sub> = <var>V</var><sub>a</sub>/<var>R</var><sub>i</sub></p>
+        <p>จัดรูป: <var>V</var><sub>o</sub> = <var>V</var><sub>a</sub>(1 + <var>R</var><sub>f</sub>/<var>R</var><sub>i</sub>) = (1 + <var>R</var><sub>f</sub>/<var>R</var><sub>i</sub>)<var>V</var><sub>i</sub> ∎</p>
+      </div>
+    </details>
+
+    <details class="solution">
+      <summary>โจทย์ 4 — การบ้าน: ทำไม gain ของ instrumentation amp ขึ้นกับ R<sub>G</sub> ตัวเดียว</summary>
+      <div class="problem"><p>อธิบายว่าทำไม gain ของขั้นอินพุตขึ้นกับ <var>R</var><sub>G</sub> เพียงตัวเดียว และขา REF มีบทบาทอย่างไร</p></div>
+      <div class="sol">
+        <p>จากกฎ <var>V</var>⁺ = <var>V</var>⁻ ขา − ของ A1 และ A2 มีแรงดัน <var>V</var>₁ และ <var>V</var>₂ ตามอินพุต
+           จึงมีแรงดัน (<var>V</var>₂ − <var>V</var>₁) คร่อม <var>R</var><sub>G</sub> ทำให้เกิดกระแส <var>i</var> = (<var>V</var>₂ − <var>V</var>₁)/<var>R</var><sub>G</sub></p>
+        <p>กระแสนี้ไม่ไหลเข้าขา op-amp จึงไหลผ่าน <var>R</var>₁ ทั้งสองตัวด้วย แรงดันระหว่างเอาต์พุต A1 และ A2 จึงเป็น
+           <var>i</var>(<var>R</var>₁ + <var>R</var><sub>G</sub> + <var>R</var>₁) = (<var>V</var>₂ − <var>V</var>₁)(1 + 2<var>R</var>₁/<var>R</var><sub>G</sub>)
+           — ใน INA128 ค่า 2<var>R</var>₁ = 50 kΩ จึงได้ <var>G</var> = 1 + 50 kΩ/<var>R</var><sub>G</sub></p>
+        <p>สัญญาณ common mode ทำให้ปลายทั้งสองของ <var>R</var><sub>G</sub> ขึ้นลงพร้อมกัน ไม่เกิดกระแส จึงไม่ถูกขยาย แล้ว A3 ตัดทิ้งอีกชั้น
+           ขา REF เป็นจุดอ้างอิงของ A3 — เอาต์พุต = <var>G</var>(<var>V</var>₂ − <var>V</var>₁) + <var>V</var><sub>REF</sub> จึงใช้เลื่อนระดับเอาต์พุตไปไว้ที่ M ได้</p>
+      </div>
+    </details>
+
+    <div id="pager"></div>
+  </main>
+
+  <footer class="site-footer">
+    © 2026 Vasu Udompetaikul, Dept. of Biosystems &amp; Agricultural Engineering, KMITL
+  </footer>
+</div>
+</body>
+</html>

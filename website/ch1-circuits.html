@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>บทที่ 1 เครื่องมือวัดและวงจรพื้นฐาน</title>
+<link rel="stylesheet" href="style.css">
+<script src="sidebar.js" defer></script>
+<script src="quiz.js" defer></script>
+</head>
+<body>
+<nav id="sidebar" class="sidebar" aria-label="สารบัญ"></nav>
+
+<div class="page">
+  <header class="topbar">
+    <button class="menu-btn" type="button" aria-label="เปิดเมนู">☰</button>
+    <span class="crumb">บทที่ 1 · เครื่องมือวัดและวงจรพื้นฐาน</span>
+  </header>
+
+  <main class="content">
+    <header class="chapter-head">
+      <div class="eyebrow">บทที่ 1 · Instrumentation Circuits</div>
+      <h1>เครื่องมือวัดและวงจรพื้นฐาน</h1>
+      <p class="lead">เครื่องมือวัดทำอะไร ประกอบด้วยขั้นตอนใดบ้าง และวงจรไฟฟ้าพื้นฐานที่ใช้แปลงค่าจากเซนเซอร์ให้เป็นแรงดัน</p>
+      <div class="source">เรียบเรียงจาก INS01_Instrumentation_Circuits_v6</div>
+      <div class="objectives">
+        <h4>เมื่อจบบทนี้ ผู้เรียนควรสามารถ</h4>
+        <ul>
+          <li>อธิบายบทบาทของเครื่องมือวัดในเกษตรแม่นยำ</li>
+          <li>แยกองค์ประกอบของเครื่องมือวัดออกเป็น Sensor, Transducer, Signal Conditioning และ Output ตาม<em>หน้าที่</em></li>
+          <li>อธิบายความหมายของการสอบเทียบ (calibration)</li>
+          <li>ใช้กฎของโอห์มและกฎของ Kirchhoff วิเคราะห์วงจรอนุกรม ขนาน วงจรแบ่งแรงดัน และ Wheatstone bridge</li>
+        </ul>
+      </div>
+    </header>
+
+    <!-- ===================================================== -->
+    <h2 id="concepts"><span class="sec-no">1.1</span>เครื่องมือวัดคืออะไร</h2>
+    <p>มนุษย์รับรู้โลกผ่านประสาทสัมผัส — การมองเห็น การได้ยิน การสัมผัส กลิ่น รส อุณหภูมิ และการเคลื่อนไหว
+       เซนเซอร์ในอุปกรณ์รอบตัวทำหน้าที่เดียวกันนี้ให้กับเครื่องจักร</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>อุปกรณ์</th><th>เซนเซอร์ที่อยู่ภายใน</th></tr></thead>
+        <tbody>
+          <tr><td>ไมโครโฟน</td><td>เซนเซอร์ความดัน (คลื่นเสียง)</td></tr>
+          <tr><td>เครื่องปรับอากาศ</td><td>อุณหภูมิ ความชื้นสัมพัทธ์ อินฟราเรด</td></tr>
+          <tr><td>โทรศัพท์มือถือ</td><td>IMU (ความเร่ง/การหมุน) กล้อง แสงรอบข้าง</td></tr>
+          <tr><td>นาฬิกาอัจฉริยะ</td><td>เซนเซอร์แสงวัดอัตราการเต้นของหัวใจ</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>บทบาทหลักของเครื่องมือวัดมี 3 ประการ คือ <strong>การเฝ้าติดตาม (monitoring)</strong>,
+       <strong>การควบคุม (control)</strong> และ <strong>การวิเคราะห์พฤติกรรม (behavioural analysis)</strong></p>
+
+    <h3>เครื่องมือวัดในเกษตรแม่นยำ</h3>
+    <p>งานเกษตรต้องวัดสมบัติของดิน สุขภาพพืช การใช้น้ำ ผลผลิต และผลตอบแทนทางเศรษฐกิจอย่างแม่นยำ
+       ทั้งในงานพืช ปศุสัตว์ และสัตว์น้ำ</p>
+    <div class="callout key">
+      <span class="title">Precision Agriculture</span>
+      การจัดการโดยสังเกต วัด และตอบสนองต่อความแปรปรวน<em>ระหว่างแปลงและภายในแปลง</em> (Kempenaar et al., 2017)
+      หรือกล่าวสั้น ๆ ว่า “right thing, right place, right time, right way” (Blackmore et al., 2005)
+    </div>
+    <p>ความแปรปรวนในแปลงมีทั้ง<strong>เชิงพื้นที่</strong>และ<strong>เชิงเวลา</strong> จึงต้องมีเครื่องมือที่วัดทั้งตำแหน่งและตัวแปรในแปลง
+       ผลผลิตเป็นฟังก์ชันของปัจจัยการผลิตและตัวแปรสิ่งแวดล้อม
+       <span class="en">(ชื่อเรียกอื่น: precision farming, farming by the inch, site-specific farming, prescription farming)</span></p>
+
+    <!-- ===================================================== -->
+    <h2 id="measurement-system"><span class="sec-no">1.2</span>ระบบการวัดทั่วไป</h2>
+    <p>เครื่องมือวัดทุกชนิดอธิบายได้ด้วยลำดับขั้นเดียวกัน (Figliola &amp; Beasley, 2011)</p>
+
+    <div class="chain">
+      <div class="stage"><b>Sensor</b><small>รับรู้ปรากฏการณ์ทางกายภาพ</small></div>
+      <div class="arrow">→</div>
+      <div class="stage"><b>Transducer</b><small>แปลงเป็นสัญญาณที่อ่านได้ (มักเป็นไฟฟ้า)</small></div>
+      <div class="arrow">→</div>
+      <div class="stage"><b>Signal Conditioning</b><small>ขยาย กรอง ปรับช่วงให้เหมาะกับ ADC</small></div>
+      <div class="arrow">→</div>
+      <div class="stage"><b>Output</b><small>ตัวเลข กราฟ dashboard การแจ้งเตือน</small></div>
+    </div>
+
+    <dl>
+      <dt><strong>Sensor</strong></dt>
+      <dd>รับรู้ปรากฏการณ์ทางกายภาพและสร้างสัญญาณออกมา เช่น อุณหภูมิ ความชื้นสัมพัทธ์ ความชื้นดิน แสง น้ำหนัก pH/EC และออกซิเจนละลายน้ำ (DO)</dd>
+      <dt><strong>Transducer</strong></dt>
+      <dd>แปลงสิ่งที่เซนเซอร์ตรวจจับให้เป็นสัญญาณไฟฟ้าที่อ่านได้ บ่อยครั้ง sensor และ transducer เป็นอุปกรณ์ชิ้นเดียวกัน เช่น
+        <ul>
+          <li>Capacitive soil moisture: การเปลี่ยนแปลงของ C → แรงดัน</li>
+          <li>Load cell: แรง → การเปลี่ยนแปลงความต้านทาน → สัญญาณระดับ mV</li>
+          <li>pH probe: ประจุ H⁺ → mV</li>
+        </ul>
+      </dd>
+      <dt><strong>Signal Conditioning</strong></dt>
+      <dd>ทำให้สัญญาณเหมาะกับไมโครคอนโทรลเลอร์ (Arduino/ESP32) — ขยายสัญญาณ (ไมโครโฟน, load cell) กรองสัญญาณรบกวน
+          และปรับช่วงให้อยู่ใน 0–3.3 V หรือ 0–5 V (รายละเอียดในบทที่ 2)</dd>
+      <dt><strong>Output</strong></dt>
+      <dd>สิ่งที่คนหรือระบบอ่าน เช่น จอแสดงตัวเลข Serial Monitor กราฟบน IoT dashboard หรือการแจ้งเตือน</dd>
+    </dl>
+
+    <p>ตัวอย่างการไหลของข้อมูลในโครงงาน: <strong>เซนเซอร์ความชื้นดิน → แรงดัน → ADC → cloud → dashboard</strong></p>
+
+    <!-- ===================================================== -->
+    <h2 id="thermometer"><span class="sec-no">1.3</span>ตัวอย่าง: เทอร์โมมิเตอร์สองแบบ</h2>
+    <p>เปรียบเทียบเทอร์โมมิเตอร์แก้ว (เชิงกลล้วน) กับ thermistor ที่ต่อกับไมโครคอนโทรลเลอร์ (เชิงไฟฟ้า)
+       สังเกต<strong>ปริมาณทางกายภาพที่ส่งต่อระหว่างขั้น</strong></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ขั้น</th><th>เทอร์โมมิเตอร์แก้ว</th><th>Thermistor + MCU</th></tr></thead>
+        <tbody>
+          <tr><td>ตัวแปร / หน่วย</td><td>อุณหภูมิ <var>T</var> (°C)</td><td>อุณหภูมิ <var>T</var> (°C)</td></tr>
+          <tr><td>Sensor</td><td>ของเหลวในกระเปาะ: <var>T</var> → Δ<var>V</var> (ปริมาตรขยายตัว)</td><td>Thermistor: <var>T</var> → <var>R</var></td></tr>
+          <tr><td>Transducer</td><td>กระเปาะ + หลอดแก้ว: Δ<var>V</var> → Δ<var>L</var> (ความยาวลำของเหลว)</td><td>วงจรแบ่งแรงดันหรือ bridge: <var>R</var> → แรงดัน</td></tr>
+          <tr><td>Signal conditioning</td><td>ขนาดรูหลอดแก้ว (bore) กำหนด “อัตราขยาย” — รูยิ่งเล็ก Δ<var>L</var> ยิ่งมาก</td><td>Op-amp ขยายและกรอง แล้ว ADC แปลงเป็นตัวเลข</td></tr>
+          <tr><td>Output</td><td>สเกลบนหลอดแก้ว</td><td>จอแสดงผล / Serial Monitor / dashboard</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout key">
+      <span class="title">บทเรียนสำคัญ</span>
+      <ul>
+        <li>แยกขั้นตาม<strong>หน้าที่</strong> ไม่ใช่ตามชิ้นส่วน — ชิ้นส่วนเดียวอาจทำหลายหน้าที่ เช่น หลอดแก้วเป็นทั้ง transducer (Δ<var>V</var> → Δ<var>L</var>) และ signal conditioner (รูแคบ = gain สูง)</li>
+        <li>เครื่องมือเชิงกลอาจไม่มีการปรับสภาพสัญญาณทางไฟฟ้าเลย การขยายเกิดขึ้นทางกล</li>
+        <li>ถามเสมอว่า “อะไรเข้า อะไรออก” ในแต่ละขั้น และเขียนเป็นปริมาณทางกายภาพ</li>
+      </ul>
+    </div>
+
+    <!-- ===================================================== -->
+    <h2 id="calibration"><span class="sec-no">1.4</span>การสอบเทียบ (Calibration)</h2>
+    <p>การสอบเทียบคือ<strong>การหาความสัมพันธ์ระหว่างค่าที่ทราบ (known) กับค่าที่วัดได้ (measured)</strong>
+       โดยค่าที่ทราบได้จากเครื่องมือที่แม่นยำกว่า เรียกว่า <em>standard</em> หรือ <em>calibrator</em></p>
+    <p>เปรียบเหมือนการ “สอน” เครื่องมือให้อ่านค่าได้ถูกต้องขึ้น ผลลัพธ์คือ <strong>calibration curve</strong>
+       ที่ใช้แปลงค่าที่เครื่องอ่านได้ไปเป็นค่าจริง เช่น สมการเชิงเส้น <var>y</var> = <var>m</var>·<var>x</var> + <var>c</var>
+       ซึ่งจะใช้จริงใน Lab 4 (ADC ของ ESP32) และ Lab 6 (strain gauge / pressure)</p>
+
+    <!-- ===================================================== -->
+    <h2 id="basics"><span class="sec-no">1.5</span>ปริมาณไฟฟ้าพื้นฐาน</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ปริมาณ</th><th>นิยาม</th><th>หน่วย</th></tr></thead>
+        <tbody>
+          <tr><td>ประจุ <var>q</var></td><td>1 C = 6.24 × 10<sup>18</sup> ประจุมูลฐาน</td><td>คูลอมบ์ (C)</td></tr>
+          <tr><td>กระแส <var>i</var></td><td><var>i</var> = d<var>q</var>/d<var>t</var></td><td>C/s = แอมแปร์ (A)</td></tr>
+          <tr><td>แรงดัน <var>V</var></td><td><var>V</var> = d<var>W</var>/d<var>q</var> — พลังงานที่ผลักประจุผ่านอุปกรณ์</td><td>J/C = โวลต์ (V)</td></tr>
+          <tr><td>กำลัง <var>P</var></td><td><var>P</var> = d<var>W</var>/d<var>t</var> = <var>Vi</var> = <var>i</var>²<var>R</var> = <var>V</var>²/<var>R</var></td><td>วัตต์ (W)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted">หมายเหตุ: ทิศกระแสตามแบบแผน (conventional current) ไหลจากขั้วบวกไปขั้วลบ ตรงข้ามกับทิศการไหลของอิเล็กตรอน</p>
+
+    <h3>ตัวต้านทาน (Resistor)</h3>
+    <p>จำกัดการไหลของกระแส ความต้านทาน <var>R</var> มีหน่วยเป็นโอห์ม (Ω)</p>
+    <div class="eq"><var>V</var> = <var>i</var><var>R</var> <span class="label">กฎของโอห์ม</span></div>
+    <div class="eq"><var>R</var> = <span class="frac"><span>ρ<var>L</var></span><span><var>A</var></span></span> <span class="label">ตัวนำสม่ำเสมอ</span></div>
+    <p>ρ = สภาพต้านทาน (ขึ้นกับวัสดุและสภาพแวดล้อม เช่น อุณหภูมิ), <var>L</var> = ความยาว, <var>A</var> = พื้นที่หน้าตัด
+       — นี่คือหลักการของ strain gauge: เมื่อถูกดึง <var>L</var> เพิ่มและ <var>A</var> ลด ทำให้ <var>R</var> เพิ่ม</p>
+
+    <h3>ตัวเก็บประจุ (Capacitor)</h3>
+    <p>เก็บประจุ ความจุ <var>C</var> มีหน่วยเป็นฟารัด (F)</p>
+    <div class="eq"><var>q</var> = <var>C</var><var>V</var> &nbsp;&nbsp;;&nbsp;&nbsp; <var>C</var> = <span class="frac"><span>ε<var>A</var></span><span><var>d</var></span></span> &nbsp;&nbsp;;&nbsp;&nbsp; <var>i</var> = <var>C</var><span class="frac"><span>d<var>V</var></span><span>d<var>t</var></span></span></div>
+    <p>ε = สภาพยอมของไดอิเล็กตริก, <var>A</var> = พื้นที่แผ่น, <var>d</var> = ระยะห่างแผ่น
+       — เซนเซอร์ความชื้นดินแบบ capacitive อาศัยการที่น้ำในดินเปลี่ยนค่า ε</p>
+
+    <h3>ตัวเหนี่ยวนำ (Inductor)</h3>
+    <p>สร้างสนามแม่เหล็กที่ต้านการเปลี่ยนแปลงของกระแส</p>
+    <div class="eq">φ = <var>L</var><var>i</var> &nbsp;&nbsp;;&nbsp;&nbsp; <var>V</var> = <span class="frac"><span>dφ</span><span>d<var>t</var></span></span> = <var>L</var><span class="frac"><span>d<var>i</var></span><span>d<var>t</var></span></span></div>
+    <p><var>L</var> = ความเหนี่ยวนำ (H), φ = ฟลักซ์แม่เหล็ก (Wb)</p>
+
+    <!-- ===================================================== -->
+    <h2 id="kirchhoff"><span class="sec-no">1.6</span>กฎของ Kirchhoff</h2>
+    <h3>กฎกระแส (KCL)</h3>
+    <p>ผลรวมกระแสที่ไหลเข้าโหนดใด ๆ เท่ากับศูนย์: <strong>Σ<var>i</var> = 0</strong></p>
+    <ul>
+      <li>สามกิ่ง: <var>i</var>₁ + <var>i</var>₂ + <var>i</var>₃ = 0 → <var>i</var>₁ = −<var>i</var>₂ − <var>i</var>₃</li>
+      <li>ห้ากิ่ง: <var>i</var>₁ + <var>i</var>₂ + <var>i</var>₃ + <var>i</var>₄ − <var>i</var>₅ = 0 → <var>i</var>₅ = <var>i</var>₁ + <var>i</var>₂ + <var>i</var>₃ + <var>i</var>₄</li>
+    </ul>
+    <h3>กฎแรงดัน (KVL)</h3>
+    <p>ผลรวมแรงดันรอบวงปิดใด ๆ เท่ากับศูนย์: <strong>Σ<var>V</var> = 0</strong></p>
+    <ul>
+      <li>ตัวอย่าง: <var>V</var>₁ + <var>V</var>₂ + <var>V</var>₃ − <var>V</var><sub>s</sub> = 0 → <var>V</var><sub>s</sub> = <var>V</var>₁ + <var>V</var>₂ + <var>V</var>₃</li>
+    </ul>
+
+    <!-- ===================================================== -->
+    <h2 id="series-parallel"><span class="sec-no">1.7</span>ตัวต้านทานอนุกรมและขนาน</h2>
+    <h3>อนุกรม</h3>
+    <p>จาก KVL: <var>V</var><sub>s</sub> = <var>iR</var>₁ + <var>iR</var>₂ ดังนั้น <var>i</var> = <var>V</var><sub>s</sub>/(<var>R</var>₁ + <var>R</var>₂)</p>
+    <div class="eq"><var>R</var><sub>eq</sub> = <var>R</var>₁ + <var>R</var>₂</div>
+    <h3>ขนาน</h3>
+    <p>จาก KCL ที่โหนด: <var>i</var> = <var>i</var>₁ + <var>i</var>₂ = <var>V</var><sub>s</sub>/<var>R</var>₁ + <var>V</var><sub>s</sub>/<var>R</var>₂</p>
+    <div class="eq"><span class="frac"><span>1</span><span><var>R</var><sub>eq</sub></span></span> = <span class="frac"><span>1</span><span><var>R</var>₁</span></span> + <span class="frac"><span>1</span><span><var>R</var>₂</span></span>
+      &nbsp;⇒&nbsp; <var>R</var><sub>eq</sub> = <span class="frac"><span><var>R</var>₁<var>R</var>₂</span><span><var>R</var>₁ + <var>R</var>₂</span></span></div>
+
+    <!-- ===================================================== -->
+    <h2 id="divider"><span class="sec-no">1.8</span>วงจรแบ่งแรงดัน (Voltage Divider)</h2>
+    <p>วงจรที่ใช้บ่อยที่สุดในการแปลง<strong>ความต้านทานของเซนเซอร์</strong> (thermistor, LDR, potentiometer) ให้เป็น<strong>แรงดัน</strong></p>
+
+    <figure>
+      <svg viewBox="0 0 250 215" width="250" role="img" aria-label="วงจรแบ่งแรงดัน">
+        <circle class="comp" cx="50" cy="110" r="18"/>
+        <text class="lbl-sm" x="50" y="104" text-anchor="middle">+</text>
+        <text class="lbl-sm" x="50" y="124" text-anchor="middle">−</text>
+        <text class="lbl" x="8" y="115">V<tspan font-size="11" dy="4">s</tspan></text>
+        <path class="wire" d="M50 92 V30 H150"/>
+        <path class="wire" d="M150 30 V45 l8 4 l-16 8 l16 8 l-16 8 l16 8 l-16 8 l8 4 V110"/>
+        <path class="wire" d="M150 110 V127 l8 4 l-16 8 l16 8 l-16 8 l16 8 l-16 8 l8 4 V190"/>
+        <path class="wire" d="M150 190 H50 V128"/>
+        <path class="wire" d="M150 110 H206"/>
+        <path class="wire" d="M150 190 H206"/>
+        <circle class="dot" cx="150" cy="110" r="3.5"/>
+        <circle class="dot" cx="150" cy="190" r="3.5"/>
+        <circle class="term" cx="210" cy="110" r="4"/>
+        <circle class="term" cx="210" cy="190" r="4"/>
+        <text class="lbl" x="166" y="74">R<tspan font-size="11" dy="4">1</tspan></text>
+        <text class="lbl" x="166" y="156">R<tspan font-size="11" dy="4">2</tspan></text>
+        <text class="lbl" x="210" y="156" text-anchor="middle">V<tspan font-size="11" dy="4">out</tspan></text>
+        <text class="lbl-sm" x="222" y="114">+</text>
+        <text class="lbl-sm" x="222" y="194">−</text>
+      </svg>
+      <figcaption>รูปที่ 1.1 วงจรแบ่งแรงดัน: V<sub>out</sub> วัดคร่อม R<sub>2</sub></figcaption>
+    </figure>
+
+    <p>กระแสไหลผ่าน <var>R</var>₁ และ <var>R</var>₂ เท่ากัน: <var>i</var> = <var>V</var><sub>s</sub>/(<var>R</var>₁ + <var>R</var>₂) และ <var>V</var><sub>out</sub> = <var>iR</var>₂</p>
+    <div class="eq"><var>V</var><sub>out</sub> = <var>V</var><sub>s</sub> · <span class="frac"><span><var>R</var>₂</span><span><var>R</var>₁ + <var>R</var>₂</span></span></div>
+
+    <div class="callout warn">
+      <span class="title">ข้อควรระวัง: Loading effect</span>
+      สูตรนี้ถือว่าไม่มีกระแสไหลออกทางขั้ว V<sub>out</sub> ถ้าต่อโหลดที่มีความต้านทานต่ำ (เช่น ขาอินพุตบางชนิดหรือวงจรถัดไป)
+      โหลดจะขนานกับ R<sub>2</sub> ทำให้แรงดันที่วัดได้ลดลง วิธีแก้คือใช้ voltage follower (บทที่ 2)
+    </div>
+
+    <!-- ===================================================== -->
+    <h2 id="bridge"><span class="sec-no">1.9</span>Wheatstone Bridge</h2>
+    <p>ประกอบด้วยวงจรแบ่งแรงดันสองชุดต่อคร่อมแหล่งจ่ายเดียวกัน แล้ววัด<strong>ผลต่าง</strong>ของแรงดันกลางทั้งสองชุด
+       เหมาะกับเซนเซอร์ที่ความต้านทานเปลี่ยนน้อยมาก เช่น strain gauge และ load cell</p>
+
+    <figure>
+      <svg viewBox="0 0 330 225" width="330" role="img" aria-label="Wheatstone bridge">
+        <circle class="comp" cx="40" cy="115" r="18"/>
+        <text class="lbl-sm" x="40" y="109" text-anchor="middle">+</text>
+        <text class="lbl-sm" x="40" y="129" text-anchor="middle">−</text>
+        <text class="lbl" x="4" y="160">V<tspan font-size="11" dy="4">s</tspan></text>
+        <path class="wire" d="M40 97 V30 H260"/>
+        <path class="wire" d="M40 133 V200 H260"/>
+        <path class="wire" d="M140 30 V45 l8 4 l-16 8 l16 8 l-16 8 l16 8 l-16 8 l8 4 V115"/>
+        <path class="wire" d="M140 115 V137 l8 4 l-16 8 l16 8 l-16 8 l16 8 l-16 8 l8 4 V200"/>
+        <path class="wire" d="M260 30 V45 l8 4 l-16 8 l16 8 l-16 8 l16 8 l-16 8 l8 4 V115"/>
+        <path class="wire" d="M260 115 V137 l8 4 l-16 8 l16 8 l-16 8 l16 8 l-16 8 l8 4 V200"/>
+        <path class="wire" d="M140 115 H185"/>
+        <path class="wire" d="M215 115 H260"/>
+        <circle class="comp accent" cx="200" cy="115" r="15"/>
+        <text class="lbl" x="200" y="120" text-anchor="middle">V₀</text>
+        <circle class="dot" cx="140" cy="30" r="3.5"/>
+        <circle class="dot" cx="140" cy="200" r="3.5"/>
+        <circle class="dot" cx="140" cy="115" r="3.5"/>
+        <circle class="dot" cx="260" cy="115" r="3.5"/>
+        <text class="lbl" x="154" y="76">R<tspan font-size="11" dy="4">1</tspan></text>
+        <text class="lbl" x="154" y="168">R<tspan font-size="11" dy="4">2</tspan></text>
+        <text class="lbl" x="274" y="76">R<tspan font-size="11" dy="4">3</tspan></text>
+        <text class="lbl" x="274" y="168">R<tspan font-size="11" dy="4">4</tspan></text>
+        <text class="lbl" x="120" y="110" font-weight="700">A</text>
+        <text class="lbl" x="270" y="110" font-weight="700">B</text>
+      </svg>
+      <figcaption>รูปที่ 1.2 Wheatstone bridge วาดเป็นวงจรแบ่งแรงดันสองชุด (V₀ = V<sub>A</sub> − V<sub>B</sub>)</figcaption>
+    </figure>
+
+    <div class="eq"><var>V</var><sub>A</sub> = <var>V</var><sub>s</sub><span class="frac"><span><var>R</var>₂</span><span><var>R</var>₁ + <var>R</var>₂</span></span>
+      &nbsp;;&nbsp; <var>V</var><sub>B</sub> = <var>V</var><sub>s</sub><span class="frac"><span><var>R</var>₄</span><span><var>R</var>₃ + <var>R</var>₄</span></span></div>
+    <div class="eq"><var>V</var>₀ = <var>V</var><sub>A</sub> − <var>V</var><sub>B</sub> = <var>V</var><sub>s</sub> · <span class="frac"><span><var>R</var>₂<var>R</var>₃ − <var>R</var>₁<var>R</var>₄</span><span>(<var>R</var>₁ + <var>R</var>₂)(<var>R</var>₃ + <var>R</var>₄)</span></span></div>
+
+    <div class="callout key">
+      <span class="title">สภาวะสมดุล</span>
+      Bridge สมดุล (<var>V</var>₀ = 0) เมื่อ <strong><var>R</var>₂<var>R</var>₃ = <var>R</var>₁<var>R</var>₄</strong>
+      เมื่อเซนเซอร์ตัวใดตัวหนึ่งเปลี่ยนค่าเล็กน้อย V₀ จะเปลี่ยนจากศูนย์เป็นสัญญาณระดับ mV
+      ซึ่งต้องขยายด้วย instrumentation amplifier (บทที่ 2)
+    </div>
+
+    <!-- ===================================================== -->
+    <h2 id="exercises"><span class="sec-no">✎</span>แบบฝึกหัดท้ายบท</h2>
+
+    <h3>ตอนที่ 1: ปรนัยและเติมตัวเลข</h3>
+    <div class="quiz">
+      <div class="q" data-answer="c">
+        <p class="q-text">ขั้นใดในระบบการวัดทำหน้าที่ปรับสัญญาณให้อยู่ในช่วงที่ ADC ของไมโครคอนโทรลเลอร์อ่านได้ (เช่น 0–3.3 V)?</p>
+        <label class="opt"><input type="radio" value="a"> Sensor</label>
+        <label class="opt"><input type="radio" value="b"> Transducer</label>
+        <label class="opt"><input type="radio" value="c"> Signal conditioning</label>
+        <label class="opt"><input type="radio" value="d"> Output</label>
+        <div class="explain" hidden>Signal conditioning ทำหน้าที่ขยาย กรอง และปรับช่วงสัญญาณให้เหมาะกับ ADC</div>
+      </div>
+
+      <div class="q" data-answer="b">
+        <p class="q-text">ในเทอร์โมมิเตอร์แก้ว “ขนาดรูของหลอดแก้ว” ทำหน้าที่ใดเป็นหลัก?</p>
+        <label class="opt"><input type="radio" value="a"> Sensor เพราะรับรู้อุณหภูมิ</label>
+        <label class="opt"><input type="radio" value="b"> Signal conditioning เพราะกำหนดอัตราขยาย (รูแคบ ลำของเหลวเลื่อนมาก)</label>
+        <label class="opt"><input type="radio" value="c"> Output เพราะเป็นส่วนที่อ่านค่า</label>
+        <label class="opt"><input type="radio" value="d"> Calibrator เพราะใช้อ้างอิงค่าจริง</label>
+        <div class="explain" hidden>รูแคบทำให้การเปลี่ยนปริมาตรเล็กน้อยกลายเป็นการเปลี่ยนความยาวมาก จึงเป็น “gain” ทางกล — หลอดแก้วจึงทำทั้งหน้าที่ transducer และ signal conditioner</div>
+      </div>
+
+      <div class="q" data-answer="a">
+        <p class="q-text">ข้อใดอธิบายการสอบเทียบ (calibration) ได้ถูกต้องที่สุด?</p>
+        <label class="opt"><input type="radio" value="a"> การหาความสัมพันธ์ระหว่างค่าที่เครื่องอ่านได้กับค่าจริงจากเครื่องมือมาตรฐานที่แม่นยำกว่า</label>
+        <label class="opt"><input type="radio" value="b"> การเพิ่มจำนวนบิตของ ADC เพื่อให้ละเอียดขึ้น</label>
+        <label class="opt"><input type="radio" value="c"> การกรองสัญญาณรบกวนออกจากเซนเซอร์</label>
+        <label class="opt"><input type="radio" value="d"> การเปลี่ยนเซนเซอร์ใหม่เมื่อค่าคลาดเคลื่อน</label>
+        <div class="explain" hidden>ผลของการสอบเทียบคือ calibration curve ที่แปลงค่าที่อ่านได้เป็นค่าจริง</div>
+      </div>
+
+      <div class="q" data-answer="d">
+        <p class="q-text">ลวดตัวนำเส้นหนึ่งถูกยืดจนยาวขึ้น 2 เท่า โดยสมมติว่าพื้นที่หน้าตัดคงเดิม ความต้านทานจะเป็นอย่างไร?</p>
+        <label class="opt"><input type="radio" value="a"> ลดลงครึ่งหนึ่ง</label>
+        <label class="opt"><input type="radio" value="b"> คงเดิม</label>
+        <label class="opt"><input type="radio" value="c"> เพิ่มขึ้น 4 เท่า</label>
+        <label class="opt"><input type="radio" value="d"> เพิ่มขึ้น 2 เท่า</label>
+        <div class="explain" hidden><var>R</var> = ρ<var>L</var>/<var>A</var> แปรผันตรงกับ <var>L</var> (ในความเป็นจริงพื้นที่หน้าตัดจะลดลงด้วย ทำให้ R เพิ่มมากกว่า 2 เท่า — หลักการของ strain gauge)</div>
+      </div>
+
+      <div class="q" data-answer="b">
+        <p class="q-text">ตัวเก็บประจุที่มีแรงดันคร่อมคงที่ (DC) ในสภาวะคงตัว จะมีกระแสไหลผ่านเท่าใด?</p>
+        <label class="opt"><input type="radio" value="a"> <var>V</var>/<var>C</var></label>
+        <label class="opt"><input type="radio" value="b"> ศูนย์</label>
+        <label class="opt"><input type="radio" value="c"> <var>C</var>·<var>V</var></label>
+        <label class="opt"><input type="radio" value="d"> ไม่จำกัด</label>
+        <div class="explain" hidden><var>i</var> = <var>C</var>·d<var>V</var>/d<var>t</var> เมื่อ <var>V</var> คงที่ d<var>V</var>/d<var>t</var> = 0 ดังนั้น <var>i</var> = 0</div>
+      </div>
+
+      <div class="q" data-answer="c">
+        <p class="q-text">Wheatstone bridge ในรูปที่ 1.2 จะสมดุล (V₀ = 0) เมื่อใด?</p>
+        <label class="opt"><input type="radio" value="a"> <var>R</var>₁ + <var>R</var>₂ = <var>R</var>₃ + <var>R</var>₄</label>
+        <label class="opt"><input type="radio" value="b"> <var>R</var>₁<var>R</var>₂ = <var>R</var>₃<var>R</var>₄</label>
+        <label class="opt"><input type="radio" value="c"> <var>R</var>₂<var>R</var>₃ = <var>R</var>₁<var>R</var>₄</label>
+        <label class="opt"><input type="radio" value="d"> <var>R</var>₁ = <var>R</var>₄ เสมอ</label>
+        <div class="explain" hidden>ตัวเศษของสมการ V₀ คือ <var>R</var>₂<var>R</var>₃ − <var>R</var>₁<var>R</var>₄ ซึ่งเป็นศูนย์เมื่อ <var>R</var>₂<var>R</var>₃ = <var>R</var>₁<var>R</var>₄ (หรือ <var>R</var>₁/<var>R</var>₂ = <var>R</var>₃/<var>R</var>₄)</div>
+      </div>
+
+      <div class="q" data-type="num" data-answer="3">
+        <p class="q-text">วงจรแบ่งแรงดันมี <var>V</var><sub>s</sub> = 5 V, <var>R</var>₁ = 10 kΩ, <var>R</var>₂ = 15 kΩ จงหา <var>V</var><sub>out</sub></p>
+        <div class="num-input"><input type="number" step="any" aria-label="คำตอบ"> V</div>
+        <div class="explain" hidden><var>V</var><sub>out</sub> = 5 × 15/(10 + 15) = 5 × 0.6 = <strong>3.0 V</strong></div>
+      </div>
+
+      <div class="q" data-type="num" data-answer="2">
+        <p class="q-text">ตัวต้านทาน 6 kΩ ต่อขนานกับ 3 kΩ ความต้านทานรวมเท่าใด?</p>
+        <div class="num-input"><input type="number" step="any" aria-label="คำตอบ"> kΩ</div>
+        <div class="explain" hidden><var>R</var><sub>eq</sub> = (6 × 3)/(6 + 3) = 18/9 = <strong>2 kΩ</strong> (ค่าขนานน้อยกว่าตัวที่น้อยที่สุดเสมอ)</div>
+      </div>
+
+      <div class="q" data-type="num" data-answer="113.6">
+        <p class="q-text">ตัวต้านทาน 220 Ω ต่อกับแรงดัน 5 V กำลังที่สูญเสียเป็นความร้อนเท่าใด?</p>
+        <div class="num-input"><input type="number" step="any" aria-label="คำตอบ"> mW</div>
+        <div class="explain" hidden><var>P</var> = <var>V</var>²/<var>R</var> = 25/220 = 0.1136 W ≈ <strong>113.6 mW</strong> — ตัวต้านทาน ¼ W (250 mW) ใช้ได้</div>
+      </div>
+
+      <div class="q" data-type="num" data-answer="-12.44" data-tol="0.02">
+        <p class="q-text">Bridge ในรูปที่ 1.2 มี <var>V</var><sub>s</sub> = 5 V, <var>R</var>₁ = <var>R</var>₂ = <var>R</var>₃ = 1000 Ω และ <var>R</var>₄ = 1010 Ω (เซนเซอร์เปลี่ยนค่า 1%) จงหา V₀</p>
+        <div class="num-input"><input type="number" step="any" aria-label="คำตอบ"> mV</div>
+        <div class="explain" hidden>V₀ = 5 × (1000·1000 − 1000·1010) / [(2000)(2010)] = 5 × (−10,000)/4,020,000 = −0.01244 V ≈ <strong>−12.44 mV</strong>
+          — ความต้านทานเปลี่ยน 1% ให้สัญญาณเพียงระดับสิบ mV จึงต้องขยายก่อนเข้า ADC</div>
+      </div>
+    </div>
+
+    <h3>ตอนที่ 2: โจทย์คำนวณพร้อมเฉลย</h3>
+
+    <details class="solution">
+      <summary>โจทย์ 1 — วงจรแบ่งแรงดันกับ thermistor</summary>
+      <div class="problem">
+        <p>Thermistor แบบ NTC มีค่า 10 kΩ ที่ 25 °C และ 3.3 kΩ ที่ 50 °C ต่อเป็น <var>R</var>₂ ในวงจรแบ่งแรงดัน โดย <var>R</var>₁ = 10 kΩ และ <var>V</var><sub>s</sub> = 3.3 V
+           จงหา <var>V</var><sub>out</sub> ที่อุณหภูมิทั้งสอง และบอกว่าเมื่ออุณหภูมิเพิ่ม <var>V</var><sub>out</sub> เพิ่มหรือลด</p>
+      </div>
+      <div class="sol">
+        <p>ที่ 25 °C: <var>V</var><sub>out</sub> = 3.3 × 10/(10 + 10) = <strong>1.65 V</strong></p>
+        <p>ที่ 50 °C: <var>V</var><sub>out</sub> = 3.3 × 3.3/(10 + 3.3) = 3.3 × 0.248 = <strong>0.82 V</strong></p>
+        <p>อุณหภูมิเพิ่ม → ความต้านทาน NTC ลด → <var>V</var><sub>out</sub> <strong>ลดลง</strong>
+           (ถ้าต้องการให้แรงดันเพิ่มตามอุณหภูมิ ให้สลับตำแหน่ง thermistor ไปเป็น <var>R</var>₁)
+           สังเกตว่าความสัมพันธ์ไม่เป็นเชิงเส้น จึงต้องสอบเทียบหลายจุด</p>
+      </div>
+    </details>
+
+    <details class="solution">
+      <summary>โจทย์ 2 — ผลของโหลดต่อวงจรแบ่งแรงดัน</summary>
+      <div class="problem">
+        <p>วงจรแบ่งแรงดัน <var>V</var><sub>s</sub> = 10 V, <var>R</var>₁ = <var>R</var>₂ = 100 kΩ ถ้าต่อเครื่องวัดที่มีความต้านทานอินพุต 100 kΩ คร่อม <var>R</var>₂ จะอ่านได้เท่าใด เทียบกับค่าที่คำนวณโดยไม่มีโหลด</p>
+      </div>
+      <div class="sol">
+        <p>ไม่มีโหลด: <var>V</var><sub>out</sub> = 10 × 100/200 = 5.00 V</p>
+        <p>มีโหลด: <var>R</var>₂ ขนานกับ 100 kΩ = 50 kΩ → <var>V</var><sub>out</sub> = 10 × 50/(100 + 50) = <strong>3.33 V</strong></p>
+        <p>ค่าลดลงถึง 33% นี่คือ <strong>loading effect</strong> ที่จะสังเกตใน Lab 1 และแก้ด้วย voltage follower ใน Lab 3</p>
+      </div>
+    </details>
+
+    <details class="solution">
+      <summary>โจทย์ 3 — พิสูจน์สมการ Wheatstone bridge</summary>
+      <div class="problem"><p>จากสมการ <var>V</var><sub>A</sub> และ <var>V</var><sub>B</sub> จงพิสูจน์ว่า V₀ = V<sub>s</sub>(R₂R₃ − R₁R₄)/[(R₁+R₂)(R₃+R₄)]</p></div>
+      <div class="sol">
+        <p>V₀ = V<sub>s</sub>[R₂/(R₁+R₂) − R₄/(R₃+R₄)]</p>
+        <p>ทำตัวส่วนร่วม: = V<sub>s</sub>[R₂(R₃+R₄) − R₄(R₁+R₂)] / [(R₁+R₂)(R₃+R₄)]</p>
+        <p>กระจาย: R₂R₃ + R₂R₄ − R₁R₄ − R₂R₄ = R₂R₃ − R₁R₄ จึงได้สมการตามต้องการ ∎</p>
+      </div>
+    </details>
+
+    <div class="assignment">
+      <h3>การบ้าน #1 (จากเอกสารประกอบการสอน)</h3>
+      <p class="muted">ส่งทาง MS Teams ก่อนเริ่มคาบสัปดาห์ที่ 9 (เขียนมือหรือพิมพ์ก็ได้)</p>
+      <ol>
+        <li>ทำตารางระบุและอธิบายองค์ประกอบของ
+          <ol type="a">
+            <li>ตาชั่งสปริงแบบเข็มชี้ (เชิงกลล้วน)</li>
+            <li>ตาชั่งดิจิทัลแบบ load cell (มีขั้นทางไฟฟ้า)</li>
+          </ol>
+          โดยมีคอลัมน์ Variable / Unit / Sensor / Transducer / Signal Conditioner(s) / Output
+          และระบุปริมาณทางกายภาพที่ส่งต่อระหว่างขั้น (เช่น แรง → การยืด → …)
+          บางขั้นอาจไม่มีหรือรวมกัน ให้ให้เหตุผลประกอบ</li>
+        <li>เลือกเครื่องมือวัดอื่นอีก 1 ชนิด (เช่น มาตรวัดน้ำ เครื่องวัดความชื้นเมล็ดพืช เทอร์โมมิเตอร์อินฟราเรด) แล้ววิเคราะห์แบบเดียวกัน</li>
+        <li>ยกตัวอย่างตัวแปรสำคัญทางการเกษตร 2 ตัวแปร พร้อมเครื่องมือที่ใช้วัดและหลักการทำงาน</li>
+      </ol>
+    </div>
+
+    <div id="pager"></div>
+  </main>
+
+  <footer class="site-footer">
+    © 2026 Vasu Udompetaikul, Dept. of Biosystems &amp; Agricultural Engineering, KMITL
+  </footer>
+</div>
+</body>
+</html>

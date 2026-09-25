@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agricultural Instrumentation &amp; IoT</title>
+<link rel="stylesheet" href="style.css">
+<script src="sidebar.js" defer></script>
+</head>
+<body>
+<nav id="sidebar" class="sidebar" aria-label="สารบัญ"></nav>
+
+<div class="page">
+  <header class="topbar">
+    <button class="menu-btn" type="button" aria-label="เปิดเมนู">☰</button>
+    <span class="crumb">01386309 · หน้าแรก</span>
+  </header>
+
+  <main class="content">
+    <section class="hero">
+      <div class="eyebrow muted">01386309 · 3 หน่วยกิต (2-2-5)</div>
+      <h1>Agricultural Instrumentation &amp; IoT</h1>
+      <p>สื่อการสอน Part 2: เครื่องมือวัด การปรับสภาพสัญญาณ และสัญญาณดิจิทัล สำหรับงานเกษตรและระบบ IoT
+         เรียบเรียงจากเอกสารประกอบการสอน INS01–INS03</p>
+    </section>
+
+    <h2 id="chapters">บทเรียน</h2>
+    <div class="cards">
+      <a class="card" href="ch1-circuits.html">
+        <span class="num">บทที่ 1 · INS01</span>
+        <h3>เครื่องมือวัดและวงจรพื้นฐาน</h3>
+        <p>ระบบการวัดทั่วไป (Sensor → Transducer → Signal Conditioning → Output), การสอบเทียบ,
+           ทบทวน R L C, กฎของ Kirchhoff, วงจรแบ่งแรงดัน และ Wheatstone bridge</p>
+        <span class="go">เข้าสู่บทเรียน →</span>
+      </a>
+      <a class="card" href="ch2-opamps.html">
+        <span class="num">บทที่ 2 · INS02</span>
+        <h3>การปรับสภาพสัญญาณและ Op-Amp</h3>
+        <p>วงจร Op-amp พื้นฐาน 7 แบบ, ข้อจำกัดของ LM358, เดซิเบล, วงจรกรองความถี่ต่ำ,
+           การขับโหลด และ Instrumentation amplifier</p>
+        <span class="go">เข้าสู่บทเรียน →</span>
+      </a>
+      <a class="card" href="ch3-digital.html">
+        <span class="num">บทที่ 3 · INS03</span>
+        <h3>สัญญาณดิจิทัล ADC และ Interface</h3>
+        <p>Quantization, DAC, SAR ADC, Sampling, ADC ของ ESP32 และ attenuation,
+           UART / RS-485 / Modbus / I²C / SPI / 1-Wire / CAN</p>
+        <span class="go">เข้าสู่บทเรียน →</span>
+      </a>
+    </div>
+
+    <div class="callout key">
+      <span class="title">วิธีใช้สื่อการสอนนี้</span>
+      อ่านเนื้อหาแต่ละบทตามลำดับ แล้วทำ <strong>แบบฝึกหัดท้ายบท</strong> ซึ่งมีทั้งข้อปรนัย ข้อเติมตัวเลข (กด “ตรวจคำตอบ” เพื่อดูผลและคำอธิบาย)
+      และโจทย์คำนวณพร้อมเฉลยละเอียด (คลิกเพื่อเปิดดู) ใช้เมนูด้านซ้ายเพื่อข้ามไปยังหัวข้อย่อยของบทที่กำลังอ่าน
+    </div>
+
+    <h2 id="course">ภาพรวมรายวิชา</h2>
+    <p>รายวิชาครอบคลุมพื้นฐานการวัดและเครื่องมือวัด ฮาร์ดแวร์และซอฟต์แวร์ระบบฝังตัว IoT และ cloud computing
+       รวมถึงโครงงานประยุกต์ใช้ IoT ในงานเกษตร</p>
+
+    <h3>ผลลัพธ์การเรียนรู้ของรายวิชา (CLO)</h3>
+    <ol>
+      <li><strong>CLO1</strong> เข้าใจและประยุกต์ใช้หลักการพื้นฐานของเครื่องมือวัดและ IoT ในการเกษตรสมัยใหม่</li>
+      <li><strong>CLO2</strong> ออกแบบ วางแผน และสร้างระบบ IoT การเกษตรขนาดเล็ก โดยเลือกฮาร์ดแวร์ ซอฟต์แวร์ และเครือข่ายได้เหมาะสม</li>
+      <li><strong>CLO3</strong> วิเคราะห์และประมวลผลข้อมูลจากเซนเซอร์และ IoT เพื่อสนับสนุนการตัดสินใจและเพิ่มประสิทธิภาพการผลิต</li>
+    </ol>
+
+    <h3>การประเมินผล</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>องค์ประกอบ</th><th class="num">สัดส่วน</th></tr></thead>
+        <tbody>
+          <tr><td>ปฏิบัติการและงานที่มอบหมาย (Lab &amp; Assignments)</td><td class="num">20%</td></tr>
+          <tr><td>โครงงาน (Term Project)</td><td class="num">20%</td></tr>
+          <tr><td>สอบกลางภาคและปลายภาค</td><td class="num">60%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="schedule">ตารางการเรียน Part 2</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>สัปดาห์</th><th>หัวข้อบรรยาย</th><th>ปฏิบัติการ / งานส่ง</th></tr></thead>
+        <tbody>
+          <tr><td>8</td><td>Instrumentation Concepts; Electrical Properties &amp; Circuit Review <span class="muted">(บทที่ 1)</span></td><td>การบ้าน #1</td></tr>
+          <tr><td>9</td><td>Signal Conditioning (Amplifiers) <span class="muted">(บทที่ 2)</span></td><td>Lab 1–3: Voltage divider, LDR, Op-amp · รับอุปกรณ์</td></tr>
+          <tr><td>10</td><td>IoT Platform &amp; Dashboard</td><td>ส่งค่าหนึ่งค่าขึ้น dashboard แบบ end-to-end</td></tr>
+          <tr><td>11</td><td>Digital Signals <span class="muted">(บทที่ 3)</span></td><td>อ่านค่าเซนเซอร์จริงบนโต๊ะทดลอง</td></tr>
+          <tr><td>12</td><td>Engineering Sensors: thermal, force, pressure, flow, movement</td><td>Lab 4 Digital Signals · Progress Report</td></tr>
+          <tr><td>13</td><td>Instrument Characteristics &amp; Calibration</td><td>Lab 6 Thermistor/Thermocouple, Strain gauge/Pressure</td></tr>
+          <tr><td>14</td><td>—</td><td>ติดตั้งภาคสนาม (Field Installation)</td></tr>
+          <tr><td>15</td><td>Other Sensors for Agriculture</td><td>Progress Check · บันทึกข้อมูลต่อเนื่อง</td></tr>
+          <tr><td>16</td><td>Summary &amp; Review</td><td>นำเสนอและสาธิตระบบ</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="project">โครงงาน: Smart Irrigation แปลงสาธิต</h2>
+    <p>โครงงานร่วมกับวิชา Irrigation Design ซึ่งรับผิดชอบระบบกายภาพ (โครงโซลาร์ ถังน้ำ ท่อไปยัง 4 โซน และแผนการจัดการน้ำ)
+       ส่วนวิชานี้รับผิดชอบ <strong>ด้านข้อมูล</strong>: วัด แสดงผล และบันทึก — เซนเซอร์ วงจรอ่านค่า การสื่อสาร การสอบเทียบ dashboard และฐานข้อมูล</p>
+
+    <div class="chain" aria-label="ภาพรวมระบบ">
+      <div class="stage"><b>Field nodes</b><small>เซนเซอร์ + ESP32 ในแปลง</small></div>
+      <div class="arrow">→</div>
+      <div class="stage"><b>Network</b><small>WiFi · LoRa · LoRaWAN · Zigbee</small></div>
+      <div class="arrow">→</div>
+      <div class="stage"><b>IoT Platform</b><small>Dashboard + Database</small></div>
+      <div class="arrow">→</div>
+      <div class="stage"><b>ผู้ใช้ข้อมูล</b><small>นักศึกษา Irrigation Design และศูนย์เรียนรู้</small></div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>กลุ่ม</th><th>ระบบย่อย</th><th>สิ่งที่วัด / อุปกรณ์หลัก</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Weather Station</td><td>สภาพอากาศ ฝน รังสีดวงอาทิตย์ คำนวณ ET · SenseCAP S700-B + ESP32 (RS-485) ผ่าน WiFi</td></tr>
+          <tr><td>2</td><td>Pump Station</td><td>ระดับน้ำในถัง อัตราไหลเข้า-ออก กำลังไฟฟ้าโซลาร์ · ESP32, flow meter, power meter</td></tr>
+          <tr><td>3–6</td><td>Soil Sensor Nodes</td><td>ความชื้นดินรายโซน การสอบเทียบ การใช้พลังงานต่ำ · เซนเซอร์ RS-485 / Watermark / Capacitive / Tensiometer
+            คู่กับการสื่อสาร Zigbee / LoRaWAN / LoRa P2P / WiFi (จับฉลาก)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <span class="title">หลักสำคัญ</span>
+      ทุกกลุ่มส่งข้อมูลเข้าระบบเดียวกัน จึงต้องตกลงรูปแบบข้อมูลและหน่วยร่วมกัน และทุกกลุ่มต้องปรับสภาพสัญญาณเซนเซอร์ก่อนเข้า ADC
+      รวมถึงสอบเทียบก่อนติดตั้งภาคสนาม
+    </div>
+
+    <div id="pager"></div>
+  </main>
+
+  <footer class="site-footer">
+    © 2026 Vasu Udompetaikul, Dept. of Biosystems &amp; Agricultural Engineering, KMITL
+  </footer>
+</div>
+</body>
+</html>
