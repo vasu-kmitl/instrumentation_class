@@ -1,0 +1,15 @@
+<svg width="325mm" height="165mm" version="1.1" viewBox="0 0 325 165" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <rect width="325" height="165" fill="#fff"/>
+ <g fill="none" stroke="#000">
+ <g stroke-dasharray="2" stroke-width=".7"><path d="m230 50h85" stroke="#00f"/><path d="m230 36h68" stroke="#f00"/><path d="m307 49v87m-35 0v-87m-6-14v101m-35-100 0 101"/></g>
+ <path d="m117 145h-22" stroke-width="2.5"/><path d="m228 137h3c16-30.6 26-18 35 0h6c9 18 18 32 35 0h3m-82-94c41-91 41 91 82 0" stroke="#080" stroke-width="1.5"/>
+ <g stroke-width=".7"><path d="m106 82v63m-19-63h38m-38 69v-18m-57-19v-62m57 41v-22l-30-14m0-5h-48m48-5 30-16v-16"/><circle cx="125" cy="82" r="4" fill="#fff"/><circle cx="9" cy="52" r="4" fill="#fff"/></g>
+ <path d="m100 95h12v37h-12z" fill="#fff" stroke-width="1.5"/>
+ <g id="b"><circle cx="64" cy="52" r="21" stroke-width="2"/><path d="m57 39v26" stroke-width="2"/><path d="m30 52h27m0 5 30 14m-30-24 30-16" stroke-width=".7"/></g>
+ <use transform="translate(0 62)" xlink:href="#b"/></g>
+ <path d="m64.6 101.8-.6 3.5 3.6 1.5-9.2 1.5zm3.4-36.8 3.5-1.5-1-3.5 7 6.4z"/><circle cx="30" cy="52" r="2"/><circle cx="106" cy="82" r="2"/><circle cx="87" cy="82" r="2"/>
+ <g transform="translate(-96-22)"><path d="m317 107 7 2-7 2 1-2m-46-43 2-7 2 7-2-1"/><path d="m287 102v14m-26-14v14m-30-7h89m-46-47v97" fill="none" stroke="#000"/></g>
+ <path d="m137 115 28-28h26l29-29" fill="none" stroke="#00f" stroke-width="1.5"/>
+ <g style="font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman'" font-size="10px" text-anchor="middle"><text x="120" y="115">R<tspan baseline-shift="sub" font-size="8px">L</tspan></text><text x="65" y="28">VT1</text><text x="65" y="89">VT2</text><text x="87" y="14">+V</text><text x="88" y="159">-V</text><text x="11" y="45">V<tspan dy="2">in</tspan></text><text x="125" y="72">V<tspan dy="2">out</tspan></text><text x="219" y="81">V<tspan dy="2">in</tspan></text><text x="191" y="47">V<tspan dy="2">out</tspan></text><text x="238" y="11">V<tspan dy="2">in</tspan></text><text x="244" y="111">V<tspan dy="2">out</tspan></text><text x="192" y="101" fill="#f00">+0,6 V<tspan x="286" y="33">+0,6 V</tspan></text><text x="164" y="79" fill="#00f">-0,6 V<tspan x="249" y="58">-0,6 V</tspan></text>
+ <g id="a" transform="translate(-45-65)"><path d="m273 108h90m-90-31v57" stroke="#000"/><text x="360" y="104" font-style="italic">t</text><path d="m360 106 7 2-7 2 1-2m-90-29 2-7 2 7-2-1"/></g>
+ <use transform="translate(0 94)" xlink:href="#a"/></g></svg>

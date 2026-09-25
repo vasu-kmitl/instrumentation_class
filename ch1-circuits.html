@@ -22,7 +22,7 @@
       <div class="eyebrow">บทที่ 1 · Instrumentation Circuits</div>
       <h1>เครื่องมือวัดและวงจรพื้นฐาน</h1>
       <p class="lead">เครื่องมือวัดทำอะไร ประกอบด้วยขั้นตอนใดบ้าง และวงจรไฟฟ้าพื้นฐานที่ใช้แปลงค่าจากเซนเซอร์ให้เป็นแรงดัน</p>
-      <div class="source">เรียบเรียงจาก INS01_Instrumentation_Circuits_v6</div>
+      <div class="source">เรียบเรียงจาก <a href="#ref-1">[1]</a> INS01_Instrumentation_Circuits_v6</div>
       <div class="objectives">
         <h4>เมื่อจบบทนี้ ผู้เรียนควรสามารถ</h4>
         <ul>
@@ -57,16 +57,21 @@
        ทั้งในงานพืช ปศุสัตว์ และสัตว์น้ำ</p>
     <div class="callout key">
       <span class="title">Precision Agriculture</span>
-      การจัดการโดยสังเกต วัด และตอบสนองต่อความแปรปรวน<em>ระหว่างแปลงและภายในแปลง</em> (Kempenaar et al., 2017)
-      หรือกล่าวสั้น ๆ ว่า “right thing, right place, right time, right way” (Blackmore et al., 2005)
+      การจัดการโดยสังเกต วัด และตอบสนองต่อความแปรปรวน<em>ระหว่างแปลงและภายในแปลง</em> (Kempenaar et al., 2017)<a class="cite" href="#ref-3">[3]</a>
+      หรือกล่าวสั้น ๆ ว่า “right thing, right place, right time, right way” (Blackmore et al., 2005)<a class="cite" href="#ref-4">[4]</a>
     </div>
     <p>ความแปรปรวนในแปลงมีทั้ง<strong>เชิงพื้นที่</strong>และ<strong>เชิงเวลา</strong> จึงต้องมีเครื่องมือที่วัดทั้งตำแหน่งและตัวแปรในแปลง
        ผลผลิตเป็นฟังก์ชันของปัจจัยการผลิตและตัวแปรสิ่งแวดล้อม
        <span class="en">(ชื่อเรียกอื่น: precision farming, farming by the inch, site-specific farming, prescription farming)</span></p>
+    <figure class="photo">
+      <img src="images/ch1-remote-sensing-farm.jpg" alt="ภาพ false-color สามภาพของแปลงเกษตรชุดเดียวกันจากการสำรวจระยะไกล (remote sensing) — สีที่ต่างกันภายในแปลงสะท้อนความแปรปรวนเชิงพื้นที่ ซึ่งเป็นหัวใจของเกษตรแม่นยำ" loading="lazy">
+      <figcaption>รูปที่ 1.1 ภาพ false-color สามภาพของแปลงเกษตรชุดเดียวกันจากการสำรวจระยะไกล (remote sensing) — สีที่ต่างกันภายในแปลงสะท้อน<strong>ความแปรปรวนเชิงพื้นที่</strong> ซึ่งเป็นหัวใจของเกษตรแม่นยำ
+        <span class="credit">ภาพ: Susan Moran, Landsat 7 Science Team &amp; USDA Agricultural Research Service (U.S. Government work, via NASA Earth Observatory) / <a href="https://commons.wikimedia.org/wiki/File:Daedelus_comparison,_remote_sensing_in_precision_farming.jpg">Wikimedia Commons</a>, Public domain</span></figcaption>
+    </figure>
 
     <!-- ===================================================== -->
     <h2 id="measurement-system"><span class="sec-no">1.2</span>ระบบการวัดทั่วไป</h2>
-    <p>เครื่องมือวัดทุกชนิดอธิบายได้ด้วยลำดับขั้นเดียวกัน (Figliola &amp; Beasley, 2011)</p>
+    <p>เครื่องมือวัดทุกชนิดอธิบายได้ด้วยลำดับขั้นเดียวกัน (Figliola &amp; Beasley, 2011)<a class="cite" href="#ref-2">[2]</a></p>
 
     <div class="chain">
       <div class="stage"><b>Sensor</b><small>รับรู้ปรากฏการณ์ทางกายภาพ</small></div>
@@ -95,6 +100,18 @@
       <dt><strong>Output</strong></dt>
       <dd>สิ่งที่คนหรือระบบอ่าน เช่น จอแสดงตัวเลข Serial Monitor กราฟบน IoT dashboard หรือการแจ้งเตือน</dd>
     </dl>
+    <div class="fig-row">
+    <figure class="photo">
+      <img src="images/ch1-load-cell.jpg" alt="Load cell แบบ single point: แรงกดทำให้ strain gauge ภายในเปลี่ยนความต้านทาน ได้สัญญาณระดับ mV — sensor และ transducer อยู่ในชิ้นเดียวกัน" loading="lazy">
+      <figcaption>รูปที่ 1.2 Load cell แบบ single point: แรงกดทำให้ strain gauge ภายในเปลี่ยนความต้านทาน ได้สัญญาณระดับ mV — sensor และ transducer อยู่ในชิ้นเดียวกัน
+        <span class="credit">ภาพ: Daraceleste / <a href="https://commons.wikimedia.org/wiki/File:GCB3_load_cell.jpg">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a></span></figcaption>
+    </figure>
+    <figure class="photo">
+      <img src="images/ch1-soil-moisture-sensor.jpg" alt="เครื่องวัดความชื้นดินแบบง่ายสำหรับงานสวน: หัววัด (sensor) กลไกแปลงสัญญาณ และหน้าปัด (output) รวมอยู่ในเครื่องเดียว" loading="lazy">
+      <figcaption>รูปที่ 1.3 เครื่องวัดความชื้นดินแบบง่ายสำหรับงานสวน: หัววัด (sensor) กลไกแปลงสัญญาณ และหน้าปัด (output) รวมอยู่ในเครื่องเดียว
+        <span class="credit">ภาพ: Sealman / <a href="https://commons.wikimedia.org/wiki/File:Soil_moisture_sensor.JPG">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a></span></figcaption>
+    </figure>
+    </div>
 
     <p>ตัวอย่างการไหลของข้อมูลในโครงงาน: <strong>เซนเซอร์ความชื้นดิน → แรงดัน → ADC → cloud → dashboard</strong></p>
 
@@ -113,6 +130,18 @@
           <tr><td>Output</td><td>สเกลบนหลอดแก้ว</td><td>จอแสดงผล / Serial Monitor / dashboard</td></tr>
         </tbody>
       </table>
+    </div>
+    <div class="fig-row">
+    <figure class="photo">
+      <img src="images/ch1-glass-thermometer.jpg" alt="เทอร์โมมิเตอร์แบบของเหลวในหลอดแก้ว — ทุกขั้นของระบบการวัดเป็นเชิงกลทั้งหมด" loading="lazy">
+      <figcaption>รูปที่ 1.4 เทอร์โมมิเตอร์แบบของเหลวในหลอดแก้ว — ทุกขั้นของระบบการวัดเป็นเชิงกลทั้งหมด
+        <span class="credit">ภาพ: Markus Säynevirta / <a href="https://commons.wikimedia.org/wiki/File:Liquid-in-glass_thermometer_showing_-22%C2%B0C,_Haukilahti,_Espoo_(January_2016).jpg">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a></span></figcaption>
+    </figure>
+    <figure class="photo">
+      <img src="images/ch1-ntc-bead.jpg" alt="Thermistor แบบ NTC ชนิดเม็ด (bead) พร้อมสายหุ้มฉนวน — ความต้านทานลดลงเมื่ออุณหภูมิสูงขึ้น" loading="lazy">
+      <figcaption>รูปที่ 1.5 Thermistor แบบ NTC ชนิดเม็ด (bead) พร้อมสายหุ้มฉนวน — ความต้านทานลดลงเมื่ออุณหภูมิสูงขึ้น
+        <span class="credit">ภาพ: Ansgar Hellwig / <a href="https://commons.wikimedia.org/wiki/File:NTC_bead.jpg">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/de/deed.en" rel="license">CC BY-SA 2.0 de</a></span></figcaption>
+    </figure>
     </div>
     <div class="callout key">
       <span class="title">บทเรียนสำคัญ</span>
@@ -152,6 +181,11 @@
     <div class="eq"><var>R</var> = <span class="frac"><span>ρ<var>L</var></span><span><var>A</var></span></span> <span class="label">ตัวนำสม่ำเสมอ</span></div>
     <p>ρ = สภาพต้านทาน (ขึ้นกับวัสดุและสภาพแวดล้อม เช่น อุณหภูมิ), <var>L</var> = ความยาว, <var>A</var> = พื้นที่หน้าตัด
        — นี่คือหลักการของ strain gauge: เมื่อถูกดึง <var>L</var> เพิ่มและ <var>A</var> ลด ทำให้ <var>R</var> เพิ่ม</p>
+    <figure class="photo">
+      <img src="images/ch1-strain-gauge-deformation.jpg" alt="Strain gauge บน load cell แบบตัว S: เมื่อถูกดึง (ซ้าย) เส้นลวดยาวขึ้นและบางลง R เพิ่ม เมื่อถูกกด (ขวา) เส้นลวดสั้นลงและหนาขึ้น R ลด" loading="lazy">
+      <figcaption>รูปที่ 1.6 Strain gauge บน load cell แบบตัว S: เมื่อถูกดึง (ซ้าย) เส้นลวดยาวขึ้นและบางลง <var>R</var> เพิ่ม เมื่อถูกกด (ขวา) เส้นลวดสั้นลงและหนาขึ้น <var>R</var> ลด
+        <span class="credit">ภาพ: Daraceleste / <a href="https://commons.wikimedia.org/wiki/File:Strain_gauge_deformation.jpg">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a></span></figcaption>
+    </figure>
 
     <h3>ตัวเก็บประจุ (Capacitor)</h3>
     <p>เก็บประจุ ความจุ <var>C</var> มีหน่วยเป็นฟารัด (F)</p>
@@ -214,12 +248,17 @@
         <text class="lbl-sm" x="222" y="114">+</text>
         <text class="lbl-sm" x="222" y="194">−</text>
       </svg>
-      <figcaption>รูปที่ 1.1 วงจรแบ่งแรงดัน: V<sub>out</sub> วัดคร่อม R<sub>2</sub></figcaption>
+      <figcaption>รูปที่ 1.7 วงจรแบ่งแรงดัน: V<sub>out</sub> วัดคร่อม R<sub>2</sub></figcaption>
     </figure>
 
     <p>กระแสไหลผ่าน <var>R</var><sub>1</sub> และ <var>R</var><sub>2</sub> เท่ากัน: <var>i</var> = <var>V</var><sub>s</sub>/(<var>R</var><sub>1</sub> + <var>R</var><sub>2</sub>) และ <var>V</var><sub>out</sub> = <var>iR</var><sub>2</sub></p>
     <div class="eq"><var>V</var><sub>out</sub> = <var>V</var><sub>s</sub> · <span class="frac"><span><var>R</var><sub>2</sub></span><span><var>R</var><sub>1</sub> + <var>R</var><sub>2</sub></span></span></div>
 
+    <figure class="photo diagram">
+      <img src="images/ch1-ntc-curve.png" alt="ความต้านทานของ NTC thermistor ที่วัดได้จริงเทียบกับอุณหภูมิ (เคลวิน) — ความสัมพันธ์ไม่เป็นเชิงเส้น จึงต้องแปลงเป็นแรงดันด้วยวงจรแบ่งแรงดันและสอบเทียบหลายจุด" loading="lazy">
+      <figcaption>รูปที่ 1.8 ความต้านทานของ NTC thermistor ที่วัดได้จริงเทียบกับอุณหภูมิ (เคลวิน) — ความสัมพันธ์ไม่เป็นเชิงเส้น จึงต้องแปลงเป็นแรงดันด้วยวงจรแบ่งแรงดันและสอบเทียบหลายจุด
+        <span class="credit">ภาพ: Giro720 / <a href="https://commons.wikimedia.org/wiki/File:NTC_resistance-temperature_curve.png">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.5" rel="license">CC BY 2.5</a></span></figcaption>
+    </figure>
     <div class="callout warn">
       <span class="title">ข้อควรระวัง: Loading effect</span>
       สูตรนี้ถือว่าไม่มีกระแสไหลออกทางขั้ว V<sub>out</sub> ถ้าต่อโหลดที่มีความต้านทานต่ำ (เช่น ขาอินพุตบางชนิดหรือวงจรถัดไป)
@@ -258,7 +297,7 @@
         <text class="lbl" x="120" y="110" font-weight="700">A</text>
         <text class="lbl" x="270" y="110" font-weight="700">B</text>
       </svg>
-      <figcaption>รูปที่ 1.2 Wheatstone bridge วาดเป็นวงจรแบ่งแรงดันสองชุด (V<sub>0</sub> = V<sub>A</sub> − V<sub>B</sub>)</figcaption>
+      <figcaption>รูปที่ 1.9 Wheatstone bridge วาดเป็นวงจรแบ่งแรงดันสองชุด (V<sub>0</sub> = V<sub>A</sub> − V<sub>B</sub>)</figcaption>
     </figure>
 
     <div class="eq"><var>V</var><sub>A</sub> = <var>V</var><sub>s</sub><span class="frac"><span><var>R</var><sub>2</sub></span><span><var>R</var><sub>1</sub> + <var>R</var><sub>2</sub></span></span>
@@ -271,6 +310,12 @@
       เมื่อเซนเซอร์ตัวใดตัวหนึ่งเปลี่ยนค่าเล็กน้อย V<sub>0</sub> จะเปลี่ยนจากศูนย์เป็นสัญญาณระดับ mV
       ซึ่งต้องขยายด้วย instrumentation amplifier (บทที่ 2)
     </div>
+
+    <figure class="photo diagram">
+      <img src="images/ch1-bridge-gauges.jpg" alt="Load cell ใช้ strain gauge 4 ตัวต่อเป็น Wheatstone bridge แบบเต็ม (full bridge): สองตัวถูกดึง สองตัวถูกกด ทำให้ V0 เปลี่ยนมากที่สุดและชดเชยผลของอุณหภูมิ (การตั้งชื่อ R ในรูปนี้ต่างจากรูปที่ 1.9)" loading="lazy">
+      <figcaption>รูปที่ 1.10 Load cell ใช้ strain gauge 4 ตัวต่อเป็น Wheatstone bridge แบบเต็ม (full bridge): สองตัวถูกดึง สองตัวถูกกด ทำให้ V<sub>0</sub> เปลี่ยนมากที่สุดและชดเชยผลของอุณหภูมิ (การตั้งชื่อ R ในรูปนี้ต่างจากรูปที่ 1.9)
+        <span class="credit">ภาพ: Daraceleste / <a href="https://commons.wikimedia.org/wiki/File:Wheatstone_bridge_with_gauges.jpg">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a></span></figcaption>
+    </figure>
 
     <!-- ===================================================== -->
     <h2 id="exercises"><span class="sec-no">✎</span>แบบฝึกหัดท้ายบท</h2>
@@ -323,7 +368,7 @@
       </div>
 
       <div class="q" data-answer="c">
-        <p class="q-text">Wheatstone bridge ในรูปที่ 1.2 จะสมดุล (V<sub>0</sub> = 0) เมื่อใด?</p>
+        <p class="q-text">Wheatstone bridge ในรูปที่ 1.9 จะสมดุล (V<sub>0</sub> = 0) เมื่อใด?</p>
         <label class="opt"><input type="radio" value="a"> <var>R</var><sub>1</sub> + <var>R</var><sub>2</sub> = <var>R</var><sub>3</sub> + <var>R</var><sub>4</sub></label>
         <label class="opt"><input type="radio" value="b"> <var>R</var><sub>1</sub><var>R</var><sub>2</sub> = <var>R</var><sub>3</sub><var>R</var><sub>4</sub></label>
         <label class="opt"><input type="radio" value="c"> <var>R</var><sub>2</sub><var>R</var><sub>3</sub> = <var>R</var><sub>1</sub><var>R</var><sub>4</sub></label>
@@ -350,7 +395,7 @@
       </div>
 
       <div class="q" data-type="num" data-answer="-12.44" data-tol="0.02">
-        <p class="q-text">Bridge ในรูปที่ 1.2 มี <var>V</var><sub>s</sub> = 5 V, <var>R</var><sub>1</sub> = <var>R</var><sub>2</sub> = <var>R</var><sub>3</sub> = 1000 Ω และ <var>R</var><sub>4</sub> = 1010 Ω (เซนเซอร์เปลี่ยนค่า 1%) จงหา V<sub>0</sub></p>
+        <p class="q-text">Bridge ในรูปที่ 1.9 มี <var>V</var><sub>s</sub> = 5 V, <var>R</var><sub>1</sub> = <var>R</var><sub>2</sub> = <var>R</var><sub>3</sub> = 1000 Ω และ <var>R</var><sub>4</sub> = 1010 Ω (เซนเซอร์เปลี่ยนค่า 1%) จงหา V<sub>0</sub></p>
         <div class="num-input"><input type="number" step="any" aria-label="คำตอบ"> mV</div>
         <div class="explain" hidden>V<sub>0</sub> = 5 × (1000·1000 − 1000·1010) / [(2000)(2010)] = 5 × (−10,000)/4,020,000 = −0.01244 V ≈ <strong>−12.44 mV</strong>
           — ความต้านทานเปลี่ยน 1% ให้สัญญาณเพียงระดับสิบ mV จึงต้องขยายก่อนเข้า ADC</div>
@@ -411,6 +456,30 @@
         <li>เลือกเครื่องมือวัดอื่นอีก 1 ชนิด (เช่น มาตรวัดน้ำ เครื่องวัดความชื้นเมล็ดพืช เทอร์โมมิเตอร์อินฟราเรด) แล้ววิเคราะห์แบบเดียวกัน</li>
         <li>ยกตัวอย่างตัวแปรสำคัญทางการเกษตร 2 ตัวแปร พร้อมเครื่องมือที่ใช้วัดและหลักการทำงาน</li>
       </ol>
+    </div>
+
+    <!-- ===================================================== -->
+    <h2 id="references"><span class="sec-no">§</span>แหล่งอ้างอิง</h2>
+    <div class="refs">
+      <h3>เอกสาร</h3>
+      <ol>
+        <li id="ref-1">Udompetaikul, V. (2026). <em>INS01: Instrumentation Circuits</em> (v6) [เอกสารประกอบการสอน]. รายวิชา 01386309 Agricultural Instrumentation &amp; IoT, สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง.</li>
+        <li id="ref-2">Figliola, R. S., &amp; Beasley, D. E. (2011). <em>Theory and Design for Mechanical Measurements</em> (5th ed.). John Wiley &amp; Sons.</li>
+        <li id="ref-3">Kempenaar et al. (2017). นิยามของเกษตรแม่นยำ — อ้างถึงใน [1]</li>
+        <li id="ref-4">Blackmore et al. (2005). “Right thing, right place, right time, right way” — อ้างถึงใน [1]</li>
+      </ol>
+      <h3>รูปประกอบ</h3>
+      <p class="muted">รูปจาก Wikimedia Commons ใช้ตามสัญญาอนุญาตที่ระบุ โดยไม่ได้ดัดแปลงนอกจากย่อขนาด ส่วนรูปวงจรและกราฟที่ไม่มีเครดิตจัดทำขึ้นใหม่สำหรับสื่อการสอนนี้</p>
+      <ul>
+        <li><strong>รูปที่ 1.1</strong> — Susan Moran, Landsat 7 Science Team &amp; USDA Agricultural Research Service (U.S. Government work, via NASA Earth Observatory), “Daedelus comparison, remote sensing in precision farming.jpg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:Daedelus_comparison,_remote_sensing_in_precision_farming.jpg">https://commons.wikimedia.org/wiki/File:Daedelus_comparison,_remote_sensing_in_precision_farming.jpg</a> <span class="lic">(Public domain)</span></li>
+        <li><strong>รูปที่ 1.2</strong> — Daraceleste, “GCB3 load cell.jpg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:GCB3_load_cell.jpg">https://commons.wikimedia.org/wiki/File:GCB3_load_cell.jpg</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a>)</span></li>
+        <li><strong>รูปที่ 1.3</strong> — Sealman, “Soil moisture sensor.JPG”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:Soil_moisture_sensor.JPG">https://commons.wikimedia.org/wiki/File:Soil_moisture_sensor.JPG</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a>)</span></li>
+        <li><strong>รูปที่ 1.4</strong> — Markus Säynevirta, “Liquid-in-glass thermometer showing -22°C, Haukilahti, Espoo (January 2016).jpg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:Liquid-in-glass_thermometer_showing_-22%C2%B0C,_Haukilahti,_Espoo_(January_2016).jpg">https://commons.wikimedia.org/wiki/File:Liquid-in-glass_thermometer_showing_-22%C2%B0C,_Haukilahti,_Espoo_(January_2016).jpg</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a>)</span></li>
+        <li><strong>รูปที่ 1.5</strong> — Ansgar Hellwig, “NTC bead.jpg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:NTC_bead.jpg">https://commons.wikimedia.org/wiki/File:NTC_bead.jpg</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by-sa/2.0/de/deed.en" rel="license">CC BY-SA 2.0 de</a>)</span></li>
+        <li><strong>รูปที่ 1.6</strong> — Daraceleste, “Strain gauge deformation.jpg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:Strain_gauge_deformation.jpg">https://commons.wikimedia.org/wiki/File:Strain_gauge_deformation.jpg</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a>)</span></li>
+        <li><strong>รูปที่ 1.8</strong> — Giro720, “NTC resistance-temperature curve.png”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:NTC_resistance-temperature_curve.png">https://commons.wikimedia.org/wiki/File:NTC_resistance-temperature_curve.png</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by/2.5" rel="license">CC BY 2.5</a>)</span></li>
+        <li><strong>รูปที่ 1.10</strong> — Daraceleste, “Wheatstone bridge with gauges.jpg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:Wheatstone_bridge_with_gauges.jpg">https://commons.wikimedia.org/wiki/File:Wheatstone_bridge_with_gauges.jpg</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a>)</span></li>
+      </ul>
     </div>
 
     <div id="pager"></div>

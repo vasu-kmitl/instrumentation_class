@@ -22,7 +22,7 @@
       <div class="eyebrow">บทที่ 3 · Digital Signals, ADC &amp; Sensor Interfaces</div>
       <h1>สัญญาณดิจิทัล ADC และ Interface</h1>
       <p class="lead">บทที่แล้วจบที่แรงดันที่พร้อมวัดแต่ยังเป็นอนาล็อก บทนี้ตอบว่าแรงดันกลายเป็นตัวเลขได้อย่างไร และตัวเลขถูกส่งระหว่างอุปกรณ์อย่างไร</p>
-      <div class="source">เรียบเรียงจาก INS03_Digital_Signals_v9</div>
+      <div class="source">เรียบเรียงจาก <a href="#ref-1">[1]</a> INS03_Digital_Signals_v9</div>
       <div class="objectives">
         <h4>เมื่อจบบทนี้ ผู้เรียนควรสามารถ</h4>
         <ul>
@@ -79,6 +79,11 @@
         </tbody>
       </table>
     </div>
+    <figure class="photo diagram">
+      <img src="images/ch3-quantization-3bit.png" alt="Quantization 3 บิต: สัญญาณอนาล็อก (เส้นแดง) ถูกแทนด้วยค่าเพียง 8 ระดับ (000–111) ที่จุดสุ่มแต่ละจุด (เส้นน้ำเงิน) — ความต่างระหว่างสองเส้นคือ quantization error" loading="lazy">
+      <figcaption>รูปที่ 3.1 Quantization 3 บิต: สัญญาณอนาล็อก (เส้นแดง) ถูกแทนด้วยค่าเพียง 8 ระดับ (000–111) ที่จุดสุ่มแต่ละจุด (เส้นน้ำเงิน) — ความต่างระหว่างสองเส้นคือ quantization error
+        <span class="credit">ภาพ: Hyacinth / <a href="https://commons.wikimedia.org/wiki/File:3-bit_resolution_analog_comparison.png">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0" rel="license">CC BY-SA 3.0</a></span></figcaption>
+    </figure>
     <p><strong>ตัวอย่าง:</strong> ADC 12 บิต, <var>V</var><sub>ref</sub> = 3.3 V → 1 LSB = 3.3/4096 ≈ 0.8 mV</p>
     <div class="callout warn">
       <span class="title">ความละเอียด ≠ ความแม่นยำ</span>
@@ -100,13 +105,18 @@
 
     <!-- ===================================================== -->
     <h2 id="sar"><span class="sec-no">3.4</span>ADC พื้นฐานและ SAR</h2>
-    <p>ADC แบบป้อนกลับทุกชนิดมีโครงสร้างเดียวกัน:</p>
+    <p>ADC แบบป้อนกลับทุกชนิดมีโครงสร้างเดียวกัน<a class="cite" href="#ref-6">[6]</a>:</p>
     <ul>
       <li><strong>Comparator</strong> รับ <var>V</var><sub>in</sub> ที่ขา + และ <var>V</var><sub>DAC</sub> ที่ขา − ให้ผล 1 เมื่อ <var>V</var><sub>in</sub> &gt; <var>V</var><sub>DAC</sub></li>
       <li><strong>DAC n บิต</strong> แปลงค่าใน register กลับเป็น <var>V</var><sub>DAC</sub> (อ้างอิง <var>V</var><sub>ref</sub>)</li>
       <li><strong>Control logic</strong> ตัดสินใจว่าจะเปลี่ยนค่าใน register อย่างไร — นี่คือสิ่งที่ทำให้ ADC แต่ละแบบต่างกัน</li>
       <li>Shift register เก็บค่าทดลอง ส่วน storage register เก็บผลลัพธ์ให้ MCU อ่านระหว่างที่แปลงค่าถัดไป</li>
     </ul>
+    <figure class="photo diagram">
+      <img src="images/ch3-sar-block.png" alt="แผนภาพบล็อกของ SAR ADC: วงจร sample-and-hold (S/H), comparator, DAC และ SAR register ที่ส่งบิต DN−1…D0 ออกมา" loading="lazy">
+      <figcaption>รูปที่ 3.2 แผนภาพบล็อกของ SAR ADC: วงจร sample-and-hold (S/H), comparator, DAC และ SAR register ที่ส่งบิต D<sub>N−1</sub>…D<sub>0</sub> ออกมา
+        <span class="credit">ภาพ: White Flye / <a href="https://commons.wikimedia.org/wiki/File:SA_ADC_block_diagram.png">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/2.5" rel="license">CC BY-SA 2.5</a></span></figcaption>
+    </figure>
     <p><strong>Digital-ramp ADC</strong> นับขึ้นทีละ 1 จากศูนย์จนกว่า <var>V</var><sub>DAC</sub> จะตามทัน <var>V</var><sub>in</sub> — ช้า (สูงสุด 2<sup><var>N</var></sup> ครั้ง) และเวลาแปลงขึ้นกับอินพุต</p>
     <p><strong>SAR (Successive Approximation Register)</strong> ทำงานแบบ <em>binary search</em>: เริ่มจากบิต MSB ค่าทดลองแรก 100… = <var>V</var><sub>ref</sub>/2
        ถ้า <var>V</var><sub>DAC</sub> ไม่เกิน <var>V</var><sub>in</sub> ให้คงบิตไว้ (1) ถ้าเกินให้ล้างบิต (0) แล้วทำบิตถัดไป — ใช้ <strong><var>n</var> ขั้นเสมอ</strong></p>
@@ -141,7 +151,7 @@
         <text class="lbl-sm" x="200" y="233" text-anchor="middle">คง b<tspan font-size="10" dy="3">1</tspan></text>
         <text class="lbl-sm" x="260" y="233" text-anchor="middle">ล้าง b<tspan font-size="10" dy="3">0</tspan></text>
       </svg>
-      <figcaption>รูปที่ 3.1 V<sub>DAC</sub> ของรหัสทดลองแต่ละขั้น (เขียว = ไม่เกิน V<sub>in</sub> คงบิต, แดง = เกิน ล้างบิต)</figcaption>
+      <figcaption>รูปที่ 3.3 V<sub>DAC</sub> ของรหัสทดลองแต่ละขั้น (เขียว = ไม่เกิน V<sub>in</sub> คงบิต, แดง = เกิน ล้างบิต)</figcaption>
     </figure>
     <div class="table-wrap">
       <table>
@@ -174,6 +184,18 @@
         </tbody>
       </table>
     </div>
+    <div class="fig-row">
+    <figure class="photo diagram">
+      <img src="images/ch3-flash-adc.png" alt="Flash ADC 2 บิต: comparator 3 ตัว (2n − 1) เทียบ VIN กับแรงดันจากโซ่ตัวต้านทานพร้อมกัน แล้ววงจรตรรกะเข้ารหัสเป็นบิต" loading="lazy">
+      <figcaption>รูปที่ 3.4 Flash ADC 2 บิต: comparator 3 ตัว (2<sup><var>n</var></sup> − 1) เทียบ V<sub>IN</sub> กับแรงดันจากโซ่ตัวต้านทานพร้อมกัน แล้ววงจรตรรกะเข้ารหัสเป็นบิต
+        <span class="credit">ภาพ: Jon Guerber / <a href="https://commons.wikimedia.org/wiki/File:Flash_ADC.png">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/3.0" rel="license">CC BY 3.0</a></span></figcaption>
+    </figure>
+    <figure class="photo diagram">
+      <img src="images/ch3-delta-sigma.svg" alt="ΔΣ ADC อันดับหนึ่ง: modulator (integrator + comparator 1 บิต + DAC 1 บิตป้อนกลับ) ตามด้วย digital filter และ decimator" loading="lazy">
+      <figcaption>รูปที่ 3.5 ΔΣ ADC อันดับหนึ่ง: modulator (integrator + comparator 1 บิต + DAC 1 บิตป้อนกลับ) ตามด้วย digital filter และ decimator
+        <span class="credit">ภาพ: Lambtron / <a href="https://commons.wikimedia.org/wiki/File:Delta-sigma_ADC.svg">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a></span></figcaption>
+    </figure>
+    </div>
     <div class="callout key">
       สัญญาณเกษตรส่วนใหญ่เปลี่ยนช้า แต่ต้องการความละเอียดสูงและทนสัญญาณรบกวน สำหรับสัญญาณระดับ mV เช่น load cell หรือ thermocouple
       ชิป ΔΣ ภายนอก (HX711, ADS1115) มักดีกว่า SAR ในตัว MCU · Dual-slope ที่เลือก T<sub>1</sub> = 20 ms จะเฉลี่ยสัญญาณรบกวน 50 Hz ทิ้งได้หมดพอดี
@@ -185,8 +207,20 @@
        เซนเซอร์เกษตรส่วนใหญ่ เช่น อุณหภูมิหรือความชื้นดิน เปลี่ยนช้ามาก สุ่มทุก 1–10 นาทีก็พอ
        แต่ต้องระวังพัลส์จาก flow meter และสัญญาณรบกวน 50 Hz — ใช้ low-pass filter (บทที่ 2) ก่อนสุ่ม</p>
 
+    <figure class="photo diagram">
+      <img src="images/ch3-aliasing.svg" alt="Aliasing: คลื่นไซน์ความถี่สูง (แดง) ถูกสุ่มช้าเกินไป จุดที่ได้ (สีดำ) จึงดูเหมือนคลื่นความถี่ต่ำ (น้ำเงิน) ที่ไม่มีอยู่จริง" loading="lazy">
+      <figcaption>รูปที่ 3.6 Aliasing: คลื่นไซน์ความถี่สูง (แดง) ถูกสุ่มช้าเกินไป จุดที่ได้ (สีดำ) จึงดูเหมือนคลื่นความถี่ต่ำ (น้ำเงิน) ที่ไม่มีอยู่จริง
+        <span class="credit">ภาพ: Moxfyre / <a href="https://commons.wikimedia.org/wiki/File:AliasingSines.svg">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0" rel="license">CC BY-SA 3.0</a></span></figcaption>
+    </figure>
+
     <!-- ===================================================== -->
     <h2 id="esp32-adc"><span class="sec-no">3.6</span>ADC ของ ESP32 และ Attenuation</h2>
+    <figure class="photo">
+      <img src="images/ch3-esp32-devboard.jpg" alt="บอร์ดพัฒนา ESP32 DevKit ที่ใช้โมดูล ESP-WROOM-32" loading="lazy">
+      <figcaption>รูปที่ 3.7 บอร์ดพัฒนา ESP32 DevKit ที่ใช้โมดูล ESP-WROOM-32
+        <span class="credit">ภาพ: Ubahnverleih / <a href="https://commons.wikimedia.org/wiki/File:ESP32_Espressif_ESP-WROOM-32_Dev_Board.jpg">Wikimedia Commons</a>, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en" rel="license">CC0</a></span></figcaption>
+    </figure>
+    <p class="muted">ข้อมูลในหัวข้อนี้สรุปจากเอกสารของ Espressif<a class="cite" href="#ref-2">[2]</a><a class="cite" href="#ref-3">[3]</a> และผลการวัดของ Llamas<a class="cite" href="#ref-4">[4]</a> และ Monk<a class="cite" href="#ref-5">[5]</a> ตามที่อ้างใน INS03</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>หัวข้อ</th><th>รายละเอียด</th></tr></thead>
@@ -269,6 +303,11 @@
       <li>ESP32 มี 3 UART: Serial (USB), Serial1, Serial2 — ใน Lab 4 GPS และ ultrasonic ต่อที่ Serial2</li>
     </ul>
 
+    <figure class="photo diagram wide">
+      <img src="images/ch3-uart-timing.svg" alt="แผนภาพเวลาของหนึ่งเฟรม UART: start bit ตามด้วย data bit 0–7 (ส่งบิตต่ำสุดก่อน) และ stop bit" loading="lazy">
+      <figcaption>รูปที่ 3.8 แผนภาพเวลาของหนึ่งเฟรม UART: start bit ตามด้วย data bit 0–7 (ส่งบิตต่ำสุดก่อน) และ stop bit
+        <span class="credit">ภาพ: IngenieroLoco / <a href="https://commons.wikimedia.org/wiki/File:UART_timing_diagram.svg">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a></span></figcaption>
+    </figure>
     <h3>ASCII หรือ Binary</h3>
     <div class="table-wrap">
       <table>
@@ -308,8 +347,13 @@
       <li>Terminator <strong>120 Ω ที่ปลายทั้งสองของสายเท่านั้น</strong> ไม่ใช่ทุกอุปกรณ์ (บางโมดูล MAX485 ติดมาแล้ว)</li>
     </ul>
 
+    <figure class="photo diagram">
+      <img src="images/ch3-rs485-waveform.svg" alt="สัญญาณ RS-485 ขณะส่งอักขระ 0xD3: สาย U+ และ U− กลับเฟสกันเสมอ ตัวรับอ่านผลต่างระหว่างสองสาย" loading="lazy">
+      <figcaption>รูปที่ 3.9 สัญญาณ RS-485 ขณะส่งอักขระ 0xD3: สาย U<sub>+</sub> และ U<sub>−</sub> กลับเฟสกันเสมอ ตัวรับอ่านผลต่างระหว่างสองสาย
+        <span class="credit">ภาพ: Roy Vegard Ovesen / <a href="https://commons.wikimedia.org/wiki/File:RS-485_waveform.svg">Wikimedia Commons</a>, <a href="http://creativecommons.org/licenses/by-sa/3.0/" rel="license">CC BY-SA 3.0</a></span></figcaption>
+    </figure>
     <h3>Modbus RTU</h3>
-    <p>Master ตัวเดียวเป็นผู้ถาม slave ตอบเมื่อถูกเรียกเท่านั้น slave address (1–247) ผู้ใช้เป็นผู้ตั้ง</p>
+    <p>Master ตัวเดียวเป็นผู้ถาม slave ตอบเมื่อถูกเรียกเท่านั้น slave address (1–247) ผู้ใช้เป็นผู้ตั้ง<a class="cite" href="#ref-7">[7]</a></p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Function code</th><th>ชื่อ</th><th>ใช้กับ</th></tr></thead>
@@ -355,7 +399,7 @@
         <text class="lbl-sm" x="296" y="168" text-anchor="middle">Ultrasonic</text>
         <text class="lbl" x="296" y="186" text-anchor="middle" font-family="monospace">0x57</text>
       </svg>
-      <figcaption>รูปที่ 3.2 I²C bus: อุปกรณ์ทุกตัวใช้ SDA/SCL ร่วมกัน โดยมีตัวต้านทาน pull-up ดึงสายขึ้น 3.3 V</figcaption>
+      <figcaption>รูปที่ 3.10 I²C bus: อุปกรณ์ทุกตัวใช้ SDA/SCL ร่วมกัน โดยมีตัวต้านทาน pull-up ดึงสายขึ้น 3.3 V</figcaption>
     </figure>
     <ul>
       <li>สาย SDA (ข้อมูล) และ SCL (clock) + GND ใช้ร่วมกันทุกอุปกรณ์</li>
@@ -368,6 +412,11 @@
        START → address + บิต R → slave ส่ง 3 ไบต์ตาม clock ของ master → master ตอบ ACK ทุกไบต์ยกเว้นไบต์สุดท้ายตอบ NACK → STOP
        ส่วน I²C scanner ก็แค่ลองส่ง START + address + W ไปที่ 1–127 แล้วดูว่า address ใดตอบ ACK</p>
 
+    <figure class="photo diagram wide">
+      <img src="images/ch3-i2c-transfer.svg" alt="ลำดับการส่งข้อมูลบน I²C: เงื่อนไข START (S) ข้อมูลแต่ละบิต B1…BN ที่อ่านขณะ SCL สูง และเงื่อนไข STOP (P)" loading="lazy">
+      <figcaption>รูปที่ 3.11 ลำดับการส่งข้อมูลบน I²C: เงื่อนไข START (S) ข้อมูลแต่ละบิต B<sub>1</sub>…B<sub>N</sub> ที่อ่านขณะ SCL สูง และเงื่อนไข STOP (P)
+        <span class="credit">ภาพ: Marcin Floryan / <a href="https://commons.wikimedia.org/wiki/File:I2C_data_transfer.svg">Wikimedia Commons</a>, Public domain</span></figcaption>
+    </figure>
     <h3>SPI: เร็วที่สุด หนึ่ง CS ต่ออุปกรณ์</h3>
     <ul>
       <li>สี่สาย: SCK, MOSI, MISO ใช้ร่วม และแต่ละอุปกรณ์มีสาย CS ของตัวเอง</li>
@@ -375,14 +424,19 @@
       <li>Mode 0–3 (CPOL/CPHA) กำหนดว่าอ่านบิตที่ขอบ clock ใด ต้องตรวจ datasheet — ผิด mode ได้ค่าผิดโดยไม่มี error</li>
       <li>ในรายวิชา: MAX6675 (thermocouple type K) และ MAX31865 (PT100) ใน Lab 6 · microSD และจอ TFT ส่วนใหญ่ก็เป็น SPI</li>
     </ul>
-    <p><strong>อ่าน MAX6675:</strong> ชิปไม่มี register และไม่มีคำสั่ง แค่ดึง CS ลง ให้ clock 16 ครั้ง ก็จะได้ 16 บิตกลับมา</p>
+    <figure class="photo diagram">
+      <img src="images/ch3-spi-three-slaves.svg" alt="SPI master หนึ่งตัวกับ slave สามตัว: สาย SCLK, MOSI, MISO ใช้ร่วมกัน แต่ละ slave มีสาย SS (CS) ของตัวเอง" loading="lazy">
+      <figcaption>รูปที่ 3.12 SPI master หนึ่งตัวกับ slave สามตัว: สาย SCLK, MOSI, MISO ใช้ร่วมกัน แต่ละ slave มีสาย SS (CS) ของตัวเอง
+        <span class="credit">ภาพ: Cburnett / <a href="https://commons.wikimedia.org/wiki/File:SPI_three_slaves.svg">Wikimedia Commons</a>, <a href="http://creativecommons.org/licenses/by-sa/3.0/" rel="license">CC BY-SA 3.0</a></span></figcaption>
+    </figure>
+    <p><strong>อ่าน MAX6675<a class="cite" href="#ref-8">[8]</a>:</strong> ชิปไม่มี register และไม่มีคำสั่ง แค่ดึง CS ลง ให้ clock 16 ครั้ง ก็จะได้ 16 บิตกลับมา</p>
 <pre><code>digitalWrite(CS, LOW);              // เลือกชิป เริ่มส่งบิต D15 ทาง MISO
 uint16_t w = SPI.transfer16(0);     // 16 clock: MOSI ส่ง 0 (ชิปไม่สนใจ), MISO รับ 16 บิต
 digitalWrite(CS, HIGH);             // ปล่อยชิป เริ่มแปลงค่าใหม่ (~220 ms)
 
 bool open = w &amp; 0x0004;             // บิต 2 = thermocouple ขาด
 float T = ((w &gt;&gt; 3) &amp; 0x0FFF) * 0.25;  // เลื่อนขวา 3 บิต เก็บ 12 บิต × 0.25 °C/LSB</code></pre>
-    <p class="muted">MAX31865 (PT100) ซับซ้อนกว่าเล็กน้อย: เขียน configuration register ก่อน แล้วอ่าน RTD register 2 ไบต์ — รูปแบบเดิมคือ CS ลง → ส่ง address → รับข้อมูล → CS ขึ้น</p>
+    <p class="muted">MAX31865 (PT100)<a class="cite" href="#ref-9">[9]</a> ซับซ้อนกว่าเล็กน้อย: เขียน configuration register ก่อน แล้วอ่าน RTD register 2 ไบต์ — รูปแบบเดิมคือ CS ลง → ส่ง address → รับข้อมูล → CS ขึ้น</p>
 
     <!-- ===================================================== -->
     <h2 id="onewire-can"><span class="sec-no">3.10</span>1-Wire และ CAN bus</h2>
@@ -393,6 +447,11 @@ float T = ((w &gt;&gt; 3) &amp; 0x0FFF) * 0.25;  // เลื่อนขวา 
       <li>Master คุมจังหวะเวลาระดับ µs (reset pulse 480 µs, time slot 60 µs) · ระยะหลายสิบเมตร · ช้า (≈ 16 kbit/s)</li>
       <li>ไลบรารี OneWire ปิด interrupt ชั่วครู่ระหว่างส่ง เพราะ MCU ต้องจับเวลาเอง</li>
     </ul>
+    <figure class="photo">
+      <img src="images/ch3-ds18b20.jpg" alt="DS18B20 ในตัวถัง TO-92 เทียบขนาดกับเหรียญ (สามขา: GND, DQ, VDD)" loading="lazy">
+      <figcaption>รูปที่ 3.13 DS18B20 ในตัวถัง TO-92 เทียบขนาดกับเหรียญ (สามขา: GND, DQ, V<sub>DD</sub>)
+        <span class="credit">ภาพ: SparkFun Electronics / <a href="https://commons.wikimedia.org/wiki/File:SparkFun_DS18B20_1.jpg">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="license">CC BY 2.0</a></span></figcaption>
+    </figure>
     <div class="table-wrap">
       <table>
         <thead><tr><th>DS18B20 resolution</th><th>ขั้น</th><th>เวลาแปลง</th></tr></thead>
@@ -405,7 +464,7 @@ float T = ((w &gt;&gt; 3) &amp; 0x0FFF) * 0.25;  // เลื่อนขวา 
       </table>
     </div>
     <ul>
-      <li>ความแม่นยำ ±0.5 °C (−10 ถึง 85 °C) <strong>ทุก resolution</strong> — ย้ำอีกครั้งว่าความละเอียดไม่ใช่ความแม่นยำ</li>
+      <li>ความแม่นยำ ±0.5 °C (−10 ถึง 85 °C)<a class="cite" href="#ref-10">[10]</a> <strong>ทุก resolution</strong> — ย้ำอีกครั้งว่าความละเอียดไม่ใช่ความแม่นยำ</li>
       <li>เดินสายแบบ daisy chain ไม่ใช่ star · สายยาวใช้คู่บิดเกลียวและลด pull-up เหลือ ≈ 2.2 kΩ · บอร์ดของภาควิชามี 4.7 kΩ แล้ว ห้ามเพิ่ม</li>
       <li>ในโครงงาน แต่ละ soil node มี DS18B20 2–3 ตัวที่ความลึกต่างกันบนสายเดียว ใช้ชดเชยค่าความชื้นดินตามอุณหภูมิ</li>
       <li>DS18B20 ปลอมพบบ่อย ตรวจเทียบกับ PT100 ที่ Lab 6 ก่อนติดตั้ง · โหมด “1-WIRE” ของ HC-SR04 รุ่น 2020 <strong>ไม่ใช่</strong>โปรโตคอล Dallas 1-Wire</li>
@@ -421,6 +480,11 @@ float T = ((w &gt;&gt; 3) &amp; 0x0FFF) * 0.25;  // เลื่อนขวา 
       <li><strong>เครื่องจักรกลเกษตร:</strong> SAE J1939 (ข้อมูลเครื่องยนต์: รอบ อัตราการใช้น้ำมัน, 250 kbit/s, ID 29 บิต จัดเป็น PGN/SPN)
           และ ISOBUS (ISO 11783) ให้รถแทรกเตอร์คุยกับอุปกรณ์ต่อพ่วง เช่น จอเดียวคุมทุกอุปกรณ์ (UT/VT), การให้ปุ๋ยแบบ variable-rate (TC)</li>
     </ul>
+    <figure class="photo diagram wide">
+      <img src="images/ch3-can-frame.svg" alt="โครงสร้างเฟรมข้อมูล CAN แบบ base (2.0A): start of frame, identifier 11 บิต, control/DLC, data 0–64 บิต, CRC, ACK และ end of frame" loading="lazy">
+      <figcaption>รูปที่ 3.14 โครงสร้างเฟรมข้อมูล CAN แบบ base (2.0A): start of frame, identifier 11 บิต, control/DLC, data 0–64 บิต, CRC, ACK และ end of frame
+        <span class="credit">ภาพ: Fröstel (S.G.) / <a href="https://commons.wikimedia.org/wiki/File:CAN_telegramm_2.0A.svg">Wikimedia Commons</a>, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en" rel="license">CC0</a></span></figcaption>
+    </figure>
     <div class="callout">Modbus หลีกเลี่ยงการชนด้วยการให้ master ถามทีละตัว (เหมาะกับเซนเซอร์ช้า) ส่วน CAN หลีกเลี่ยงด้วยลำดับความสำคัญ (เหมาะกับเครื่องจักรที่มีหลายตัวควบคุม)</div>
 
     <!-- ===================================================== -->
@@ -617,6 +681,40 @@ float T = ((w &gt;&gt; 3) &amp; 0x0FFF) * 0.25;  // เลื่อนขวา 
         <p>Binary เล็กกว่าเกือบ 3 เท่า ส่งได้เร็วขึ้นและประหยัดพลังงาน แต่ผู้รับต้องรู้ลำดับไบต์ endianness และ scale — ต้องเขียนเป็นเอกสารร่วมกันทุกกลุ่ม</p>
       </div>
     </details>
+
+    <!-- ===================================================== -->
+    <h2 id="references"><span class="sec-no">§</span>แหล่งอ้างอิง</h2>
+    <div class="refs">
+      <h3>เอกสาร</h3>
+      <ol>
+        <li id="ref-1">Udompetaikul, V. (2026). <em>INS03: Digital Signals</em> (v9) [เอกสารประกอบการสอน]. รายวิชา 01386309 Agricultural Instrumentation &amp; IoT, สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง.</li>
+        <li id="ref-2">Espressif Systems. <em>ESP-IDF Programming Guide v4.4 — Analog to Digital Converter (ADC)</em>. <a href="https://docs.espressif.com/projects/esp-idf/en/v4.4/esp32/api-reference/peripherals/adc.html">https://docs.espressif.com/projects/esp-idf/en/v4.4/esp32/api-reference/peripherals/adc.html</a></li>
+        <li id="ref-3">Espressif Systems. <em>ESP32 Series Datasheet</em>. <a href="https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf">https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf</a></li>
+        <li id="ref-4">Llamas, L. <em>How to use the ADC analog inputs in an ESP32</em>. luisllamas.es. <a href="https://www.luisllamas.es/en/esp32-adc/">https://www.luisllamas.es/en/esp32-adc/</a></li>
+        <li id="ref-5">Monk, S. (2024). ผลการวัด ADC ของ ESP32 ที่ attenuation 0 dB, <em>Doctor Monk’s DIY Electronics Blog</em> — อ้างถึงใน [1]. <a href="https://doctormonk.com/">https://doctormonk.com/</a></li>
+        <li id="ref-6">Kuphaldt, T. R. <em>Lessons in Electric Circuits, Vol. IV — Digital</em>, Chapter 13: Digital-Analog Conversion. All About Circuits. <a href="https://www.allaboutcircuits.com/textbook/digital/chpt-13/">https://www.allaboutcircuits.com/textbook/digital/chpt-13/</a></li>
+        <li id="ref-7">Modbus Organization. (2012). <em>MODBUS Application Protocol Specification V1.1b3</em>. <a href="https://www.modbus.org/file/secure/modbusprotocolspecification.pdf">https://www.modbus.org/file/secure/modbusprotocolspecification.pdf</a></li>
+        <li id="ref-8">Analog Devices (Maxim Integrated). <em>MAX6675 — Cold-junction-compensated K-thermocouple-to-digital converter</em>. <a href="https://www.analog.com/en/products/max6675.html">https://www.analog.com/en/products/max6675.html</a></li>
+        <li id="ref-9">Analog Devices (Maxim Integrated). <em>MAX31865 — RTD-to-digital converter</em>. <a href="https://www.analog.com/en/products/max31865.html">https://www.analog.com/en/products/max31865.html</a></li>
+        <li id="ref-10">Analog Devices (Maxim Integrated). <em>DS18B20 — Programmable resolution 1-Wire digital thermometer</em>. <a href="https://www.analog.com/en/products/ds18b20.html">https://www.analog.com/en/products/ds18b20.html</a></li>
+      </ol>
+      <h3>รูปประกอบ</h3>
+      <p class="muted">รูปจาก Wikimedia Commons ใช้ตามสัญญาอนุญาตที่ระบุ โดยไม่ได้ดัดแปลงนอกจากย่อขนาด ส่วนรูปวงจรและกราฟที่ไม่มีเครดิตจัดทำขึ้นใหม่สำหรับสื่อการสอนนี้</p>
+      <ul>
+        <li><strong>รูปที่ 3.1</strong> — Hyacinth, “3-bit resolution analog comparison.png”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:3-bit_resolution_analog_comparison.png">https://commons.wikimedia.org/wiki/File:3-bit_resolution_analog_comparison.png</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by-sa/3.0" rel="license">CC BY-SA 3.0</a>)</span></li>
+        <li><strong>รูปที่ 3.2</strong> — White Flye, “SA ADC block diagram.png”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:SA_ADC_block_diagram.png">https://commons.wikimedia.org/wiki/File:SA_ADC_block_diagram.png</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by-sa/2.5" rel="license">CC BY-SA 2.5</a>)</span></li>
+        <li><strong>รูปที่ 3.4</strong> — Jon Guerber, “Flash ADC.png”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:Flash_ADC.png">https://commons.wikimedia.org/wiki/File:Flash_ADC.png</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by/3.0" rel="license">CC BY 3.0</a>)</span></li>
+        <li><strong>รูปที่ 3.5</strong> — Lambtron, “Delta-sigma ADC.svg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:Delta-sigma_ADC.svg">https://commons.wikimedia.org/wiki/File:Delta-sigma_ADC.svg</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a>)</span></li>
+        <li><strong>รูปที่ 3.6</strong> — Moxfyre, “AliasingSines.svg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:AliasingSines.svg">https://commons.wikimedia.org/wiki/File:AliasingSines.svg</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by-sa/3.0" rel="license">CC BY-SA 3.0</a>)</span></li>
+        <li><strong>รูปที่ 3.7</strong> — Ubahnverleih, “ESP32 Espressif ESP-WROOM-32 Dev Board.jpg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:ESP32_Espressif_ESP-WROOM-32_Dev_Board.jpg">https://commons.wikimedia.org/wiki/File:ESP32_Espressif_ESP-WROOM-32_Dev_Board.jpg</a> <span class="lic">(<a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en" rel="license">CC0</a>)</span></li>
+        <li><strong>รูปที่ 3.8</strong> — IngenieroLoco, “UART timing diagram.svg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:UART_timing_diagram.svg">https://commons.wikimedia.org/wiki/File:UART_timing_diagram.svg</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a>)</span></li>
+        <li><strong>รูปที่ 3.9</strong> — Roy Vegard Ovesen, “RS-485 waveform.svg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:RS-485_waveform.svg">https://commons.wikimedia.org/wiki/File:RS-485_waveform.svg</a> <span class="lic">(<a href="http://creativecommons.org/licenses/by-sa/3.0/" rel="license">CC BY-SA 3.0</a>)</span></li>
+        <li><strong>รูปที่ 3.11</strong> — Marcin Floryan, “I2C data transfer.svg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:I2C_data_transfer.svg">https://commons.wikimedia.org/wiki/File:I2C_data_transfer.svg</a> <span class="lic">(Public domain)</span></li>
+        <li><strong>รูปที่ 3.12</strong> — Cburnett, “SPI three slaves.svg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:SPI_three_slaves.svg">https://commons.wikimedia.org/wiki/File:SPI_three_slaves.svg</a> <span class="lic">(<a href="http://creativecommons.org/licenses/by-sa/3.0/" rel="license">CC BY-SA 3.0</a>)</span></li>
+        <li><strong>รูปที่ 3.13</strong> — SparkFun Electronics, “SparkFun DS18B20 1.jpg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:SparkFun_DS18B20_1.jpg">https://commons.wikimedia.org/wiki/File:SparkFun_DS18B20_1.jpg</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by/2.0" rel="license">CC BY 2.0</a>)</span></li>
+        <li><strong>รูปที่ 3.14</strong> — Fröstel (S.G.), “CAN telegramm 2.0A.svg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:CAN_telegramm_2.0A.svg">https://commons.wikimedia.org/wiki/File:CAN_telegramm_2.0A.svg</a> <span class="lic">(<a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en" rel="license">CC0</a>)</span></li>
+      </ul>
+    </div>
 
     <div id="pager"></div>
   </main>

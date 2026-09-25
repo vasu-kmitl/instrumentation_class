@@ -22,7 +22,7 @@
       <div class="eyebrow">บทที่ 2 · Signal Conditioning &amp; Op-Amps</div>
       <h1>การปรับสภาพสัญญาณและ Op-Amp</h1>
       <p class="lead">ทำให้สัญญาณจากเซนเซอร์ “พร้อม” สำหรับ ADC — ขยาย บัฟเฟอร์ กรอง และเลื่อนระดับ ด้วยวงจร op-amp</p>
-      <div class="source">เรียบเรียงจาก INS02_SigCon_OpAmps_v20</div>
+      <div class="source">เรียบเรียงจาก <a href="#ref-1">[1]</a> INS02_SigCon_OpAmps_v20</div>
       <div class="objectives">
         <h4>เมื่อจบบทนี้ ผู้เรียนควรสามารถ</h4>
         <ul>
@@ -93,7 +93,7 @@
       Open-loop gain ใหญ่เกินกว่าจะใช้งานตรง ๆ จึงต้องมี negative feedback เสมอ และอัตราขยายที่ใช้งานจริงถูกกำหนดด้วย<strong>อัตราส่วนของตัวต้านทาน</strong>
     </div>
 
-    <h3>LM358 (Dual Op-Amp) ที่ใช้ในปฏิบัติการ</h3>
+    <h3>LM358 (Dual Op-Amp) ที่ใช้ในปฏิบัติการ<a class="cite" href="#ref-2">[2]</a></h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th>ขา</th><th>หน้าที่</th><th>ขา</th><th>หน้าที่</th></tr></thead>
@@ -112,6 +112,11 @@
       <li><strong>Gain-bandwidth product:</strong> ≈ 1 MHz → ที่ gain 11 แบนด์วิดท์ใช้งานได้ ≈ 90 kHz</li>
       <li><strong>Slew rate:</strong> ≈ 0.3 V/µs จำกัดความชันของขอบสัญญาณ</li>
     </ul>
+    <figure class="photo">
+      <img src="images/ch2-lm358-dip.jpg" alt="ภาพขยายแผ่นซิลิคอน (die) ของ LM358 ที่อยู่ภายในตัวถัง — op-amp ทั้งสองชุดของ dual op-amp อยู่บนชิปชิ้นเดียวนี้" loading="lazy">
+      <figcaption>รูปที่ 2.1 ภาพขยายแผ่นซิลิคอน (die) ของ LM358 ที่อยู่ภายในตัวถัง — op-amp ทั้งสองชุดของ dual op-amp อยู่บนชิปชิ้นเดียวนี้
+        <span class="credit">ภาพ: Epop / <a href="https://commons.wikimedia.org/wiki/File:UTC_PL0B_LM358_JC_N5.JPG">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0" rel="license">CC BY-SA 3.0</a></span></figcaption>
+    </figure>
     <div class="callout warn">
       <span class="title">กฎความปลอดภัยในแล็บ</span>
       ใช้ op-amp A (ขา 1-2-3) เท่านั้น แต่อย่าปล่อยอินพุตของ B ลอย · ต่อตัวเก็บประจุ decoupling 0.1 µF คร่อมขา 8 และ 4 ·
@@ -142,7 +147,7 @@
           <text class="lbl-sm" x="106" y="72">a</text>
           <text class="lbl" x="252" y="90" text-anchor="middle">V<tspan font-size="11" dy="4">o</tspan></text>
         </svg>
-        <figcaption>รูปที่ 2.1 Inverting amplifier</figcaption>
+        <figcaption>รูปที่ 2.2 Inverting amplifier</figcaption>
       </figure>
       <figure>
         <svg viewBox="0 0 280 240" width="280" role="img" aria-label="วงจรขยายแบบไม่กลับเฟส">
@@ -164,7 +169,7 @@
           <text class="lbl-sm" x="96" y="146">a</text>
           <text class="lbl" x="252" y="90" text-anchor="middle">V<tspan font-size="11" dy="4">o</tspan></text>
         </svg>
-        <figcaption>รูปที่ 2.2 Non-inverting amplifier</figcaption>
+        <figcaption>รูปที่ 2.3 Non-inverting amplifier</figcaption>
       </figure>
     </div>
 
@@ -229,6 +234,18 @@
       </table>
     </div>
 
+    <div class="fig-row">
+    <figure class="photo diagram">
+      <img src="images/ch2-clipping.svg" alt="สัญญาณปกติเทียบกับการถูกตัดยอด (clipping) — op-amp ที่ saturate ให้ผลแบบ hard clipping ข้อมูลส่วนที่เกินขีดจำกัดสูญหายไป" loading="lazy">
+      <figcaption>รูปที่ 2.4 สัญญาณปกติเทียบกับการถูกตัดยอด (clipping) — op-amp ที่ saturate ให้ผลแบบ <em>hard clipping</em> ข้อมูลส่วนที่เกินขีดจำกัดสูญหายไป
+        <span class="credit">ภาพ: Iainf; derivative work: Mikhail Ryazanov / <a href="https://commons.wikimedia.org/wiki/File:Clipping_waveform.svg">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/3.0" rel="license">CC BY 3.0</a></span></figcaption>
+    </figure>
+    <figure class="photo diagram">
+      <img src="images/ch2-crossover.svg" alt="Crossover distortion ของ output stage แบบ class B: ช่วง ±0.6 V รอบศูนย์ทรานซิสเตอร์ทั้งสองตัวไม่นำกระแส เอาต์พุตจึงหักที่จุดตัดศูนย์" loading="lazy">
+      <figcaption>รูปที่ 2.5 Crossover distortion ของ output stage แบบ class B: ช่วง ±0.6 V รอบศูนย์ทรานซิสเตอร์ทั้งสองตัวไม่นำกระแส เอาต์พุตจึงหักที่จุดตัดศูนย์
+        <span class="credit">ภาพ: Rohitbd; vectorization: Д. Ильин / <a href="https://commons.wikimedia.org/wiki/File:Crossover_distortion.svg">Wikimedia Commons</a>, Public domain</span></figcaption>
+    </figure>
+    </div>
     <h3>ตัวอย่าง: Lab 3 Activity 3.2 (non-inverting)</h3>
     <div class="table-wrap">
       <table>
@@ -292,12 +309,17 @@
         <text class="lbl" x="196" y="94">C</text>
         <text class="lbl" x="246" y="24" text-anchor="middle">V<tspan font-size="11" dy="4">out</tspan></text>
       </svg>
-      <figcaption>รูปที่ 2.3 วงจรกรองความถี่ต่ำแบบ RC (passive)</figcaption>
+      <figcaption>รูปที่ 2.6 วงจรกรองความถี่ต่ำแบบ RC (passive)</figcaption>
     </figure>
     <div class="eq"><var>f</var><sub>c</sub> = <span class="frac"><span>1</span><span>2π<var>RC</var></span></span> <span class="label">ความถี่ตัด (−3 dB)</span></div>
     <div class="eq"><span>|</span><span class="frac"><span><var>V</var><sub>out</sub></span><span><var>V</var><sub>in</sub></span></span><span>|</span> = <span class="frac"><span>1</span><span>√(1 + (<var>f</var>/<var>f</var><sub>c</sub>)<sup>2</sup>)</span></span></div>
     <p><strong>ตัวอย่าง:</strong> <var>R</var> = 10 kΩ, <var>C</var> = 1 µF → <var>f</var><sub>c</sub> = 1/(2π × 10<sup>4</sup> × 10<sup>−6</sup>) ≈ 16 Hz
        ที่ 50 Hz: 1/√(1 + (50/16)<sup>2</sup>) ≈ 0.30 หรือประมาณ −10 dB</p>
+    <figure class="photo diagram">
+      <img src="images/ch2-lowpass.svg" alt="วงจร RC low-pass (ซ้ายบน) รูปคลื่นอินพุต u และเอาต์พุต u′ ที่ล้าหลังเป็นมุม θ (ขวาบน) กราฟขนาดที่ลดลง −3 dB ที่ความถี่ตัด f0 (ซ้ายล่าง) และแผนภาพเฟเซอร์ (ขวาล่าง)" loading="lazy">
+      <figcaption>รูปที่ 2.7 วงจร RC low-pass (ซ้ายบน) รูปคลื่นอินพุต u และเอาต์พุต u′ ที่ล้าหลังเป็นมุม θ (ขวาบน) กราฟขนาดที่ลดลง −3 dB ที่ความถี่ตัด f<sub>0</sub> (ซ้ายล่าง) และแผนภาพเฟเซอร์ (ขวาล่าง)
+        <span class="credit">ภาพ: Fred the Oyster / <a href="https://commons.wikimedia.org/wiki/File:Low-pass_filter_diagram.svg">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a></span></figcaption>
+    </figure>
     <div class="callout key">
       <span class="title">หลักการเลือก f<sub>c</sub></span>
       ตั้ง <var>f</var><sub>c</sub> ให้สูงกว่าความถี่ของสัญญาณที่ต้องการ 5–10 เท่า แต่ต่ำกว่าความถี่ของสัญญาณรบกวน
@@ -318,6 +340,18 @@
         </tbody>
       </table>
     </div>
+    <div class="fig-row">
+    <figure class="photo diagram">
+      <img src="images/ch2-relay-principle.gif" alt="หลักการของรีเลย์: กระแสในขดลวด (1) ดึงอาร์เมเจอร์ (2) ให้หน้าสัมผัส (3) เปลี่ยนตำแหน่ง — วงจรควบคุมกับวงจรโหลดแยกกันทางไฟฟ้า" loading="lazy">
+      <figcaption>รูปที่ 2.8 หลักการของรีเลย์: กระแสในขดลวด (1) ดึงอาร์เมเจอร์ (2) ให้หน้าสัมผัส (3) เปลี่ยนตำแหน่ง — วงจรควบคุมกับวงจรโหลดแยกกันทางไฟฟ้า
+        <span class="credit">ภาพ: Digigalos / <a href="https://commons.wikimedia.org/wiki/File:Relay_principle_horizontal_new.gif">Wikimedia Commons</a>, <a href="http://creativecommons.org/licenses/by-sa/3.0/" rel="license">CC BY-SA 3.0</a></span></figcaption>
+    </figure>
+    <figure class="photo">
+      <img src="images/ch2-relay-module.jpg" alt="โมดูลรีเลย์ 5 V หนึ่งช่อง (SRD-05VDC-SL-C) — หน้าสัมผัสรับได้ 10 A ที่ 250 VAC ตามที่พิมพ์บนตัวรีเลย์" loading="lazy">
+      <figcaption>รูปที่ 2.9 โมดูลรีเลย์ 5 V หนึ่งช่อง (SRD-05VDC-SL-C) — หน้าสัมผัสรับได้ 10 A ที่ 250 VAC ตามที่พิมพ์บนตัวรีเลย์
+        <span class="credit">ภาพ: Suyash Dwivedi / <a href="https://commons.wikimedia.org/wiki/File:SRD-05VDC-SL-C_5V_one-channel_relay_module.jpg">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a></span></figcaption>
+    </figure>
+    </div>
     <p>ลำดับการขยายกระแส: GPIO ≈ 20 mA → ทรานซิสเตอร์ 0.1–1 A → หน้าสัมผัสรีเลย์ สูงสุด 10 A</p>
     <div class="callout key"><strong>Op-amp ขยายแรงดันเพื่ออ่านเซนเซอร์</strong> ส่วน <strong>ทรานซิสเตอร์/รีเลย์ขยายกระแสเพื่อขับโหลด</strong></div>
 
@@ -331,7 +365,12 @@
       <li><strong>A3</strong> เป็น differential amplifier ตัด common-mode noise</li>
       <li><strong>ขา REF:</strong> เอาต์พุตวัดเทียบกับขานี้ ต่อ GND ให้เอาต์พุตอยู่รอบ 0 V หรือต่อ M ให้อยู่รอบ 6 V</li>
     </ul>
-    <div class="eq"><var>G</var> = 1 + <span class="frac"><span>50 kΩ</span><span><var>R</var><sub>G</sub></span></span> <span class="label">INA128P</span></div>
+    <figure class="photo diagram">
+      <img src="images/ch2-inamp.svg" alt="Instrumentation amplifier แบบ op-amp 3 ตัว: สองตัวซ้ายเป็น buffer ที่มี Rgain ตัวเดียวคร่อมระหว่างกัน ตัวขวาเป็น differential amplifier" loading="lazy">
+      <figcaption>รูปที่ 2.10 Instrumentation amplifier แบบ op-amp 3 ตัว: สองตัวซ้ายเป็น buffer ที่มี R<sub>gain</sub> ตัวเดียวคร่อมระหว่างกัน ตัวขวาเป็น differential amplifier
+        <span class="credit">ภาพ: Inductiveload / <a href="https://commons.wikimedia.org/wiki/File:Op-Amp_Instrumentation_Amplifier.svg">Wikimedia Commons</a>, Public domain</span></figcaption>
+    </figure>
+    <div class="eq"><var>G</var> = 1 + <span class="frac"><span>50 kΩ</span><span><var>R</var><sub>G</sub></span></span> <span class="label">INA128P<a class="cite" href="#ref-3">[3]</a></span></div>
 
     <h3>ใช้ร่วมกับ Wheatstone bridge</h3>
     <p>Bridge คือวงจรแบ่งแรงดันสองชุดที่ผลต่างมีเพียงไม่กี่ mV จุดกลางแต่ละชุดต่อเข้า IN+ และ IN− ของ INA128
@@ -461,7 +500,7 @@
 
     <details class="solution">
       <summary>โจทย์ 3 — พิสูจน์ gain ของ non-inverting amplifier</summary>
-      <div class="problem"><p>จากรูปที่ 2.2 ใช้กฎทองของ op-amp พิสูจน์ว่า <var>V</var><sub>o</sub> = (1 + <var>R</var><sub>f</sub>/<var>R</var><sub>i</sub>)<var>V</var><sub>i</sub></p></div>
+      <div class="problem"><p>จากรูปที่ 2.3 ใช้กฎทองของ op-amp พิสูจน์ว่า <var>V</var><sub>o</sub> = (1 + <var>R</var><sub>f</sub>/<var>R</var><sub>i</sub>)<var>V</var><sub>i</sub></p></div>
       <div class="sol">
         <p>กฎข้อ 2: <var>V</var><sub>a</sub> = <var>V</var><sup>+</sup> = <var>V</var><sub>i</sub></p>
         <p>กฎข้อ 1: ไม่มีกระแสเข้าขา − ดังนั้นกระแสผ่าน <var>R</var><sub>f</sub> เท่ากับกระแสผ่าน <var>R</var><sub>i</sub>:
@@ -483,6 +522,28 @@
            ขา REF เป็นจุดอ้างอิงของ A3 — เอาต์พุต = <var>G</var>(<var>V</var><sub>2</sub> − <var>V</var><sub>1</sub>) + <var>V</var><sub>REF</sub> จึงใช้เลื่อนระดับเอาต์พุตไปไว้ที่ M ได้</p>
       </div>
     </details>
+
+    <!-- ===================================================== -->
+    <h2 id="references"><span class="sec-no">§</span>แหล่งอ้างอิง</h2>
+    <div class="refs">
+      <h3>เอกสาร</h3>
+      <ol>
+        <li id="ref-1">Udompetaikul, V. (2026). <em>INS02: Signal Conditioning and Operational Amplifiers</em> (v20) [เอกสารประกอบการสอน]. รายวิชา 01386309 Agricultural Instrumentation &amp; IoT, สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง.</li>
+        <li id="ref-2">Texas Instruments. <em>LM358 — Dual operational amplifier</em> (product page and datasheet). <a href="https://www.ti.com/product/LM358">https://www.ti.com/product/LM358</a></li>
+        <li id="ref-3">Texas Instruments. <em>INA128 — Precision, low-power instrumentation amplifier</em> (product page and datasheet). <a href="https://www.ti.com/product/INA128">https://www.ti.com/product/INA128</a></li>
+      </ol>
+      <h3>รูปประกอบ</h3>
+      <p class="muted">รูปจาก Wikimedia Commons ใช้ตามสัญญาอนุญาตที่ระบุ โดยไม่ได้ดัดแปลงนอกจากย่อขนาด ส่วนรูปวงจรและกราฟที่ไม่มีเครดิตจัดทำขึ้นใหม่สำหรับสื่อการสอนนี้</p>
+      <ul>
+        <li><strong>รูปที่ 2.1</strong> — Epop, “UTC PL0B LM358 JC N5.JPG”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:UTC_PL0B_LM358_JC_N5.JPG">https://commons.wikimedia.org/wiki/File:UTC_PL0B_LM358_JC_N5.JPG</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by-sa/3.0" rel="license">CC BY-SA 3.0</a>)</span></li>
+        <li><strong>รูปที่ 2.4</strong> — Iainf; derivative work: Mikhail Ryazanov, “Clipping waveform.svg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:Clipping_waveform.svg">https://commons.wikimedia.org/wiki/File:Clipping_waveform.svg</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by/3.0" rel="license">CC BY 3.0</a>)</span></li>
+        <li><strong>รูปที่ 2.5</strong> — Rohitbd; vectorization: Д. Ильин, “Crossover distortion.svg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:Crossover_distortion.svg">https://commons.wikimedia.org/wiki/File:Crossover_distortion.svg</a> <span class="lic">(Public domain)</span></li>
+        <li><strong>รูปที่ 2.7</strong> — Fred the Oyster, “Low-pass filter diagram.svg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:Low-pass_filter_diagram.svg">https://commons.wikimedia.org/wiki/File:Low-pass_filter_diagram.svg</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a>)</span></li>
+        <li><strong>รูปที่ 2.8</strong> — Digigalos, “Relay principle horizontal new.gif”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:Relay_principle_horizontal_new.gif">https://commons.wikimedia.org/wiki/File:Relay_principle_horizontal_new.gif</a> <span class="lic">(<a href="http://creativecommons.org/licenses/by-sa/3.0/" rel="license">CC BY-SA 3.0</a>)</span></li>
+        <li><strong>รูปที่ 2.9</strong> — Suyash Dwivedi, “SRD-05VDC-SL-C 5V one-channel relay module.jpg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:SRD-05VDC-SL-C_5V_one-channel_relay_module.jpg">https://commons.wikimedia.org/wiki/File:SRD-05VDC-SL-C_5V_one-channel_relay_module.jpg</a> <span class="lic">(<a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license">CC BY-SA 4.0</a>)</span></li>
+        <li><strong>รูปที่ 2.10</strong> — Inductiveload, “Op-Amp Instrumentation Amplifier.svg”, Wikimedia Commons, <a href="https://commons.wikimedia.org/wiki/File:Op-Amp_Instrumentation_Amplifier.svg">https://commons.wikimedia.org/wiki/File:Op-Amp_Instrumentation_Amplifier.svg</a> <span class="lic">(Public domain)</span></li>
+      </ul>
+    </div>
 
     <div id="pager"></div>
   </main>

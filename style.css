@@ -361,6 +361,25 @@ figure {
 }
 figure svg { display: block; margin: 0 auto; height: auto; color: var(--text); }
 figcaption { font-size: 14px; color: var(--text-muted); margin-top: 8px; }
+/* รูปประกอบจากแหล่งภายนอก */
+figure.photo img {
+  display: block;
+  margin: 0 auto;
+  max-height: 340px;
+  width: auto;
+  border-radius: 6px;
+  background: #fff;           /* แผนภาพโปร่งใสต้องมีพื้นขาว อ่านได้ทั้งโหมดสว่างและมืด */
+}
+figure.photo.diagram img { padding: 8px; }
+figure.photo.wide img { max-height: none; width: 100%; }
+figcaption .credit { display: block; font-size: 12.5px; margin-top: 3px; opacity: .85; }
+figcaption .credit a { color: inherit; }
+.cite { font-size: .75em; vertical-align: super; line-height: 0; text-decoration: none; }
+
+.refs { font-size: 15px; line-height: 1.6; }
+.refs li { margin: .45em 0; overflow-wrap: anywhere; }
+.refs .lic { color: var(--text-muted); }
+
 .fig-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
 .fig-row figure { margin: 0; }
 
